@@ -1,0 +1,276 @@
+# Medulla
+
+Website and web app for **Medulla**, a student-run brain-health project from Uzbekistan.
+*Mind • Learn • Grow*
+
+Plain HTML, CSS and JavaScript in **Uzbek (default), Russian and English**. It
+works with no backend and no keys. An optional build script pre-renders pages
+for search engines. Sync across devices and a Telegram channel bot are
+optional add-ons.
+
+- **What only you can do, in order:** [`HANDOFF.md`](HANDOFF.md)
+- **Why things are built this way, with sources:** [`RESEARCH.md`](RESEARCH.md)
+- **Fonts, art, sounds, sources:** [`CREDITS.md`](CREDITS.md) · **What changed:** [`CHANGELOG.md`](CHANGELOG.md)
+
+---
+
+## Decisions made
+
+1. **No framework and no build step needed to run it.** The site is plain files.
+   `node tools/build.js` (Node only, no packages) adds pre-rendered pages for
+   search engines and link previews. Vite or React would add a toolchain the
+   team would have to maintain, for no gain at this size.
+   See RESEARCH.md §7.
+2. **Guest first, no accounts.** Progress (XP, badges, saved facts, results)
+   stays in the browser. Uzbekistan's personal data law (Art. 21) requires
+   written parental consent for minors' data, so by default nothing is sent
+   anywhere. Optional sync uses a random code instead of an email and asks
+   under-18s to confirm a parent or guardian agreed. See RESEARCH.md §2.
+3. **Gentle progress, no manipulation.** There are no leaderboards, push
+   notifications, random rewards or loss warnings. One or two missed days never
+   break a streak. The only comparison is an opt-in school-club total.
+   See RESEARCH.md §1.
+4. **Honest brain games.** Every activity ends with "what this measures" and
+   "what it doesn't show". The site never claims to raise IQ. Research mode
+   stays "coming soon" until there is ethics approval and parental consent.
+   See RESEARCH.md §6.
+5. **Motion without libraries.** The neuron network is drawn on a canvas, and
+   everything else uses CSS and the Web Animations API. That adds 0 KB, against
+   45 to 491 KB for GSAP, Lottie or Rive. Sound is synthesized, off by default,
+   and always has a visual equivalent. Calm mode and the system's
+   reduced-motion setting switch off all movement. See RESEARCH.md §3–4.
+6. **Free hosting on GitHub Pages**, deployed by a GitHub Action. Optional
+   Supabase for sync and counters, called with plain `fetch` (no SDK). The
+   Telegram bot runs as a daily GitHub Action. See RESEARCH.md §5 and §7.
+7. **Every placeholder lives in `js/config.js`** and shows as a dashed "TBD"
+   on the site. No invented names, numbers, partners or photos. All health
+   content is labelled "Pending expert review".
+
+---
+
+## Run it
+
+Any static server in this folder works:
+
+```bash
+npx serve .
+```
+
+```bash
+python -m http.server 8000
+```
+
+Then open the address it prints. Opening `index.html` straight from disk also
+works, but offline mode (the service worker) needs a server.
+
+Useful while testing:
+- `?lang=ru` or `?lang=en` on any page switches language. The choice is remembered.
+- `?backend=mock` uses a fake server in your browser, so you can try sync,
+  restore, school clubs and counters without an account (`?backend=none` switches back).
+- After editing text, facts or pages, run:
+  ```bash
+  node tools/build.js
+  ```
+  It rebuilds the fact and topic pages, the sitemap and the offline file list, then
+  checks that all three languages have the same keys, every fact is complete and
+  every internal link works. `node tools/build.js --check` only checks.
+- Tests for the Telegram bot (a mock Telegram server; nothing is sent):
+  ```bash
+  node --test telegram/
+  ```
+
+## Deploy
+
+**GitHub Pages (recommended, free).** Push this folder to a GitHub repository
+(see HANDOFF.md step 1). Then open **Settings → Pages → Source: GitHub Actions**.
+Every push to `main` runs `.github/workflows/pages.yml`, which builds the site
+and publishes it. Tooling and the original art are left out of the published copy.
+
+- **Custom domain:** set it in Settings → Pages, add the DNS records GitHub
+  shows you, then set `domain` in `js/config.js` (for example
+  `"https://medulla.uz"`) and push. The build then writes canonical links,
+  `og:url` and the sitemap.
+- **Project address** (`username.github.io/repo/`): everything works except the
+  404 page, whose paths start with `/`. Change them to `/repo/` as the comment
+  in `404.html` explains, or use a custom domain.
+
+**Netlify or Cloudflare Pages:** build command `node tools/build.js`, publish
+directory `.` (the root).
+
+## What's inside
+
+```
+index.html            Home: neuron-network hero, impact bar, the five characters, story chapters per pillar
+learn.html            Fact library: topic hubs, search (all languages), filters, saved facts
+facts/<id>.html       One page per fact (generated): simple/detailed text, listen, save, share card, quiz
+topics/<topic>.html   Topic hubs (generated): sleep, learning, brain, movement, senses, myths
+lab.html              Brain Lab: 6 activities with honest result cards and "My results"
+explore.html          My Medulla: daily challenge, level, streak, badges, saved, history, profile and sync
+parents.html          For parents: early signs, questions for a doctor, disclaimer, resource directory
+events.html           Brain Awareness Week (15–21 March 2027) and requesting a visit or workshop
+activities.html       10 printable A4 sheets (colouring pages, maze, neuron labels, sleep diary…)
+about.html · partners.html · join.html · privacy.html · offline.html · 404.html
+
+js/config.js          ← every placeholder (domain, email, team, partners, impact numbers, backend keys)
+js/lang/uz|ru|en.js   ← all interface text (same keys in every language)
+data/facts.json       ← the facts (source of truth)
+data/kindness.json    ← kindness-wall messages the team approved
+data/resources.json   ← checked resources for parents
+
+js/i18n.js            Language list and loader      js/prefs.js    Settings applied before first paint
+js/main.js            Header, footer, icons, characters, reader, shared renderers
+js/store.js           Progress: XP, levels, streak, badges, saved facts, results (localStorage)
+js/backend.js         Optional sync and counters: none / mock / Supabase
+js/motion.js          Neuron canvas, parallax, reveals, tilt, sparkles; pauses when hidden
+js/sound.js           Synthesized sounds (Web Audio), off by default
+js/games.js           The six activities          js/explore.js   My Medulla
+js/learn.js · js/fact.js · js/fact-template.js · js/lab.js · js/home.js · js/activities.js · js/telegram.js
+css/styles.css · css/app.css
+sw.js · manifest.webmanifest   Offline support and "Add to home screen"
+tools/build.js        Pre-render + checks         backend/   Supabase schema and guide
+telegram/             Daily-fact bot, tests, Mini App plan        .github/workflows/   Deploy, checks, daily bot
+```
+
+## Characters
+
+| Character | Stands for | Leads |
+|---|---|---|
+| **Dendi** (neuron, the guide) | Growth and curiosity | Logo, home, My Medulla, the daily challenge |
+| **Memo** (elephant) | Memory | Daily facts, the library (Educational pillar) |
+| **Octa** (octopus) | Problem solving | Brain Lab tests and games (Practical pillar) |
+| **Syno** (jellyfish) | Feelings and kindness | Breathing, kindness tasks, parents, visits (Social pillar) |
+| **Lumi** (firefly) | Ideas and sleep | "Did you know" moments, sleep facts, the night wind-down |
+
+The art is used unchanged: no redrawing, recolouring or stretching. Animation
+moves whole images (float, sway, breathe).
+
+---
+
+## How to…
+
+### Add a fact
+1. In `data/facts.json`, copy an entry and give it a new `id` (lowercase, dashes; it becomes `facts/<id>.html`).
+2. Fill `character`, `topic` (an existing topic key), and `title`, `simple`, `detail` in **uz, ru and en**.
+   In Uzbek, attribute numbers ("…maʼlumotlariga koʻra") and explain Latin terms in brackets.
+3. Add a `quiz`: a question, three options with **the correct one first** (`"answer": 0`; the site shuffles them), and `why`.
+4. Add a `source` with `name` and `url`. Open the link and check that it says what the fact says.
+5. Keep `"reviewed": false` until an expert has checked it. Then run `node tools/build.js`.
+
+### Change a placeholder
+Everything is in `js/config.js`, with comments. `null` shows "TBD". Run
+`node tools/build.js` after changing `domain`.
+
+### Add a language
+1. In `js/i18n.js`, add `{ code, label, name, locale, bcp47, decimal, group }` to `languages`.
+2. Copy `js/lang/en.js` to `js/lang/<code>.js`, change the first line to the new code, and translate the values.
+3. Add the new language next to `uz`/`ru`/`en` in every text field of `data/facts.json`.
+4. Run `node tools/build.js`. It fails if any key or fact text is missing. The language button appears by itself.
+
+### Add a character
+1. Put the art in `assets/characters/<id>.webp` (and the `.png` original).
+2. Add it to `CHARACTERS` and `CHARACTER_ORDER` in `js/main.js` (pixel size and a tint from the palette),
+   and to `CHARS` in `js/fact-template.js`.
+3. Add `char.<id>.kind`, `.trait`, `.role`, `.line` and `.alt` to every `js/lang/*.js` file, then run the build.
+
+### Add a badge
+1. Add `{ id: "<char>-<name>", char: "<char>", test: function (s) { … } }` to `BADGES` in `js/store.js`.
+   `s` is the saved progress (see the top of that file).
+2. Add `badge.<id>.name` and `badge.<id>.how` to every language file. Keep badges about learning, not about time spent.
+
+### Add a game or activity
+1. In `js/games.js`, add `{ id, char, icon, kind: "test" | "exercise", minutes }` to the list at the top.
+   Write a function like the others, `(g, el, opts, signal)`, and register it in `IMPL`.
+2. End it with `resultCard(…)` and `finish(id, result, opts)`, so the result is saved, XP is
+   given and the honest "what it measures / what it doesn't" card appears.
+3. Add `game.<id>.title`, `.short`, `.how`, `.what` and `.limits` (plus any messages) to every language file.
+   If it is a test, add the id to `GAME_IDS` in `js/store.js`.
+
+### Approve a kindness message or a parents' resource
+Messages arrive by email through the "Send a kind message" button on the Join page. After the team
+reads one, add it to `data/kindness.json`: no children's names, no photos, no
+health details. Add a resource to `data/resources.json` only after someone has
+checked that it exists, and record the date.
+
+### Switch on sync and live counters
+Follow [`backend/README.md`](backend/README.md) (about 10 minutes, free Supabase project).
+
+### Post the daily fact to Telegram
+Follow [`telegram/MINI_APP.md`](telegram/MINI_APP.md). Dry run:
+```bash
+node telegram/bot.mjs --dry-run
+```
+
+---
+
+## Accessibility and motion
+
+- Meets WCAG 2.2 AA targets:
+  - skip link, landmarks and one `h1` per page
+  - orange focus rings, keyboard use everywhere (arrow keys in the reader, keys 1–4 in Stroop)
+  - native `<dialog>` modals with labels, live regions for game status
+  - tap targets of at least 24 px (most are 44 px)
+  - text contrast of at least 4.5:1
+- Settings (the sliders button), saved on the device:
+  - sound (off by default)
+  - **calm mode** (no animation, parallax or tilt)
+  - **larger text**
+  - **dyslexia-friendly font** (Verdana or Tahoma with extra spacing)
+- The system "reduce motion" setting has the same effect as calm mode.
+- Flashes are never faster than 3 per second.
+- Animation pauses when the tab is hidden or the element is off screen.
+- Every sound has a visual equivalent.
+- Characters are decorative (empty `alt`) wherever their name is written next to them.
+
+## Tested (October 2026)
+
+All tests ran on a local server, in Edge or Chromium.
+
+**Every page, in all three languages:**
+- 13 pages, 25 fact pages and 6 topic pages.
+- No JavaScript errors and no missing translation keys.
+- No horizontal scrolling at 375 px or at desktop width.
+
+**My Medulla and the Lab:**
+- The full daily challenge: fact, then 3 questions with explanations, then a game, then the badge and the "done" screen.
+- All 6 activities open. Stroop, reaction time and sequence memory were played through to their result cards.
+
+**Sync, with the mock backend:**
+- Switching sync on, including the parent/guardian step for under-18s.
+- The code screen.
+- Restore on a "new device", which merges progress.
+- School club totals.
+- "Delete everything", which also removes the online copy.
+
+**With no backend keys:**
+- Sync shows "not set up yet".
+- Nothing is sent anywhere.
+
+**Settings:**
+- Sound, calm mode, larger text and the dyslexia font switch on, are remembered and switch off.
+- With the system "reduce motion" setting (headless Edge): idle loops, entrance animations and scroll reveals are off.
+
+**Offline:**
+- The app shell and the Lab work offline.
+- Pages that aren't cached show the offline page, including pages inside `facts/` and `topics/`.
+
+**Share card and the Telegram bot:**
+- The share card renders at 1200×630.
+- The bot passes 10 tests against a mock Telegram server.
+- The SQL schema passes 16 checks in an in-memory Postgres.
+
+**Speed:** measured on a phone-sized screen (412 px) with "Slow 4G" and 4× CPU slowdown, gzip on and no cache:
+
+| Page | Transferred | First paint | Largest paint | Layout shift |
+|---|---|---|---|---|
+| Home | 313 KB | 1.0–1.9 s | 1.0–1.9 s | 0.000 |
+| Learn | 234 KB | 1.4–1.6 s | 1.4–1.6 s | 0.000 |
+| Lab | 246 KB | 0.8–1.3 s | 0.8–1.3 s | 0.000 |
+| My Medulla | 293 KB | 1.0–1.3 s | 3.1 s | 0.000 |
+| A fact page | 248 KB | 1.1–1.3 s | 1.1–1.3 s | 0.000 |
+| Parents | 207 KB | 0.9–1.3 s | 0.9–1.3 s | ≤ 0.023 |
+| Printables | 620 KB | 0.8–1.5 s | 3.6–4.6 s | 0.064 |
+
+Google rates a largest paint under 2.5 s and a layout shift under 0.1 as
+"good". Most of the transfer is shared files (CSS, scripts, the language file,
+fonts, character art) that are cached after the first page. The printables
+page is heavier because of its colouring-page images.

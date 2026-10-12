@@ -1,0 +1,62 @@
+# Credits
+
+## Characters and logo
+
+Dendi, Memo, Octa, Syno, Lumi and the Medulla logo were **created by the Medulla
+team**. The site uses the original art unchanged: cut out from its background,
+resized and saved as WebP. Nothing was redrawn or recoloured. The originals are
+in `assets/source/`.
+
+The colouring pages in `assets/printables/*-lines.png` were **traced
+automatically** from that art (edge detection) as a stand-in. Replace them with
+clean line art from the illustrator when it is available (see `HANDOFF.md`).
+
+## Fonts
+
+- **Sora** (headings), by Jonathan Barnbrook and Julián Moncada, SIL Open Font License 1.1.
+- **Manrope** (Cyrillic headings), by Mikhail Sharanda, SIL Open Font License 1.1.
+- Both load from Google Fonts. Body text uses the visitor's system font.
+  The dyslexia-friendly mode uses Verdana or Tahoma from the device.
+
+## Sound
+
+There are **no sound files**. Every sound (taps, correct and wrong answers,
+badges, the breathing tones and Lumi's night ambience) is synthesized live in
+the browser with the Web Audio API by `js/sound.js`, written for this site.
+Sound is off until the visitor switches it on, and every sound has a visual
+equivalent.
+
+## Icons and illustrations
+
+- The interface icons are simple inline SVG line icons drawn for this site
+  (`js/main.js` → `ICONS`), in the common 24-pixel outline style.
+- The neuron network, the story explainers (neuron firing, sleep cycle, memory
+  steps, pupil) and the printable worksheets are SVG and canvas drawings made
+  for this site.
+
+## Facts
+
+Every fact names its source on its page and in `data/facts.json`: NINDS, NIMH,
+NHLBI, NEI and MedlinePlus (US National Institutes of Health), the NHS, the
+World Health Organization, StatPearls, and peer-reviewed papers (Xie et al.
+2013; Raichle & Gusnard 2002; Azevedo et al. 2009; Roediger & Karpicke 2006;
+Dunlosky et al. 2013; Nielsen et al. 2013; Simons et al. 2016). The wording is
+Medulla's own summary. All facts are marked **"Pending expert review"** until
+a specialist signs them off.
+
+## Activities
+
+- **Stroop test:** after J. R. Stroop (1935).
+- **Digit span and sequence memory:** classic short-term memory tasks, here
+  with a simple adaptive staircase.
+- **Breathing with Syno:** the in for 5 / out for 5 pattern from the NHS
+  "Breathing exercises for stress" page.
+- **Lumi's wind-down:** general sleep-hygiene advice from the NHS and NHLBI.
+
+These are for curiosity and learning, not diagnosis.
+
+## Third-party code
+
+None is bundled. The only outside script is Telegram's official
+`telegram-web-app.js`, and it is loaded only when the site is opened inside
+Telegram.
