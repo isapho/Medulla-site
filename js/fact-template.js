@@ -59,7 +59,7 @@
       (f.reviewed ? "" : '<p class="reader-note">' + ic("info") + "<span>" + esc(t("reader.note")) + "</span></p>") +
       (q ? '<section class="fact-quiz" aria-labelledby="fq-title"><div class="quiz-q" data-quiz="' + esc(f.id) + '">' +
         '<p class="eyebrow" id="fq-title">' + ic("bulb") + esc(t("fact.quizTitle")) + "</p>" +
-        "<h3>" + esc(loc(q.q)) + '</h3><div class="quiz-options">' +
+        '<h2 class="h3">' + esc(loc(q.q)) + '</h2><div class="quiz-options">' +
         order.map(function (oi, n) {
           return '<button type="button" class="quiz-option" data-opt="' + oi + '"><span class="qo-mark">' + String.fromCharCode(65 + n) + "</span><span>" + esc(loc(q.options[oi])) + "</span></button>";
         }).join("") + '</div><div class="quiz-why-slot" aria-live="polite"></div></div></section>' : "");

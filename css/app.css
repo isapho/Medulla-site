@@ -463,7 +463,7 @@ html.calm .night-moon, html.calm .night-lumi, html.calm .star { animation: none;
 
 .quiz { display: grid; gap: 14px; }
 .quiz-q { padding: 20px; border: 1px solid var(--line); border-radius: var(--r); background: var(--white); box-shadow: var(--shadow-1); }
-.quiz-q h3 { margin: 0 0 12px; font-size: 1.1rem; }
+.quiz-q h3, .quiz-q h2 { margin: 0 0 12px; font-size: 1.1rem; }
 .quiz-options { display: grid; gap: 8px; }
 .quiz-option { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 10px 14px; border: 1.5px solid var(--line-2); border-radius: var(--r-sm); background: var(--white); color: var(--ink); font: inherit; font-weight: 600; text-align: left; cursor: pointer; }
 .quiz-option:hover:not(:disabled) { border-color: var(--purple); }

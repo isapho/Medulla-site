@@ -241,9 +241,9 @@ function factPage(f) {
           <article class="card fact-article" id="fact-article" aria-labelledby="fact-title">
 ${Tpl.article(f, ctx)}
           </article>
-          <aside class="fact-side" id="fact-side">
+          <div class="fact-side" id="fact-side">
 ${Tpl.side(f, ctx)}
-          </aside>
+          </div>
         </div>
       </div>
     </section>

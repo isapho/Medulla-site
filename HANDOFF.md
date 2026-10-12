@@ -6,51 +6,38 @@ goes. Tick the boxes as you go.
 
 ---
 
-## 1. Put the code under version control (15 minutes)
+## 1. Version control: DONE
 
-Git is not installed on the computer this was built on, so there is no history
-yet.
-
-- [ ] Install Git: https://git-scm.com/download/win (default options are fine).
-- [ ] In a terminal inside `medulla-site`, commit the work in steps:
+Git is installed, the work is committed, and the repository is
+https://github.com/isapho/Medulla-site (public). Later changes:
 
 ```bash
-git init -b main
-git add RESEARCH.md
-git commit -m "Research: engagement, minors' data, animation, sound, Telegram, games, hosting"
-git add assets css js/prefs.js js/config.js js/i18n.js js/lang js/store.js js/backend.js js/sound.js js/motion.js js/main.js
-git commit -m "Core: three languages, progress store, backend adapter, sound, motion, shared shell"
-git add js/games.js js/lab.js js/explore.js js/learn.js js/fact.js js/fact-template.js js/home.js js/activities.js js/telegram.js
-git commit -m "Features: six activities, My Medulla, fact pages, printables, Telegram adapter"
-git add *.html data tools facts topics sitemap.xml robots.txt sw.js manifest.webmanifest
-git commit -m "Pages, 25 facts, build script, PWA and SEO files"
-git add backend telegram .github
-git commit -m "Optional Supabase schema, Telegram daily-fact bot with tests, GitHub workflows"
-git add README.md HANDOFF.md CREDITS.md CHANGELOG.md .gitignore
-git commit -m "Docs: README, handoff checklist, credits, changelog"
-git status
+git add -A
+git commit -m "What you changed"
+git push
 ```
 
-  `git status` should then say "nothing to commit".
-- [ ] Create an empty repository on GitHub (for example `medulla-site`). Then push:
+## 2. Publishing: set up, not yet announced
 
-```bash
-git remote add origin https://github.com/YOUR-ACCOUNT/medulla-site.git
-git push -u origin main
-```
+Pages is switched on, and every push to `main` republishes the site at
+https://isapho.github.io/Medulla-site/ (Settings → Pages → Source: GitHub Actions).
 
-## 2. Publish it (15 minutes)
-
-- [ ] GitHub → repository → **Settings → Pages → Source: GitHub Actions**. The
-      next push (or **Actions → Deploy to GitHub Pages → Run workflow**)
-      publishes the site.
+- [ ] **Decide when to go public.** The repository and the site are public now.
+      To take the site down until you are ready: Settings → Pages → "Unpublish
+      site". To stop deploys, turn off Actions for the repository. To make the
+      code private too: Settings → General → Danger Zone (private repositories
+      need a paid plan for Pages).
 - [ ] Optional domain (for example `medulla.uz`): buy it, add it under
       Settings → Pages, and create the DNS records GitHub shows you. Tick
       "Enforce HTTPS" once it appears.
-- [ ] Set `domain` in `js/config.js` (for example `"https://medulla.uz"`), then commit and push.
-      The build fills canonical links, `og:url`, absolute share images and `sitemap.xml`.
+- [ ] Set `domain` in `js/config.js` (the final address, for example
+      `"https://medulla.uz"`), then commit and push. The build fills canonical
+      links, `og:url`, absolute share images and `sitemap.xml`. Set it once the
+      address is final, because link previews and search engines remember it.
+- [ ] On a project address (`…github.io/Medulla-site/`) the 404 page needs its
+      paths changed to `/Medulla-site/` (see the comment in `404.html`). A custom
+      domain avoids that.
 - [ ] Optional: add the site in Google Search Console and Yandex Webmaster, then submit `sitemap.xml`.
-
 ## 3. Contact details → `js/config.js`
 
 - [ ] `contactEmail`: a shared inbox, for example `hello@…`. It powers every

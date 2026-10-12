@@ -59,6 +59,7 @@
   - empty header, icons drawn late, library lists, the My Medulla view
   - the home page's main text painting late
 - Breadcrumb links were under the 24 px minimum tap size.
+- An automated accessibility audit (axe-core, WCAG 2.2 AA, 26 page loads in uz, en and ru) found three issues, now fixed: the flipped fact card hid a focusable link from screen readers, the quiz heading on fact pages skipped a level, and the fact sidebar was a landmark inside a landmark. It now reports zero issues.
 - The small icons in the home page explainer titles were stretched wide on phones, making the page scroll sideways.
 - The daily challenge didn't add to the anonymous "daily challenges" counter.
 - Sync now waits for a burst of progress events to settle before uploading.

@@ -132,7 +132,7 @@ Medulla.ready(function () {
         '<div class="flip" id="flip"><div class="flip-inner">' +
           '<button type="button" class="flip-face flip-front press" data-flip aria-expanded="false"><span class="chip">' + esc(M.topicName(f)) + "</span>" +
             "<h3>" + esc(M.localized(f.title)) + '</h3><span class="flip-hint">' + icon("refresh") + esc(t("daily.flip")) + "</span>" + M.charImg(who, "idle idle-" + who, "") + "</button>" +
-          '<div class="flip-face flip-back" aria-hidden="true"><span class="chip">' + esc(M.topicName(f)) + "</span><h3>" + esc(M.localized(f.title)) + "</h3>" +
+          '<div class="flip-face flip-back" inert><span class="chip">' + esc(M.topicName(f)) + "</span><h3>" + esc(M.localized(f.title)) + "</h3>" +
             '<p class="fact-text">' + esc(M.localized(f.simple)) + "</p>" + M.sourceLine(f) +
             '<div class="btn-row"><a class="text-link" href="' + M.factUrl(f) + '">' + esc(t("daily.readMore")) + icon("arrow", "icon-sm") + "</a></div></div>" +
         "</div></div>" +
@@ -156,7 +156,7 @@ Medulla.ready(function () {
       btn.addEventListener("click", function () {
         flip.classList.add("is-flipped");
         btn.setAttribute("aria-expanded", "true");
-        flip.querySelector(".flip-back").removeAttribute("aria-hidden");
+        flip.querySelector(".flip-back").removeAttribute("inert");
         btn.setAttribute("tabindex", "-1");
         next.disabled = false;
         S.tap();
