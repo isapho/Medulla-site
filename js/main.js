@@ -199,11 +199,11 @@
 
   // The Medulla character system: transparent cut-outs of the original sheet.
   var CHARACTERS = {
-    dendi: { name: "Dendi", w: 191, h: 275, tint: "#EFEDFF", guide: true },
-    memo:  { name: "Memo",  w: 274, h: 227, tint: "#E8E5FF" },
-    octa:  { name: "Octa",  w: 197, h: 230, tint: "#F3F1FF" },
-    syno:  { name: "Syno",  w: 166, h: 244, tint: "#ECE9FF" },
-    lumi:  { name: "Lumi",  w: 160, h: 157, tint: "#FFF3E6" }
+    dendi: { name: "Dendi", w: 197, h: 281, tint: "#EFEDFF", guide: true },
+    memo:  { name: "Memo",  w: 278, h: 233, tint: "#E8E5FF" },
+    octa:  { name: "Octa",  w: 201, h: 235, tint: "#F3F1FF" },
+    syno:  { name: "Syno",  w: 171, h: 250, tint: "#ECE9FF" },
+    lumi:  { name: "Lumi",  w: 162, h: 164, tint: "#FFF3E6" }
   };
   var CHARACTER_ORDER = ["dendi", "memo", "octa", "syno", "lumi"];
 
@@ -377,7 +377,7 @@
     d.querySelector(".reader-body").innerHTML =
       '<div class="reader-spread' + (animate && !reducedMotion.matches ? " reader-turn" : "") + '">' +
         '<div class="reader-cover"><div><span class="chip">' + esc(topicName(fact)) + "</span></div>" +
-          charImg(who, "idle idle-float", "", true) +
+          poseImg(who, "aha", "idle idle-float", true) +
           '<p class="presenter">' + esc(t("reader.presenter", { name: CHARACTERS[who].name })) + "</p></div>" +
         '<div class="reader-page">' +
           '<div class="fact-meta" style="justify-content:flex-start;margin-bottom:14px">' + reviewBadge(fact) + "</div>" +

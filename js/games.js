@@ -473,7 +473,7 @@
   // ends by asking the visitor to put the phone away.
   function sleepMode(g, el, opts, signal) {
     el.innerHTML = head(g, opts.heading) +
-      '<div class="stage night-preview"><img src="' + M.root() + 'assets/characters/lumi.png" width="160" height="157" alt="" class="night-lumi-small">' +
+      '<div class="stage night-preview"><img src="' + M.root() + 'assets/characters/lumi.png" width="162" height="164" alt="" class="night-lumi-small">' +
       '<ul class="small-notes">' + ["game.sleep.note1", "game.sleep.note2"].map(function (k) { return "<li>" + M.icon("moon") + "<span>" + esc(t(k)) + "</span></li>"; }).join("") + "</ul>" +
       '<div class="btn-row"><button type="button" class="btn btn-night g-start">' + M.icon("moon") + "<span>" + esc(t("game.sleep.start")) + "</span></button></div></div>" +
       '<div class="result-card" hidden></div>';
@@ -494,7 +494,7 @@
       }
       overlay.innerHTML = '<div class="night-sky" aria-hidden="true">' + stars + "</div>" +
         '<div class="night-inner"><div class="night-moon" aria-hidden="true"></div>' +
-        '<img class="night-lumi" src="' + M.root() + 'assets/characters/lumi.png" width="160" height="157" alt="">' +
+        '<img class="night-lumi" src="' + M.root() + 'assets/characters/lumi.png" width="162" height="164" alt="">' +
         '<p class="night-step" aria-live="polite"></p>' +
         '<div class="night-ring" aria-hidden="true"><span></span></div>' +
         '<div class="btn-row"><button type="button" class="btn btn-night-ghost night-end">' + esc(t("game.sleep.end")) + "</button></div></div>";
@@ -534,6 +534,7 @@
       if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
       if (completed === true || seconds >= 60) {
         resultCard(res, "sleep", [[M.fmt(seconds / 60, 1), t("game.sleep.minutes")]]);
+        var pose = res.querySelector(".result-pose"); if (pose) pose.innerHTML = M.poseImg("lumi", "asleep", "pose", true);
         finish("sleep", { type: "sleep", seconds: seconds }, opts);
       }
     }

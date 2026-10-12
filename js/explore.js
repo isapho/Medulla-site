@@ -143,7 +143,7 @@ Medulla.ready(function () {
       var gid = dailyGame();
       body = '<p class="muted">' + esc(t("daily.gameLead", { game: t("game." + gid + ".title") })) + '</p><div class="card experiment-card" id="daily-game"></div>';
     } else {
-      body = '<div class="done-card">' + M.charImg("dendi", "idle idle-dendi", "") + "<h2>" + esc(t("daily.doneTitle")) + "</h2><p>" + esc(t("daily.doneText")) + "</p>" +
+      body = '<div class="done-card">' + M.poseImg("dendi", "win", "idle idle-dendi") + "<h2>" + esc(t("daily.doneTitle")) + "</h2><p>" + esc(t("daily.doneText")) + "</p>" +
         '<div class="btn-row" style="justify-content:center"><a class="btn btn-primary press" href="#/">' + icon("home") + "<span>" + esc(t("daily.backHome")) + '</span></a><a class="btn btn-ghost press" href="' + M.root() + 'lab.html">' + icon("target") + "<span>" + esc(t("daily.moreLab")) + "</span></a></div></div>";
     }
     return '<div class="card app-card"><h2 style="margin-bottom:12px">' + esc(t("daily.title")) + "</h2>" + steps + body + "</div>";
@@ -229,7 +229,7 @@ Medulla.ready(function () {
 
   function viewSaved() {
     var ids = Store.get().saved, list = facts.filter(function (f) { return ids.indexOf(f.id) !== -1; });
-    if (!list.length) return '<div class="empty-state">' + M.charImg("memo", "idle idle-memo", "") + "<h3>" + esc(t("saved.emptyTitle")) + "</h3><p>" + esc(t("saved.empty")) + '</p><a class="btn btn-primary press" href="' + M.root() + 'learn.html">' + icon("book") + "<span>" + esc(t("saved.browse")) + "</span></a></div>";
+    if (!list.length) return '<div class="empty-state">' + M.poseImg("memo", "curious", "idle idle-memo") + "<h3>" + esc(t("saved.emptyTitle")) + "</h3><p>" + esc(t("saved.empty")) + '</p><a class="btn btn-primary press" href="' + M.root() + 'learn.html">' + icon("book") + "<span>" + esc(t("saved.browse")) + "</span></a></div>";
     return '<div class="card app-card"><h2>' + esc(t("saved.title")) + '</h2><ul class="related-list" style="margin-top:12px">' + list.map(function (f) {
       return '<li><a href="' + M.factUrl(f) + '"><span><span class="chip" style="margin-right:8px">' + esc(M.topicName(f)) + "</span>" + esc(M.localized(f.title)) + "</span>" + icon("arrow") + "</a></li>";
     }).join("") + "</ul></div>";

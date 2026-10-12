@@ -61,7 +61,7 @@ const esc = Tpl.esc;
 
 const TOPICS = ["sleep", "learning", "brain", "movement", "senses", "myths"];
 const PAGES = ["index", "learn", "lab", "explore", "parents", "events", "activities", "about", "partners", "join", "privacy", "offline", "404"];
-const CHAR_DIMS = { dendi: [191, 275], memo: [274, 227], octa: [197, 230], syno: [166, 244], lumi: [160, 157] };
+const CHAR_DIMS = { dendi: [197, 281], memo: [278, 233], octa: [201, 235], syno: [171, 250], lumi: [162, 164] };
 
 /* --------------------------------------------------------------- checks */
 
@@ -363,7 +363,11 @@ if (!CHECK_ONLY) {
     "js/lang/uz.js", "js/lang/ru.js", "js/lang/en.js",
     "data/facts.json", "data/kindness.json", "data/resources.json",
     "assets/brand/logo-96.webp", "assets/brand/logo-192.webp", "assets/brand/favicon-64.png"
-  ].concat(Object.keys(CHAR_DIMS).map((c) => "assets/characters/" + c + ".webp"));
+  ]
+    .concat(Object.keys(CHAR_DIMS).map((c) => "assets/characters/" + c + ".webp"))
+    // reactions used offline: quiz feedback, game results and the offline page
+    .concat(Object.keys(CHAR_DIMS).flatMap((c) => ["correct", "tryagain", "win"].map((p) => "assets/characters/poses/" + c + "-" + p + ".webp")))
+    .concat(["assets/characters/poses/lumi-curious.webp"]);
   const hash = crypto.createHash("sha256");
   precache.filter((p) => p !== "./").forEach((p) => hash.update(fs.readFileSync(rel(p))));
   const version = "medulla-" + hash.digest("hex").slice(0, 10);

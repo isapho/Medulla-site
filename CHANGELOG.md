@@ -48,9 +48,14 @@
 ### Poses (added after 2.0.0)
 - 41 reaction poses (hello, curious, aha, correct, tryagain, win, inhale, exhale,
   asleep) for the five characters, cut out from the team's generated images.
+- The five base characters (and the colouring-page line art) were re-cut from
+  the new character sheet, so base art and poses match.
 - Used in: quiz feedback on fact pages and in the daily challenge (the presenter
-  cheers or encourages), game result cards (the host celebrates), the welcome
-  dialog (Dendi waves) and the 404 page (Dendi looks around).
+  cheers or encourages), game result cards (the host celebrates), the daily
+  challenge done screen (Dendi), the fact reader (the presenter is delighted),
+  empty states (Memo looks curious), the welcome dialog (Dendi waves), the 404
+  and offline pages, and the wind-down result (Lumi asleep). The quiz and result
+  poses are also saved for offline use.
 - Not used yet: `focus` (faces look angry), Syno `aha`, `inhale`, `exhale`,
   `asleep` (body shape differs from the sheet).
 - Team list and Telegram channel/contact filled in from the team's details.

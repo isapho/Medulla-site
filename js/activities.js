@@ -65,7 +65,7 @@ Medulla.ready(function () {
   /* -------------------------------------------------------------- sheets */
 
   var CHARS = ["dendi", "memo", "octa", "syno", "lumi"];
-  var CHAR_PX = { dendi: [573, 825], memo: [822, 681], octa: [591, 690], syno: [498, 732], lumi: [480, 471] };
+  var CHAR_PX = { dendi: [591, 843], memo: [834, 699], octa: [603, 705], syno: [513, 750], lumi: [486, 492] };
 
   function sheets() {
     var out = [];

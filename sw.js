@@ -6,7 +6,7 @@
  *  - Other same-origin files: served from cache, refreshed in the background.
  *  - Google Fonts: cached after first use. Everything else: network only.
  */
-const VERSION = "medulla-8194b7bde9";
+const VERSION = "medulla-14a34fb727";
 const PRECACHE = [
   "./",
   "index.html",
@@ -45,7 +45,23 @@ const PRECACHE = [
   "assets/characters/memo.webp",
   "assets/characters/octa.webp",
   "assets/characters/syno.webp",
-  "assets/characters/lumi.webp"
+  "assets/characters/lumi.webp",
+  "assets/characters/poses/dendi-correct.webp",
+  "assets/characters/poses/dendi-tryagain.webp",
+  "assets/characters/poses/dendi-win.webp",
+  "assets/characters/poses/memo-correct.webp",
+  "assets/characters/poses/memo-tryagain.webp",
+  "assets/characters/poses/memo-win.webp",
+  "assets/characters/poses/octa-correct.webp",
+  "assets/characters/poses/octa-tryagain.webp",
+  "assets/characters/poses/octa-win.webp",
+  "assets/characters/poses/syno-correct.webp",
+  "assets/characters/poses/syno-tryagain.webp",
+  "assets/characters/poses/syno-win.webp",
+  "assets/characters/poses/lumi-correct.webp",
+  "assets/characters/poses/lumi-tryagain.webp",
+  "assets/characters/poses/lumi-win.webp",
+  "assets/characters/poses/lumi-curious.webp"
 ];
 
 self.addEventListener("install", (event) => {

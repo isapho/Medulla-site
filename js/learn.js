@@ -79,7 +79,7 @@ Medulla.ready(function () {
     });
     if (sortSel.value === "az") shown = shown.slice().sort(function (a, b) { return (M.localized(a.title) || "").localeCompare(M.localized(b.title) || "", M.lang()); });
     list.innerHTML = shown.length ? shown.map(card).join("")
-      : '<li class="empty-state">' + M.charImg("memo", "idle idle-memo", "") + "<p>" + M.esc(M.t(topic === "saved" ? "learn.savedEmpty" : "learn.empty")) + "</p></li>";
+      : '<li class="empty-state">' + M.poseImg("memo", "curious", "idle idle-memo") + "<p>" + M.esc(M.t(topic === "saved" ? "learn.savedEmpty" : "learn.empty")) + "</p></li>";
     count.textContent = M.t("learn.showing", { shown: shown.length, total: facts.length });
     if (window.MedullaMotion) window.MedullaMotion.initTilt(list);
     highlightFromHash();

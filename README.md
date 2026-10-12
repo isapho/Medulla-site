@@ -144,6 +144,25 @@ telegram/             Daily-fact bot, tests, Mini App plan        .github/workfl
 The art is used unchanged: no redrawing, recolouring or stretching. Animation
 moves whole images (float, sway, breathe).
 
+**Base art** is cut from the team's character sheet (`assets/source/`), and
+**reaction poses** (`assets/characters/poses/<character>-<pose>.webp`) from
+the emotion images generated from that sheet. Poses are registered in `POSES`
+in `js/main.js` (`M.poseImg(character, pose, class)` falls back to the normal
+image when a pose doesn't exist). In use:
+
+| Pose | Where |
+|---|---|
+| `correct`, `tryagain` | Quiz feedback on fact pages and in the daily challenge |
+| `win` | Game result cards, daily challenge done |
+| `hello` | Welcome dialog (Dendi) |
+| `aha` | The fact reader (the presenter) |
+| `curious` | Empty states (Memo), 404 and offline pages |
+| `asleep` | The wind-down result card (Lumi) |
+
+To add or replace a pose: put the cut-out PNG in `assets/source/poses/`, save
+the WebP in `assets/characters/poses/`, and add the pose name to `POSES`.
+Prompts for generating more are in `assets/source/character-poses-prompt.md`.
+
 ---
 
 ## How to…
