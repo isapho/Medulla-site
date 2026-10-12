@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- meta:start (filled by node tools/build.js from js/lang/uz.js) -->
+  <title>Chop etiladigan mashgʻulotlar — Medulla</title>
+  <meta name="description" content="Medulla qahramonlari bilan bepul boʻyash sahifalari va mashgʻulot varaqlari.">
+  <!-- canonical/og:url: set `domain` in js/config.js, then run node tools/build.js -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Medulla">
+  <meta property="og:title" content="Chop etiladigan mashgʻulotlar — Medulla">
+  <meta property="og:description" content="Medulla qahramonlari bilan bepul boʻyash sahifalari va mashgʻulot varaqlari.">
+  <meta property="og:image" content="assets/brand/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Medulla — Mind • Learn • Grow">
+  <meta property="og:locale" content="uz_UZ">
+  <meta property="og:locale:alternate" content="ru_RU">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- meta:end -->
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="assets/brand/favicon-64.png">
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&amp;family=Manrope:wght@700;800&amp;display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/app.css">
+  <script src="js/prefs.js"></script>
+</head>
+<body data-page="activities">
+  <a class="skip-link" href="#main" data-i18n="a11y.skip">Asosiy matnga oʻtish</a>
+  <header id="site-header" class="site-header"></header>
+  <noscript><p class="noscript">JavaScript yoqilmagan. Включите JavaScript. Please turn on JavaScript.</p></noscript>
+
+  <main id="main" tabindex="-1">
+    <section class="page-hero no-print">
+      <div class="container">
+        <div>
+          <p class="eyebrow"><span data-icon="printer"></span><span data-i18n="sheet.eyebrow">Chop etish</span></p>
+          <h1 data-i18n="sheet.title">Boʻyash sahifalari va mashgʻulot varaqlari</h1>
+          <p class="lead" data-i18n="sheet.lead">Uy, sinf yoki toʻgarak uchun Medulla qahramonlari bilan bepul A4 varaqlar. Birini tanlang va “Chop etish”ni bosing.</p>
+        </div>
+        <div class="page-hero-art">
+          <p class="bubble" data-i18n="sheet.memoSays">Bittasini chop eting, qalamlarni oling!</p>
+          <img src="assets/characters/memo.webp" class="idle idle-memo" data-char="memo" alt="" width="274" height="227">
+        </div>
+      </div>
+    </section>
+
+    <section class="section print-area" style="padding-top:32px">
+      <div class="container sheet-picker">
+        <div class="btn-row" style="margin-bottom:18px">
+          <button type="button" class="btn btn-primary press" id="print-colouring"><span data-icon="printer"></span><span data-i18n="sheet.printAllColor">Barcha boʻyash sahifalarini chop etish</span></button>
+          <span class="muted" style="font-size:.9rem" data-i18n="sheet.tip">Maslahat: nusxasini saqlash uchun chop etish oynasida “PDF sifatida saqlash”ni tanlang.</span>
+        </div>
+        <ul class="sheet-list" id="sheet-list"></ul>
+        <p class="todo-note" style="margin-top:16px"><span data-icon="info"></span><span data-i18n="sheet.traced">Boʻyash sahifalari qahramonlar rasmidan avtomatik chizib olingan. Keyinroq ular dizayner chizgan aniq chiziqlar bilan almashtiriladi.</span></p>
+      </div>
+      <div id="sheets"></div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/backend.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/motion.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/activities.js"></script>
+</body>
+</html>

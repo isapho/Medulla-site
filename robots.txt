@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /explore.html
+# Sitemap: set `domain` in js/config.js and run node tools/build.js

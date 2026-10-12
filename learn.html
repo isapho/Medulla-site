@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- meta:start (filled by node tools/build.js from js/lang/uz.js) -->
+  <title>Fakt kutubxonasi — Medulla</title>
+  <meta name="description" content="Uyqu, xotira, oʻrganish va miya haqida qisqa faktlar — har biri tekshirilgan manba bilan.">
+  <!-- canonical/og:url: set `domain` in js/config.js, then run node tools/build.js -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Medulla">
+  <meta property="og:title" content="Fakt kutubxonasi — Medulla">
+  <meta property="og:description" content="Uyqu, xotira, oʻrganish va miya haqida qisqa faktlar — har biri tekshirilgan manba bilan.">
+  <meta property="og:image" content="assets/brand/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Medulla — Mind • Learn • Grow">
+  <meta property="og:locale" content="uz_UZ">
+  <meta property="og:locale:alternate" content="ru_RU">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- meta:end -->
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="assets/brand/favicon-64.png">
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&amp;family=Manrope:wght@700;800&amp;display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/app.css">
+  <script src="js/prefs.js"></script>
+</head>
+<body data-page="learn">
+  <a class="skip-link" href="#main" data-i18n="a11y.skip">Asosiy matnga oʻtish</a>
+  <header id="site-header" class="site-header"></header>
+  <noscript><p class="noscript">JavaScript yoqilmagan. Включите JavaScript. Please turn on JavaScript.</p></noscript>
+
+  <main id="main" tabindex="-1">
+    <section class="page-hero">
+      <div class="container">
+        <div>
+          <p class="eyebrow"><span data-icon="book"></span><span data-i18n="learn.eyebrow">Fakt kutubxonasi</span></p>
+          <h1 data-i18n="learn.title">Miya haqida faktlar</h1>
+          <p class="lead" data-i18n="learn.lead">Qisqa va ilmiy asoslangan faktlar, har biri biz ochib tekshirgan manba bilan. Barcha faktlar hali mutaxassis tekshiruvini kutmoqda.</p>
+        </div>
+        <div class="page-hero-art">
+          <p class="bubble" data-i18n="learn.memoSays">Salom! Men Memo. Har bir faktni manbasi bilan yetkazaman.</p>
+          <img src="assets/characters/memo.webp" class="idle idle-memo" data-char="memo" alt="" width="274" height="227">
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:32px" aria-labelledby="hubs-title">
+      <div class="container">
+        <h2 id="hubs-title" class="h3" data-i18n="learn.topicsTitle">Mavzular</h2>
+        <ul class="topic-hubs" id="topic-hubs" style="margin-bottom:28px">
+          <!-- placeholders keep the layout still until js/learn.js fills the list -->
+          <li aria-hidden="true"><span class="topic-hub sk-hub"><span class="tile skeleton"></span><span class="skeleton sk-text"></span></span></li>
+          <li aria-hidden="true"><span class="topic-hub sk-hub"><span class="tile skeleton"></span><span class="skeleton sk-text"></span></span></li>
+          <li aria-hidden="true"><span class="topic-hub sk-hub"><span class="tile skeleton"></span><span class="skeleton sk-text"></span></span></li>
+          <li aria-hidden="true"><span class="topic-hub sk-hub"><span class="tile skeleton"></span><span class="skeleton sk-text"></span></span></li>
+          <li aria-hidden="true"><span class="topic-hub sk-hub"><span class="tile skeleton"></span><span class="skeleton sk-text"></span></span></li>
+          <li aria-hidden="true"><span class="topic-hub sk-hub"><span class="tile skeleton"></span><span class="skeleton sk-text"></span></span></li>
+        </ul>
+
+        <div class="toolbar">
+          <div class="toolbar-row">
+            <div class="search" role="search">
+              <label class="sr-only" for="fact-search" data-i18n="learn.searchLabel">Faktlarni qidirish</label>
+              <span data-icon="search"></span>
+              <input id="fact-search" type="search" autocomplete="off" spellcheck="false" data-i18n-attr="placeholder:learn.searchPlaceholder" placeholder="Masalan: uyqu, xotira…">
+            </div>
+            <div>
+              <label class="sr-only" for="fact-sort" data-i18n="learn.sortLabel">Saralash</label>
+              <select id="fact-sort" class="select">
+                <option value="default" data-i18n="learn.sortDefault">Tavsiya etilgan tartib</option>
+                <option value="az" data-i18n="learn.sortAz">Nomi boʻyicha (A–Z)</option>
+              </select>
+            </div>
+          </div>
+          <div class="filter-chips" id="topic-chips" role="group" data-i18n-attr="aria-label:learn.filterLabel" aria-label="Mavzu boʻyicha saralash"></div>
+        </div>
+
+        <p class="results-count" id="results-count" role="status" aria-live="polite" data-i18n="learn.loading">Yuklanmoqda…</p>
+        <ul class="facts-grid" id="facts-list">
+          <li><div class="skeleton-card" aria-hidden="true"><div class="skeleton sk-chip"></div><div class="skeleton sk-title"></div><div class="skeleton sk-line"></div><div class="skeleton sk-line"></div><div class="skeleton sk-line short"></div></div></li>
+          <li><div class="skeleton-card" aria-hidden="true"><div class="skeleton sk-chip"></div><div class="skeleton sk-title"></div><div class="skeleton sk-line"></div><div class="skeleton sk-line"></div><div class="skeleton sk-line short"></div></div></li>
+          <li><div class="skeleton-card" aria-hidden="true"><div class="skeleton sk-chip"></div><div class="skeleton sk-title"></div><div class="skeleton sk-line"></div><div class="skeleton sk-line"></div><div class="skeleton sk-line short"></div></div></li>
+        </ul>
+
+        <div class="callout-box is-calm" style="margin-top:28px">
+          <span data-icon="bulb"></span>
+          <div><h2 data-i18n="learn.suggestTitle">Yaxshi fakt bilasizmi?</h2><p data-i18n="learn.suggestText">Uni ishonchli manba havolasi bilan yuboring. Har bir manbani eʼlon qilishdan oldin tekshiramiz. Iltimos, shaxsiy maʼlumot yozmang.</p>
+            <div class="btn-row" style="margin-top:10px" data-render="mailto" data-subject="fact.suggestSubject" data-body="fact.suggestBody" data-label="fact.suggest" data-icon="bulb"></div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/backend.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/motion.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/learn.js"></script>
+</body>
+</html>

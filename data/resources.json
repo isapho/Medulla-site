@@ -1,0 +1,4 @@
+{
+  "_readme": "Parents' resource directory. Add an entry ONLY after the team has checked it (call or visit, confirm it exists and what it offers). Put the date you checked it in 'verified'. Example: { \"name\": { \"uz\": \"...\", \"ru\": \"...\", \"en\": \"...\" }, \"what\": { \"uz\": \"...\", \"ru\": \"...\", \"en\": \"...\" }, \"url\": \"https://...\", \"verified\": \"2026-11-01\" }",
+  "resources": []
+}

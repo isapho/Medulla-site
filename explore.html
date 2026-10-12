@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- meta:start (filled by node tools/build.js from js/lang/uz.js) -->
+  <title>Mening Medullam — Medulla</title>
+  <meta name="description" content="Kunlik topshiriq, nishonlar, saqlangan faktlar va natijalaringiz — hammasi shu qurilmada.">
+  <!-- canonical/og:url: set `domain` in js/config.js, then run node tools/build.js -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Medulla">
+  <meta property="og:title" content="Mening Medullam — Medulla">
+  <meta property="og:description" content="Kunlik topshiriq, nishonlar, saqlangan faktlar va natijalaringiz — hammasi shu qurilmada.">
+  <meta property="og:image" content="assets/brand/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Medulla — Mind • Learn • Grow">
+  <meta property="og:locale" content="uz_UZ">
+  <meta property="og:locale:alternate" content="ru_RU">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- meta:end -->
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="assets/brand/favicon-64.png">
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&amp;family=Manrope:wght@700;800&amp;display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/app.css">
+  <script src="js/prefs.js"></script>
+</head>
+<body data-page="explore">
+  <a class="skip-link" href="#main" data-i18n="a11y.skip">Asosiy matnga oʻtish</a>
+  <header id="site-header" class="site-header"></header>
+  <noscript><p class="noscript">JavaScript yoqilmagan. Включите JavaScript. Please turn on JavaScript.</p></noscript>
+
+  <main id="main" tabindex="-1">
+    <section class="app-hero">
+      <div class="container"><div class="greet" id="greet" aria-live="polite"></div></div>
+    </section>
+    <section class="section" style="padding-top:20px">
+      <div class="container">
+        <nav class="app-tabs" id="app-tabs" data-i18n-attr="aria-label:explore.tabsLabel" aria-label="“Mening Medullam” boʻlimlari">
+          <a href="#/"><span data-icon="home"></span><span data-i18n="explore.tab.home">Umumiy</span></a>
+          <a href="#/daily"><span data-icon="play"></span><span data-i18n="explore.tab.daily">Kunlik</span></a>
+          <a href="#/badges"><span data-icon="trophy"></span><span data-i18n="explore.tab.badges">Nishonlar</span></a>
+          <a href="#/saved"><span data-icon="bookmark"></span><span data-i18n="explore.tab.saved">Saqlangan</span></a>
+          <a href="#/history"><span data-icon="chart"></span><span data-i18n="explore.tab.history">Natijalar</span></a>
+          <a href="#/me"><span data-icon="user"></span><span data-i18n="explore.tab.me">Men</span></a>
+        </nav>
+        <div id="view" class="view" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="modal" id="onboard"></dialog>
+  <dialog class="modal" id="consent"></dialog>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/backend.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/motion.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/fact-template.js"></script>
+  <script src="js/games.js"></script>
+  <script src="js/explore.js"></script>
+</body>
+</html>

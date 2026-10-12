@@ -1,0 +1,4 @@
+{
+  "_readme": "Kindness wall. ONLY messages the team has read and approved go here. No names of children, no photos, no health details. Example entry: { \"id\": 1, \"character\": \"syno\", \"text\": { \"uz\": \"...\", \"ru\": \"...\", \"en\": \"...\" } }",
+  "messages": []
+}

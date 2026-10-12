@@ -1,0 +1,702 @@
+[
+  {
+    "id": "sleep-memory",
+    "character": "lumi",
+    "topic": "sleep",
+    "title": { "uz": "Uyqu xotirani mustahkamlaydi", "ru": "Сон помогает учиться и запоминать", "en": "Sleep helps you learn and remember" },
+    "simple": {
+      "uz": "Uxlayotganingizda miya oʻrganish va eslab qolish uchun kerakli yoʻllarni quradi.",
+      "ru": "Пока вы спите, мозг укрепляет связи, которые нужны, чтобы учиться и запоминать.",
+      "en": "While you sleep, your brain keeps building the pathways you need to learn and remember."
+    },
+    "detail": {
+      "uz": "AQSh Milliy nevrologik kasalliklar va insult instituti (NINDS) maʼlumotlariga koʻra, uyqusiz miyada oʻrganish va yangi xotiralar uchun zarur aloqalar shakllanmaydi va saqlanmaydi. Uyqu yetishmasa, diqqatni jamlash va tez javob berish ham qiyinlashadi.",
+      "ru": "По данным Национального института неврологических расстройств и инсульта США (NINDS), без сна в мозге не формируются и не сохраняются связи, которые позволяют учиться и создавать новые воспоминания. Недосып также мешает сосредоточиться и быстро реагировать.",
+      "en": "According to the US National Institute of Neurological Disorders and Stroke (NINDS), without sleep you can't form or maintain the brain pathways that let you learn and create new memories. Lack of sleep also makes it harder to concentrate and respond quickly."
+    },
+    "source": { "name": "NINDS (NIH) — Brain Basics: Understanding Sleep", "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-understanding-sleep" },
+    "quiz": {
+      "q": { "uz": "Yetarlicha uxlamasangiz, oʻrganish qanday oʻzgaradi?", "ru": "Что происходит с обучением, если мало спать?", "en": "What happens to learning when you don't sleep enough?" },
+      "options": [
+        { "uz": "Qiyinlashadi", "ru": "Учиться становится труднее", "en": "It gets harder" },
+        { "uz": "Osonlashadi", "ru": "Учиться становится легче", "en": "It gets easier" },
+        { "uz": "Hech narsa oʻzgarmaydi", "ru": "Ничего не меняется", "en": "Nothing changes" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NINDS maʼlumotlariga koʻra, oʻrganish va xotira uchun kerakli aloqalar uyqu tufayli shakllanadi va saqlanadi.", "ru": "По данным NINDS, сон нужен, чтобы формировать и сохранять связи для обучения и памяти.", "en": "NINDS says sleep is needed to form and keep the brain pathways for learning and memory." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "sleep-cycles",
+    "character": "lumi",
+    "topic": "sleep",
+    "title": { "uz": "Uyqu sikllardan iborat", "ru": "Сон состоит из циклов", "en": "Sleep comes in cycles" },
+    "simple": {
+      "uz": "Har kecha siz yengil uyqu, chuqur uyqu va tush koʻriladigan (REM) uyqudan bir necha marta oʻtasiz.",
+      "ru": "За ночь вы несколько раз проходите лёгкий сон, глубокий сон и быстрый сон (REM), когда снятся сны.",
+      "en": "Each night you go through light sleep, deep sleep and dream (REM) sleep several times."
+    },
+    "detail": {
+      "uz": "NINDS maʼlumotlariga koʻra, uyquning ikki asosiy turi bor: REM uyqu (rapid eye movement — koʻzning tez harakatlanishi) va uch bosqichdan iborat non-REM uyqu. Bir kechada ular bir necha marta almashinadi, tongga yaqin esa REM davrlari uzayib, chuqurlashadi. Non-REM uyquning 3-bosqichi — ertalab tetik uygʻonish uchun kerak boʻlgan chuqur uyqu.",
+      "ru": "По данным NINDS, есть два основных типа сна: быстрый сон (REM, rapid eye movement — быстрые движения глаз) и медленный сон из трёх стадий. За ночь они сменяют друг друга несколько раз, а ближе к утру периоды быстрого сна становятся длиннее и глубже. Третья стадия медленного сна — глубокий сон, после которого утром чувствуешь себя отдохнувшим.",
+      "en": "NINDS describes two basic types of sleep: REM (rapid eye movement) sleep and non-REM sleep, which has three stages. You cycle through them several times a night, and REM periods get longer and deeper later in the night. Stage 3 non-REM is the deep sleep you need to feel refreshed in the morning."
+    },
+    "source": { "name": "NINDS (NIH) — Brain Basics: Understanding Sleep", "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-understanding-sleep" },
+    "quiz": {
+      "q": { "uz": "REM (tush koʻriladigan) uyqu davrlari qachon uzayadi?", "ru": "Когда периоды быстрого сна (REM) становятся длиннее?", "en": "When do REM (dream) sleep periods get longer?" },
+      "options": [
+        { "uz": "Tongga yaqin", "ru": "Ближе к утру", "en": "Later in the night" },
+        { "uz": "Uxlab qolishi bilanoq", "ru": "Сразу после засыпания", "en": "Right after falling asleep" },
+        { "uz": "Ular doim bir xil", "ru": "Они всегда одинаковые", "en": "They are always the same length" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NINDS maʼlumotlariga koʻra, REM davrlari uyquning keyingi qismida uzayadi va chuqurlashadi.", "ru": "По данным NINDS, к концу ночи периоды быстрого сна удлиняются и становятся глубже.", "en": "NINDS: REM periods become longer and deeper later in the sleep session." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "sleep-hours",
+    "character": "lumi",
+    "topic": "sleep",
+    "title": { "uz": "Yoshlarga qancha uyqu kerak?", "ru": "Сколько сна нужно детям и подросткам?", "en": "How much sleep do young people need?" },
+    "simple": {
+      "uz": "6–12 yoshli bolalarga kuniga 9–12 soat, oʻsmirlarga esa 8–10 soat uyqu kerak.",
+      "ru": "Детям 6–12 лет нужно 9–12 часов сна в сутки, подросткам — 8–10 часов.",
+      "en": "Children aged 6–12 need 9 to 12 hours of sleep a day. Teenagers need 8 to 10 hours."
+    },
+    "detail": {
+      "uz": "AQSh Milliy yurak, oʻpka va qon instituti (NHLBI) maʼlumotlariga koʻra, 6–12 yoshli bolalar kuniga 9–12 soat, 13–18 yoshli oʻsmirlar esa 8–10 soat uxlashi kerak. Kattalarga mutaxassislar har kecha 7–9 soat uyquni tavsiya qiladi.",
+      "ru": "По данным Национального института сердца, лёгких и крови США (NHLBI), детям 6–12 лет следует спать 9–12 часов в сутки, подросткам 13–18 лет — 8–10 часов. Взрослым специалисты рекомендуют 7–9 часов за ночь.",
+      "en": "According to the US National Heart, Lung, and Blood Institute (NHLBI), children 6 to 12 years old should sleep 9 to 12 hours per day, and teens 13 to 18 years old should sleep 8 to 10 hours. Experts recommend 7 to 9 hours a night for adults."
+    },
+    "source": { "name": "NHLBI (NIH) — How Much Sleep Is Enough?", "url": "https://www.nhlbi.nih.gov/health/sleep/how-much-sleep" },
+    "quiz": {
+      "q": { "uz": "NHLBI maʼlumotlariga koʻra, 13–18 yoshli oʻsmirlarga necha soat uyqu kerak?", "ru": "Сколько часов сна нужно подросткам 13–18 лет по данным NHLBI?", "en": "How many hours of sleep do teenagers (13–18) need, according to NHLBI?" },
+      "options": [
+        { "uz": "8–10 soat", "ru": "8–10 часов", "en": "8 to 10 hours" },
+        { "uz": "5–6 soat", "ru": "5–6 часов", "en": "5 to 6 hours" },
+        { "uz": "12–14 soat", "ru": "12–14 часов", "en": "12 to 14 hours" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NHLBI 13–18 yoshli oʻsmirlarga kuniga 8–10 soat uyquni tavsiya qiladi.", "ru": "NHLBI рекомендует подросткам 13–18 лет спать 8–10 часов в сутки.", "en": "NHLBI recommends 8–10 hours per day for teens aged 13–18." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "sleep-cleanup",
+    "character": "lumi",
+    "topic": "sleep",
+    "title": { "uz": "Uyqu miyani “tozalashga” yordam berishi mumkin", "ru": "Сон может помогать мозгу «выносить мусор»", "en": "Sleep may help the brain take out the trash" },
+    "simple": {
+      "uz": "Sichqonlarda oʻtkazilgan tadqiqotda miya uyqu paytida chiqindilarni tezroq tozalagan.",
+      "ru": "В исследовании на мышах мозг во сне быстрее очищался от отходов.",
+      "en": "In a study with mice, the brain cleared waste faster during sleep."
+    },
+    "detail": {
+      "uz": "Xie va hamkasblari 2013-yilda Science jurnalida eʼlon qilgan tadqiqotda tirik sichqonlar miyasini kuzatgan. Tabiiy uyqu paytida miya hujayralari orasidagi boʻshliq taxminan 60 foizga kengaygan va suyuqlik beta-amiloid (miyada toʻplanadigan oqsil chiqindisi) kabi moddalarni tezroq olib chiqqan. Bu natija sichqonlarda olingan; odamlarda qanday ishlashi hali oʻrganilmoqda.",
+      "ru": "В исследовании 2013 года в журнале Science Се (Xie) и коллеги наблюдали за мозгом живых мышей. Во время естественного сна пространство между клетками мозга увеличивалось примерно на 60%, и жидкость быстрее вымывала отходы, например бета-амилоид (белок, который накапливается в мозге). Это результат на мышах; как это работает у людей, ещё изучают.",
+      "en": "In a 2013 study in Science, Xie and colleagues watched the brains of live mice. During natural sleep, the space between brain cells grew by about 60%, letting fluid clear waste such as beta-amyloid faster. This was found in mice, so scientists are still studying how it works in people."
+    },
+    "source": { "name": "Xie et al. (2013), Science — Sleep drives metabolite clearance from the adult brain", "url": "https://pubmed.ncbi.nlm.nih.gov/24136970/" },
+    "quiz": {
+      "q": { "uz": "2013-yilgi sichqonlar tadqiqotida uyqu paytida miya hujayralari orasidagi boʻshliq bilan nima boʻlgan?", "ru": "Что происходило во сне с пространством между клетками мозга мышей в исследовании 2013 года?", "en": "In the 2013 mouse study, what happened to the space between brain cells during sleep?" },
+      "options": [
+        { "uz": "Taxminan 60 foizga kengaygan", "ru": "Увеличивалось примерно на 60%", "en": "It grew by about 60%" },
+        { "uz": "Butunlay yoʻqolgan", "ru": "Исчезало", "en": "It disappeared" },
+        { "uz": "Oʻzgarmagan", "ru": "Не менялось", "en": "It stayed the same" }
+      ],
+      "answer": 0,
+      "why": { "uz": "Xie va hamkasblari (2013) taxminan 60 foizlik kengayishni qayd etgan. Yodda tuting: bu sichqonlarda aniqlangan.", "ru": "Се и коллеги (2013) зафиксировали увеличение примерно на 60%. Помните: это данные на мышах.", "en": "Xie et al. (2013) measured about a 60% increase, which helped fluid clear waste. Remember: this was in mice." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "body-clock",
+    "character": "lumi",
+    "topic": "sleep",
+    "title": { "uz": "Koʻzlar ichki soatga vaqtni aytib turadi", "ru": "Глаза подсказывают внутренним часам, который час", "en": "Your eyes tell your body clock what time it is" },
+    "simple": {
+      "uz": "Miyaning kichik bir qismi koʻzdan kelgan yorugʻlik orqali uyqu va uygʻonish vaqtini belgilaydi.",
+      "ru": "Маленькая часть мозга по свету от глаз задаёт время сна и бодрствования.",
+      "en": "A tiny part of your brain uses light from your eyes to set your sleep and wake times."
+    },
+    "detail": {
+      "uz": "NINDS maʼlumotlariga koʻra, gipotalamusdagi suprachiasmatic nucleus — SCN (minglab hujayralardan iborat “ichki soat” yadrosi) yorugʻlik haqidagi maʼlumotni bevosita koʻzlardan oladi va kundalik ritmni boshqaradi. Chiroqlar oʻchgach, epifiz (shishsimon bez) koʻproq melatonin (uyqu gormoni) ishlab chiqaradi va uxlashga yordam beradi.",
+      "ru": "По данным NINDS, супрахиазматическое ядро (SCN, скопление тысяч клеток в гипоталамусе) получает сведения о свете прямо от глаз и управляет суточным ритмом. Когда темнеет, шишковидная железа вырабатывает больше гормона мелатонина, который помогает заснуть.",
+      "en": "According to NINDS, the suprachiasmatic nucleus (SCN), clusters of thousands of cells in the hypothalamus, receives information about light directly from the eyes and controls your daily rhythm. When the lights go down, the pineal gland makes more of the hormone melatonin, which helps put you to sleep."
+    },
+    "source": { "name": "NINDS (NIH) — Brain Basics: Understanding Sleep", "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-understanding-sleep" },
+    "quiz": {
+      "q": { "uz": "Chiroqlar oʻchganda qaysi gormon uxlashga yordam beradi?", "ru": "Какой гормон помогает заснуть, когда темнеет?", "en": "Which hormone helps put you to sleep when the lights go down?" },
+      "options": [
+        { "uz": "Melatonin", "ru": "Мелатонин", "en": "Melatonin" },
+        { "uz": "Adrenalin", "ru": "Адреналин", "en": "Adrenaline" },
+        { "uz": "Insulin", "ru": "Инсулин", "en": "Insulin" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NINDS maʼlumotlariga koʻra, qorongʻida epifiz koʻproq melatonin ishlab chiqaradi va bu uxlashga yordam beradi.", "ru": "По данным NINDS, в темноте шишковидная железа вырабатывает больше мелатонина, и это помогает заснуть.", "en": "NINDS: the pineal gland makes more melatonin when it gets dark, which helps you fall asleep." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "teen-melatonin",
+    "character": "lumi",
+    "topic": "sleep",
+    "title": { "uz": "Oʻsmirlarning ichki soati kechroq yuradi", "ru": "У подростков внутренние часы сдвинуты на позже", "en": "Teen body clocks run later" },
+    "simple": {
+      "uz": "Oʻsmirlarda uyqu gormoni melatonin kechqurun kechroq koʻtariladi, shuning uchun kech uyqu kelishi tabiiy.",
+      "ru": "У подростков гормон сна мелатонин поднимается позже вечером, поэтому спать хочется позже — это нормально.",
+      "en": "In teenagers, the sleep hormone melatonin rises later at night, so feeling sleepy later is normal."
+    },
+    "detail": {
+      "uz": "AQSh Milliy ruhiy salomatlik instituti (NIMH) maʼlumotlariga koʻra, oʻsmirlik davrida melatonin darajasi kechasi uzoqroq yuqori turadi va ertalab kechroq pasayadi. Shu sababli koʻp oʻsmirlarga erta uxlash qiyin; NIMH koʻp oʻsmirlar yetarlicha uxlamasligini ham taʼkidlaydi.",
+      "ru": "Национальный институт психического здоровья США (NIMH) объясняет: в подростковом возрасте уровень мелатонина дольше остаётся высоким ночью и позже снижается утром. Поэтому многим подросткам трудно рано заснуть, и, по данным NIMH, многие из них недосыпают.",
+      "en": "The US National Institute of Mental Health (NIMH) explains that in adolescence, melatonin levels stay high later at night and drop later in the morning. That helps explain why many teens find it hard to fall asleep early, and NIMH notes that many teens do not get enough sleep."
+    },
+    "source": { "name": "NIMH (NIH) — The Teen Brain: 7 Things to Know", "url": "https://www.nimh.nih.gov/health/publications/the-teen-brain-7-things-to-know" },
+    "quiz": {
+      "q": { "uz": "Oʻsmirlarda melatonin darajasi…", "ru": "У подростков уровень мелатонина…", "en": "In teenagers, melatonin levels…" },
+      "options": [
+        { "uz": "Kechasi uzoqroq yuqori turadi va ertalab kechroq pasayadi", "ru": "Дольше остаётся высоким ночью и позже снижается утром", "en": "Stay high later at night and drop later in the morning" },
+        { "uz": "Tushdan keyin koʻtariladi", "ru": "Повышается сразу после обеда", "en": "Rise in the early afternoon" },
+        { "uz": "Hech qachon oʻzgarmaydi", "ru": "Никогда не меняется", "en": "Never change" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NIMH maʼlumotlariga koʻra, oʻsmirlarda melatonin kechasi uzoqroq yuqori turadi va ertalab kechroq pasayadi.", "ru": "По данным NIMH, у подростков мелатонин дольше остаётся высоким ночью и позже снижается утром.", "en": "NIMH: in adolescence melatonin stays high later at night and drops later in the morning." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "screens-bed",
+    "character": "lumi",
+    "topic": "sleep",
+    "title": { "uz": "Uxlashdan bir soat oldin telefonni chetga qoʻying", "ru": "Отложите телефон за час до сна", "en": "Put the phone away an hour before bed" },
+    "simple": {
+      "uz": "NHS uxlashdan bir soat oldin telefon, planshet va kompyuterdan foydalanmaslikni maslahat beradi.",
+      "ru": "NHS советует не пользоваться телефоном, планшетом и компьютером за час до сна.",
+      "en": "The NHS suggests not using phones, tablets or computers for an hour before bed."
+    },
+    "detail": {
+      "uz": "Buyuk Britaniya sogʻliqni saqlash xizmati (NHS, Every Mind Matters) tinch uxlash odatini, har kuni bir xil vaqtda yotib-turishni va uxlashdan bir soat oldin telefon, planshet va kompyuterdan foydalanmaslikni maslahat beradi: ekranlarning koʻk yorugʻligi uxlab qolishni qiyinlashtirishi mumkin.",
+      "ru": "Служба здравоохранения Великобритании (NHS, Every Mind Matters) советует спокойный ритуал перед сном, ложиться и вставать примерно в одно время и не пользоваться телефоном, планшетом и компьютером за час до сна: синий свет экранов может мешать заснуть.",
+      "en": "The UK's NHS (Every Mind Matters) suggests a calm bedtime routine, going to bed and getting up at similar times each day, and not using phones, tablets or computers for an hour before bed, because the blue light from screens can make it harder to fall asleep."
+    },
+    "source": { "name": "NHS Every Mind Matters — How to fall asleep faster and sleep better", "url": "https://www.nhs.uk/every-mind-matters/mental-wellbeing-tips/how-to-fall-asleep-faster-and-sleep-better/" },
+    "quiz": {
+      "q": { "uz": "NHS ekranlarni uxlashdan qancha vaqt oldin chetga qoʻyishni maslahat beradi?", "ru": "За сколько до сна NHS советует отложить экраны?", "en": "How long before bed does the NHS suggest putting screens away?" },
+      "options": [
+        { "uz": "Taxminan bir soat", "ru": "Примерно за час", "en": "About an hour" },
+        { "uz": "Besh daqiqa", "ru": "За пять минут", "en": "Five minutes" },
+        { "uz": "Farqi yoʻq", "ru": "Это неважно", "en": "It doesn't matter" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NHS uxlashdan bir soat oldin telefon, planshet va kompyuterdan foydalanmaslikni maslahat beradi.", "ru": "NHS советует не пользоваться телефоном, планшетом и компьютером за час до сна.", "en": "NHS: try not to use phones, tablets or computers for an hour before bed." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "exercise-learning",
+    "character": "octa",
+    "topic": "movement",
+    "title": { "uz": "Harakat oʻsayotgan miyaga foydali", "ru": "Движение полезно для растущего мозга", "en": "Moving is good for a growing brain" },
+    "simple": {
+      "uz": "Faol harakat bolalar va oʻsmirlarda fikrlash va oʻrganish koʻnikmalari rivojlanishiga yordam beradi.",
+      "ru": "Физическая активность помогает детям и подросткам развивать мышление и навыки обучения.",
+      "en": "Being active helps children and teenagers develop their thinking and learning skills."
+    },
+    "detail": {
+      "uz": "Jahon sogʻliqni saqlash tashkiloti (JSST) maʼlumotlariga koʻra, jismoniy faollik bolalar va oʻsmirlarning harakat koʻnikmalari va kognitiv (fikrlash va oʻrganish bilan bogʻliq) rivojlanishini, shuningdek, jismoniy tayyorgarlik, suyaklar va ruhiy salomatlikni yaxshilaydi.",
+      "ru": "По данным Всемирной организации здравоохранения (ВОЗ), физическая активность у детей и подростков улучшает двигательное и когнитивное развитие (навыки мышления и обучения), а также физическую форму, здоровье костей и психическое здоровье.",
+      "en": "The World Health Organization (WHO) notes that in children and adolescents, physical activity improves motor and cognitive development (the skills for thinking and learning), as well as fitness, bone health and mental health."
+    },
+    "source": { "name": "WHO — Physical activity (fact sheet)", "url": "https://www.who.int/news-room/fact-sheets/detail/physical-activity" },
+    "quiz": {
+      "q": { "uz": "JSST maʼlumotlariga koʻra, jismoniy faollik bolalarda nimani yaxshilaydi?", "ru": "Что, по данным ВОЗ, улучшает физическая активность у детей?", "en": "According to WHO, what does physical activity improve in children?" },
+      "options": [
+        { "uz": "Harakat va kognitiv rivojlanishni", "ru": "Двигательное и когнитивное развитие", "en": "Motor and cognitive development" },
+        { "uz": "Faqat boʻyni", "ru": "Только рост", "en": "Only height" },
+        { "uz": "Oʻlchab boʻladigan hech narsani", "ru": "Ничего измеримого", "en": "Nothing measurable" }
+      ],
+      "answer": 0,
+      "why": { "uz": "JSST: jismoniy faollik bolalar va oʻsmirlarning harakat va kognitiv rivojlanishini yaxshilaydi.", "ru": "ВОЗ: физическая активность улучшает двигательное и когнитивное развитие детей и подростков.", "en": "WHO: physical activity improves motor and cognitive development in children and adolescents." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "neuroplasticity",
+    "character": "dendi",
+    "topic": "brain",
+    "title": { "uz": "Miya tajribaga qarab oʻzgaradi", "ru": "Мозг меняется с опытом", "en": "Your brain changes with experience" },
+    "simple": {
+      "uz": "Yangi narsani oʻrganib, mashq qilganingizda miya oʻz aloqalarini oʻzgartira oladi.",
+      "ru": "Когда вы учитесь и тренируетесь, мозг может менять свои связи.",
+      "en": "Your brain can change its connections when you learn and practise something new."
+    },
+    "detail": {
+      "uz": "Neyroplastiklik (asab tizimining tajriba taʼsirida oʻzgara olish qobiliyati) tufayli miya oʻz tuzilishi va ishlashini oʻzgartira oladi. AQSh Milliy tibbiyot kutubxonasidagi StatPearls maʼlumotlariga koʻra, neyronlar (nerv hujayralari) orasidagi aloqalar tajribaga qarab uzoq muddat kuchayishi yoki susayishi mumkin.",
+      "ru": "Нейропластичность — способность нервной системы менять строение и работу под влиянием опыта. По данным StatPearls (Национальная медицинская библиотека США), связи между нейронами могут надолго усиливаться или ослабевать в зависимости от опыта.",
+      "en": "Neuroplasticity is the nervous system's ability to change its structure and function in response to experience. According to StatPearls (US National Library of Medicine), connections between neurons can become stronger or weaker over the long term, depending on experience."
+    },
+    "source": { "name": "NIH National Library of Medicine — StatPearls: Neuroplasticity", "url": "https://www.ncbi.nlm.nih.gov/books/NBK557811/" },
+    "quiz": {
+      "q": { "uz": "Neyroplastiklik nima?", "ru": "Что такое нейропластичность?", "en": "What is neuroplasticity?" },
+      "options": [
+        { "uz": "Miyaning tajriba bilan oʻzgarish qobiliyati", "ru": "Способность мозга меняться с опытом", "en": "The brain's ability to change with experience" },
+        { "uz": "Miya jarohatining bir turi", "ru": "Вид травмы мозга", "en": "A type of brain injury" },
+        { "uz": "Miya uchun vitamin", "ru": "Витамин для мозга", "en": "A vitamin for the brain" }
+      ],
+      "answer": 0,
+      "why": { "uz": "StatPearls: neyroplastiklik — asab tizimining tajribaga javoban tuzilishi va ishlashini oʻzgartira olishi.", "ru": "StatPearls: нейропластичность — способность нервной системы менять строение и работу под влиянием опыта.", "en": "StatPearls: neuroplasticity is the nervous system's capacity to change its structure and function in response to experience." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "teen-brain-matures",
+    "character": "dendi",
+    "topic": "brain",
+    "title": { "uz": "Miya 20 yoshlargacha yetilishda davom etadi", "ru": "Мозг созревает дольше, чем кажется", "en": "The brain keeps maturing into your 20s" },
+    "simple": {
+      "uz": "Oʻsmirlikda miya hali rivojlanadi va 20 yoshlarning oʻrtasi yoki oxirida toʻliq yetiladi.",
+      "ru": "В подростковом возрасте мозг ещё развивается и окончательно созревает к середине или концу третьего десятка лет.",
+      "en": "Your brain is still developing as a teenager. It finishes maturing in the mid-to-late 20s."
+    },
+    "detail": {
+      "uz": "NIMH maʼlumotlariga koʻra, miya 20 yoshlarning oʻrtasi va oxirida toʻliq rivojlanib, yetiladi. Rejalashtirish va qaror qabul qilishga yordam beradigan prefrontal cortex (peshona oldi poʻstlogʻi) eng oxirgi yetiladigan qismlardan biri. Shu bilan birga, oʻsmir miyasi yangi tajribalarga moslashishda ajoyib qobiliyatga ega.",
+      "ru": "По данным NIMH, развитие и созревание мозга завершается к середине или концу третьего десятка лет. Префронтальная кора, которая помогает планировать и принимать решения, созревает одной из последних. При этом мозг подростка удивительно хорошо приспосабливается к новому опыту.",
+      "en": "NIMH explains that the brain finishes developing and maturing in the mid-to-late 20s. The prefrontal cortex, which helps with planning and decision-making, is one of the last parts to mature. The teen brain also has an amazing ability to adapt and respond to new experiences."
+    },
+    "source": { "name": "NIMH (NIH) — The Teen Brain: 7 Things to Know", "url": "https://www.nimh.nih.gov/health/publications/the-teen-brain-7-things-to-know" },
+    "quiz": {
+      "q": { "uz": "Miyaning qaysi qismi eng oxirgi yetiladiganlardan biri?", "ru": "Какая часть мозга созревает одной из последних?", "en": "Which part of the brain is one of the last to mature?" },
+      "options": [
+        { "uz": "Prefrontal cortex (rejalashtirish va qaror qabul qilish)", "ru": "Префронтальная кора (планирование и решения)", "en": "The prefrontal cortex (planning and decisions)" },
+        { "uz": "Koʻzlar", "ru": "Глаза", "en": "The eyes" },
+        { "uz": "Miya ustuni", "ru": "Ствол мозга", "en": "The brainstem" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NIMH: rejalashtirish va qaror qabul qilish bilan bogʻliq prefrontal cortex eng oxirgi yetiladigan qismlardan biri.", "ru": "NIMH: префронтальная кора, отвечающая за планирование и принятие решений, созревает одной из последних.", "en": "NIMH: the prefrontal cortex, which handles planning and decision-making, is one of the last parts to mature." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "brain-energy",
+    "character": "memo",
+    "topic": "brain",
+    "title": { "uz": "Kichik aʼzo — katta ishtaha", "ru": "Маленький орган с большим аппетитом", "en": "A small organ with a big appetite" },
+    "simple": {
+      "uz": "Miya tanaga nisbatan kichik, lekin u tana energiyasining qariyb beshdan bir qismini sarflaydi.",
+      "ru": "Мозг маленький по сравнению с телом, но тратит около пятой части всей энергии.",
+      "en": "Your brain is small compared with your body, but it uses about a fifth of your energy."
+    },
+    "detail": {
+      "uz": "Raichle va Gusnard (2002) maʼlumotlariga koʻra, katta yoshli odamda miya tana vaznining taxminan 2 foizini tashkil qiladi, biroq organizm isteʼmol qiladigan kislorod va kaloriyaning qariyb 20 foizini sarflaydi.",
+      "ru": "По данным Райкла и Гуснард (2002), у взрослого человека мозг составляет около 2% массы тела, но расходует около 20% кислорода и, соответственно, калорий, которые потребляет организм.",
+      "en": "In an average adult, the brain is about 2% of body weight, yet it uses about 20% of the oxygen, and therefore the calories, that the body consumes (Raichle & Gusnard, 2002)."
+    },
+    "source": { "name": "Raichle & Gusnard (2002), PNAS — Appraising the brain's energy budget", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC124895/" },
+    "quiz": {
+      "q": { "uz": "Miya tana energiyasining taxminan qancha qismini sarflaydi?", "ru": "Какую долю энергии тела примерно тратит мозг?", "en": "About how much of the body's energy does the brain use?" },
+      "options": [
+        { "uz": "Taxminan 20 foiz", "ru": "Около 20%", "en": "About 20%" },
+        { "uz": "Taxminan 2 foiz", "ru": "Около 2%", "en": "About 2%" },
+        { "uz": "Taxminan 90 foiz", "ru": "Около 90%", "en": "About 90%" }
+      ],
+      "answer": 0,
+      "why": { "uz": "Raichle va Gusnard (2002): miya tana vaznining ~2 foizi, lekin kislorod va kaloriyaning ~20 foizini sarflaydi.", "ru": "Райкл и Гуснард (2002): мозг — около 2% массы тела, но тратит около 20% кислорода и калорий.", "en": "Raichle & Gusnard (2002): the brain is ~2% of body weight but uses ~20% of the oxygen and calories." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "neuron-count",
+    "character": "dendi",
+    "topic": "brain",
+    "title": { "uz": "Taxminan 86 milliard neyron", "ru": "Около 86 миллиардов нейронов", "en": "About 86 billion neurons" },
+    "simple": {
+      "uz": "Miyangizda taxminan 86 milliard nerv hujayrasi va ularni qoʻllab-quvvatlaydigan deyarli shuncha boshqa hujayra bor.",
+      "ru": "В мозге около 86 миллиардов нервных клеток — и почти столько же других клеток, которые их поддерживают.",
+      "en": "Your brain has about 86 billion nerve cells, and about as many other cells that support them."
+    },
+    "detail": {
+      "uz": "Azevedo va hamkasblari 2009-yilda katta yoshli odamlar miyasidagi hujayralarni sanab chiqqan: taxminan 86,1 milliard neyron va 84,6 milliard neyron boʻlmagan hujayra aniqlangan. Tez-tez tilga olinadigan “100 milliard neyron” degan raqam haqiqatdan koʻproq ekan.",
+      "ru": "В 2009 году Азеведо и коллеги подсчитали клетки в мозге взрослых людей: около 86,1 миллиарда нейронов и 84,6 миллиарда клеток другого типа. Часто цитируемая цифра «100 миллиардов нейронов» оказалась завышенной.",
+      "en": "When Azevedo and colleagues counted the cells in adult human brains in 2009, they found about 86.1 billion neurons and 84.6 billion non-neuronal cells. The often-quoted figure of 100 billion neurons turned out to be too high."
+    },
+    "source": { "name": "Azevedo et al. (2009), J Comp Neurol — Equal numbers of neuronal and nonneuronal cells make the human brain an isometrically scaled-up primate brain", "url": "https://pubmed.ncbi.nlm.nih.gov/19226510/" },
+    "quiz": {
+      "q": { "uz": "Katta yoshli odam miyasida taxminan nechta neyron bor?", "ru": "Сколько примерно нейронов в мозге взрослого человека?", "en": "About how many neurons are in an adult human brain?" },
+      "options": [
+        { "uz": "Taxminan 86 milliard", "ru": "Около 86 миллиардов", "en": "About 86 billion" },
+        { "uz": "Taxminan 1 million", "ru": "Около 1 миллиона", "en": "About 1 million" },
+        { "uz": "Roppa-rosa 100 milliard", "ru": "Ровно 100 миллиардов", "en": "Exactly 100 billion" }
+      ],
+      "answer": 0,
+      "why": { "uz": "Azevedo va hamkasblari (2009) taxminan 86 milliard neyron sanagan — bu mashhur “100 milliard”dan kam.", "ru": "Азеведо и коллеги (2009) насчитали около 86 миллиардов нейронов — меньше, чем популярные «100 миллиардов».", "en": "Azevedo et al. (2009) counted about 86 billion neurons, fewer than the popular '100 billion'." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "myelin",
+    "character": "dendi",
+    "topic": "brain",
+    "title": { "uz": "Mielin signallarni tezlashtiradi", "ru": "Миелин ускоряет сигналы", "en": "Myelin speeds up signals" },
+    "simple": {
+      "uz": "Mielin — nervlarni oʻrab turuvchi yogʻli qobiq, u signallarning tez yetib borishiga yordam beradi.",
+      "ru": "Миелин — жировая оболочка вокруг нервов, которая помогает сигналам идти быстро.",
+      "en": "Myelin is a fatty coat around nerves that helps signals travel fast."
+    },
+    "detail": {
+      "uz": "MedlinePlus maʼlumotlariga koʻra, mielin (nervlar atrofida hosil boʻladigan, oqsil va yogʻsimon moddalardan iborat himoya qobigʻi) elektr signallarining nerv hujayralari boʻylab tez va samarali oʻtishini taʼminlaydi. Mielin shikastlansa, signallar sekinlashadi.",
+      "ru": "По данным MedlinePlus, миелин (изолирующая оболочка из белков и жироподобных веществ вокруг нервов) позволяет электрическим импульсам быстро и эффективно проходить по нервным клеткам. Если миелин повреждён, импульсы замедляются.",
+      "en": "According to MedlinePlus, myelin is an insulating layer of protein and fatty substances that forms around nerves. It lets electrical signals travel quickly and efficiently along nerve cells; if it is damaged, the signals slow down."
+    },
+    "source": { "name": "MedlinePlus (NIH) — Myelin", "url": "https://medlineplus.gov/ency/article/002261.htm" },
+    "quiz": {
+      "q": { "uz": "Mielin nima vazifani bajaradi?", "ru": "Что делает миелин?", "en": "What does myelin do?" },
+      "options": [
+        { "uz": "Nerv signallarining tez oʻtishiga yordam beradi", "ru": "Помогает нервным сигналам идти быстро", "en": "Helps nerve signals travel quickly" },
+        { "uz": "Xotiralarni saqlaydi", "ru": "Хранит воспоминания", "en": "Stores memories" },
+        { "uz": "Gormon ishlab chiqaradi", "ru": "Вырабатывает гормоны", "en": "Makes hormones" }
+      ],
+      "answer": 0,
+      "why": { "uz": "MedlinePlus: mielin qobigʻi elektr impulslarining nerv hujayralari boʻylab tez va samarali oʻtishini taʼminlaydi.", "ru": "MedlinePlus: миелиновая оболочка позволяет импульсам быстро и эффективно проходить по нервным клеткам.", "en": "MedlinePlus: the myelin sheath lets electrical impulses travel quickly and efficiently along nerve cells." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "synapse",
+    "character": "dendi",
+    "topic": "brain",
+    "title": { "uz": "Neyronlar kimyoviy moddalar orqali “gaplashadi”", "ru": "Нейроны общаются с помощью химических веществ", "en": "Neurons talk with chemicals" },
+    "simple": {
+      "uz": "Neyronlar sinaps deb ataladigan kichik boʻshliqlarda neyromediator moddalar yordamida xabar uzatadi.",
+      "ru": "Нейроны передают сигналы через крошечные промежутки — синапсы — с помощью веществ-нейромедиаторов.",
+      "en": "Neurons pass messages at tiny gaps called synapses, using chemicals called neurotransmitters."
+    },
+    "detail": {
+      "uz": "NINDS maʼlumotlariga koʻra, sinaps (synapse — hujayralar tutashgan joy) signal bir neyrondan boshqa hujayraga oʻtadigan joy. Neyron bu boʻshliqqa neyromediatorlar (nerv hujayralari bir-biri bilan “gaplashadigan” kimyoviy moddalar) chiqaradi; ular boʻshliqdan oʻtib, qoʻshni hujayradagi retseptorlarga birikadi. Baʼzi neyromediatorlar hujayralarni faollashtiradi, baʼzilari esa ularning faolligini susaytiradi.",
+      "ru": "По данным NINDS, синапс — место, где сигнал переходит от нейрона к другой клетке. Нейрон выбрасывает в щель нейромедиаторы; они пересекают её и связываются с рецепторами соседней клетки. Одни нейромедиаторы делают клетки активнее, другие тормозят их работу.",
+      "en": "NINDS explains that a synapse is the place where a signal passes from a neuron to another cell. The neuron releases chemicals called neurotransmitters into the gap; they cross it and attach to receptors on the neighbouring cell. Some neurotransmitters make cells more active, others dampen their activity."
+    },
+    "source": { "name": "NINDS (NIH) — Brain Basics: Know Your Brain", "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain" },
+    "quiz": {
+      "q": { "uz": "Sinaps nima?", "ru": "Что такое синапс?", "en": "What is a synapse?" },
+      "options": [
+        { "uz": "Signal bir neyrondan boshqa hujayraga oʻtadigan joy", "ru": "Место, где сигнал переходит от нейрона к другой клетке", "en": "The place where a signal passes from a neuron to another cell" },
+        { "uz": "Suyakning bir turi", "ru": "Вид кости", "en": "A type of bone" },
+        { "uz": "Koʻzning bir qismi", "ru": "Часть глаза", "en": "A part of the eye" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NINDS: sinaps — signal neyrondan boshqa hujayraga oʻtadigan joy.", "ru": "NINDS: синапс — место, где сигнал переходит от нейрона к другой клетке.", "en": "NINDS: the synapse is where a signal passes from a neuron to another cell." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "cerebellum",
+    "character": "octa",
+    "topic": "brain",
+    "title": { "uz": "Miyacha harakatlarni silliq qiladi", "ru": "Мозжечок помогает двигаться плавно", "en": "The cerebellum helps you move smoothly" },
+    "simple": {
+      "uz": "Miyaning orqa qismidagi burmali kichik shar — miyacha — harakatlarni muvofiqlashtiradi.",
+      "ru": "Морщинистый шарик в задней части мозга — мозжечок — координирует движения.",
+      "en": "A wrinkled ball at the back of your brain, the cerebellum, coordinates your movements."
+    },
+    "detail": {
+      "uz": "NINDS maʼlumotlariga koʻra, cerebellum (miyacha) harakatlarni muvofiqlashtiradi va oʻrganilgan harakatlarda ishtirok etadi. Pianino chalganingizda yoki tennis toʻpini urganingizda miyacha faollashadi.",
+      "ru": "По данным NINDS, мозжечок координирует движения и участвует в выученных движениях. Когда вы играете на пианино или отбиваете теннисный мяч, работает мозжечок.",
+      "en": "According to NINDS, the cerebellum coordinates movement and is involved in learned movements. When you play the piano or hit a tennis ball, you are activating the cerebellum."
+    },
+    "source": { "name": "NINDS (NIH) — Brain Basics: Know Your Brain", "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain" },
+    "quiz": {
+      "q": { "uz": "Pianino chalish yoki tennis toʻpini urishda miyaning qaysi qismi ishlaydi?", "ru": "Какая часть мозга помогает играть на пианино или отбивать теннисный мяч?", "en": "Which part of the brain helps you play the piano or hit a tennis ball?" },
+      "options": [
+        { "uz": "Miyacha (cerebellum)", "ru": "Мозжечок", "en": "The cerebellum" },
+        { "uz": "Qorachiq", "ru": "Зрачок", "en": "The pupil" },
+        { "uz": "Orqa miya suyuqligi", "ru": "Спинномозговая жидкость", "en": "The spinal fluid" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NINDS: miyacha harakatlarni, jumladan pianino chalish kabi oʻrganilgan harakatlarni muvofiqlashtiradi.", "ru": "NINDS: мозжечок координирует движения, в том числе выученные, например игру на пианино.", "en": "NINDS: the cerebellum coordinates movement, including learned movements like playing the piano." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "hindbrain-breathing",
+    "character": "dendi",
+    "topic": "brain",
+    "title": { "uz": "Nafas olishni miyaning pastki qismi boshqaradi", "ru": "Дыхание работает на «автопилоте» в заднем мозге", "en": "Breathing runs on autopilot in the hindbrain" },
+    "simple": {
+      "uz": "Miyaning eng pastki qismi uxlayotganingizda ham nafas olishingiz va yuragingiz urishini taʼminlaydi.",
+      "ru": "Нижняя часть мозга поддерживает дыхание и сердцебиение, даже когда вы спите.",
+      "en": "The lowest part of your brain keeps you breathing and your heart beating, even while you sleep."
+    },
+    "detail": {
+      "uz": "NINDS maʼlumotlariga koʻra, hindbrain (miyaning pastki-orqa qismi: miya ustuni va miyacha) nafas olish va yurak urishi kabi hayotiy funksiyalarni boshqaradi. Loyihamiz nomi olingan medulla (uzunchoq miya) ham miya ustunining shu qismida joylashgan.",
+      "ru": "По данным NINDS, задний мозг (ствол мозга и мозжечок) управляет жизненно важными функциями, такими как дыхание и частота сердечных сокращений. Здесь же, в стволе мозга, находится продолговатый мозг (medulla), в честь которого назван наш проект.",
+      "en": "NINDS explains that the hindbrain, which includes the brainstem and the cerebellum, controls the body's vital functions such as breathing and heart rate. The medulla, the part of the brainstem our project is named after, is found here."
+    },
+    "source": { "name": "NINDS (NIH) — Brain Basics: Know Your Brain", "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain" },
+    "quiz": {
+      "q": { "uz": "Nafas olish va yurak urishini miyaning qaysi qismi boshqaradi?", "ru": "Какая часть мозга управляет дыханием и сердцебиением?", "en": "Which part of the brain controls breathing and heart rate?" },
+      "options": [
+        { "uz": "Hindbrain (miya ustuni bilan birga)", "ru": "Задний мозг (вместе со стволом мозга)", "en": "The hindbrain (with the brainstem)" },
+        { "uz": "Peshona boʻlaklari", "ru": "Лобные доли", "en": "The frontal lobes" },
+        { "uz": "Qorachiqlar", "ru": "Зрачки", "en": "The pupils" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NINDS: hindbrain nafas olish va yurak urishi kabi hayotiy funksiyalarni boshqaradi.", "ru": "NINDS: задний мозг управляет жизненно важными функциями — дыханием и сердцебиением.", "en": "NINDS: the hindbrain controls vital functions such as respiration and heart rate." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "brain-weight",
+    "character": "memo",
+    "topic": "brain",
+    "title": { "uz": "Taxminan 1,4 kilogramm", "ru": "Около 1,4 килограмма", "en": "About 1.4 kilograms" },
+    "simple": {
+      "uz": "Katta yoshli odamning miyasi taxminan 1,4 kg (uch funt) keladi.",
+      "ru": "Мозг взрослого человека весит около 1,4 кг (три фунта).",
+      "en": "An adult brain weighs about 1.4 kilograms (three pounds)."
+    },
+    "detail": {
+      "uz": "NINDS miyani inson tanasining eng murakkab qismi deb ataydi. Taxminan 1,4 kg (uch funt) vazndagi bu aʼzo aql-zakovat markazi boʻlib, sezgilarni talqin qiladi, harakatni boshlaydi va xulq-atvorni boshqaradi.",
+      "ru": "NINDS называет мозг самой сложной частью тела человека. Этот орган массой около 1,4 кг (три фунта) — центр интеллекта: он интерпретирует ощущения, запускает движения и управляет поведением.",
+      "en": "NINDS calls the brain the most complex part of the human body. This three-pound organ (about 1.4 kg) is the seat of intelligence, interprets the senses, starts body movement and controls behaviour."
+    },
+    "source": { "name": "NINDS (NIH) — Brain Basics: Know Your Brain", "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain" },
+    "quiz": {
+      "q": { "uz": "Katta yoshli odamning miyasi taxminan qancha keladi?", "ru": "Сколько примерно весит мозг взрослого человека?", "en": "About how much does an adult brain weigh?" },
+      "options": [
+        { "uz": "Taxminan 1,4 kg", "ru": "Около 1,4 кг", "en": "About 1.4 kg" },
+        { "uz": "Taxminan 140 g", "ru": "Около 140 г", "en": "About 140 g" },
+        { "uz": "Taxminan 14 kg", "ru": "Около 14 кг", "en": "About 14 kg" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NINDS miyani uch funtlik (taxminan 1,4 kg) aʼzo deb taʼriflaydi.", "ru": "NINDS описывает мозг как орган массой три фунта — около 1,4 кг.", "en": "NINDS describes the brain as a three-pound organ, about 1.4 kg." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "opposite-side",
+    "character": "octa",
+    "topic": "brain",
+    "title": { "uz": "Miyaning har bir yarmi tananing qarama-qarshi tomonini boshqaradi", "ru": "Каждое полушарие управляет противоположной стороной тела", "en": "Each half of the brain moves the opposite side of the body" },
+    "simple": {
+      "uz": "Miyaning oʻng yarmi asosan tananing chap tomonini, chap yarmi esa oʻng tomonini boshqaradi.",
+      "ru": "Правое полушарие в основном управляет левой стороной тела, а левое — правой.",
+      "en": "The right half of your brain mostly controls the left side of your body, and the other way round."
+    },
+    "detail": {
+      "uz": "NINDS maʼlumotlariga koʻra, oʻng katta yarimshar asosan tananing chap tomonini, chap yarimshar esa oʻng tomonini boshqaradi. Ikki yarimshar corpus callosum (qadoqsimon tana) deb ataladigan qalin nerv tolalari tutami orqali bir-biri bilan bogʻlanadi.",
+      "ru": "По данным NINDS, правое полушарие большого мозга в основном управляет левой стороной тела, а левое — правой. Полушария связаны толстым пучком нервных волокон — мозолистым телом (corpus callosum).",
+      "en": "NINDS explains that the right cerebral hemisphere primarily controls the left side of the body, and the left hemisphere primarily controls the right side. The two halves talk to each other through a thick bundle of nerve fibres called the corpus callosum."
+    },
+    "source": { "name": "NINDS (NIH) — Brain Basics: Know Your Brain", "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain" },
+    "quiz": {
+      "q": { "uz": "Miyaning oʻng yarmi asosan nimani boshqaradi?", "ru": "Чем в основном управляет правое полушарие?", "en": "The right half of the brain mainly controls…" },
+      "options": [
+        { "uz": "Tananing chap tomonini", "ru": "Левой стороной тела", "en": "The left side of the body" },
+        { "uz": "Tananing oʻng tomonini", "ru": "Правой стороной тела", "en": "The right side of the body" },
+        { "uz": "Faqat koʻzlarni", "ru": "Только глазами", "en": "Only the eyes" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NINDS: oʻng yarimshar asosan tananing chap tomonini boshqaradi.", "ru": "NINDS: правое полушарие в основном управляет левой стороной тела.", "en": "NINDS: the right hemisphere primarily controls the left side of the body." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "temporal-memory",
+    "character": "memo",
+    "topic": "learning",
+    "title": { "uz": "Xotiralar chakka boʻlaklarida shakllanadi", "ru": "Воспоминания создаются в височных долях", "en": "Memories are made in the temporal lobes" },
+    "simple": {
+      "uz": "Miyaning yon tomonlaridagi, quloqlar yaqinidagi qismlari xotiralarni hosil qilish va eslashga yordam beradi, jumladan musiqa xotiralarini ham.",
+      "ru": "Части мозга по бокам, возле ушей, помогают создавать и вспоминать воспоминания — в том числе о музыке.",
+      "en": "Parts of the brain at the sides, near your ears, help you form and recall memories, including memories of music."
+    },
+    "detail": {
+      "uz": "NINDS maʼlumotlariga koʻra, har bir temporal lobe (chakka boʻlagi)ning pastki qismi xotiralarni shakllantirish va eslashda, jumladan musiqa bilan bogʻliq xotiralarda muhim rol oʻynaydi. Bu boʻlakning boshqa qismlari taʼm, tovush, koʻrish va teginish xotiralari hamda sezgilarini birlashtiradi.",
+      "ru": "По данным NINDS, нижняя часть каждой височной доли играет ключевую роль в формировании и извлечении воспоминаний, в том числе связанных с музыкой. Другие участки этой доли объединяют воспоминания и ощущения вкуса, звука, зрения и осязания.",
+      "en": "According to NINDS, the underside of each temporal lobe plays a crucial role in forming and retrieving memories, including those associated with music. Other parts of this lobe bring together memories and sensations of taste, sound, sight and touch."
+    },
+    "source": { "name": "NINDS (NIH) — Brain Basics: Know Your Brain", "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain" },
+    "quiz": {
+      "q": { "uz": "Chakka boʻlagining pastki qismi nimaga yordam beradi?", "ru": "За что отвечает нижняя часть височной доли?", "en": "What does the underside of the temporal lobe help with?" },
+      "options": [
+        { "uz": "Xotiralarni hosil qilish va eslashga", "ru": "За создание и извлечение воспоминаний", "en": "Forming and retrieving memories" },
+        { "uz": "Ovqat hazm qilishga", "ru": "За пищеварение", "en": "Digesting food" },
+        { "uz": "Soch oʻsishiga", "ru": "За рост волос", "en": "Growing hair" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NINDS: u xotiralarni, jumladan musiqa xotiralarini shakllantirish va eslashda muhim rol oʻynaydi.", "ru": "NINDS: она играет ключевую роль в создании и извлечении воспоминаний, в том числе о музыке.", "en": "NINDS: it plays a crucial role in forming and retrieving memories, including memories of music." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "working-memory",
+    "character": "octa",
+    "topic": "learning",
+    "title": { "uz": "Fikrni yodda tutib turish", "ru": "Удерживать мысль в голове", "en": "Keeping ideas in mind" },
+    "simple": {
+      "uz": "Peshona boʻlaklari bir fikrni yodda saqlab, boshqasi haqida oʻylashga yordam beradi.",
+      "ru": "Лобные доли помогают удерживать одну мысль, пока вы думаете о другой.",
+      "en": "Your frontal lobes help you hold one idea in mind while you think about another."
+    },
+    "detail": {
+      "uz": "NINDS maʼlumotlariga koʻra, peshona ortida joylashgan frontal lobes (peshona boʻlaklari) qisqa muddatli saqlash joyi kabi ishlaydi: bir fikrni yodda tutgan holda boshqa fikrlarni koʻrib chiqish imkonini beradi. Laboratoriyamizdagi raqamlar va ketma-ketlik oʻyinlari shu qisqa muddatli xotirani kuzatishga yordam beradi, lekin aql darajasini oʻlchamaydi.",
+      "ru": "По данным NINDS, лобные доли, расположенные прямо за лбом, работают как место кратковременного хранения: позволяют держать в уме одну идею, пока обдумываются другие. Наши игры с цифрами и последовательностями помогают заметить, как работает такая кратковременная память, но не измеряют интеллект.",
+      "en": "NINDS explains that the frontal lobes, just behind the forehead, seem to act as short-term storage sites, allowing one idea to be kept in mind while other ideas are considered. Our digit and sequence games let you notice this short-term memory at work; they don't measure intelligence."
+    },
+    "source": { "name": "NINDS (NIH) — Brain Basics: Know Your Brain", "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain" },
+    "quiz": {
+      "q": { "uz": "Qaysi boʻlaklar bir fikrni yodda tutib, boshqasi haqida oʻylashga yordam beradi?", "ru": "Какие доли помогают держать в уме одну мысль, пока думаешь о другой?", "en": "Which lobes help you keep one idea in mind while thinking of another?" },
+      "options": [
+        { "uz": "Peshona boʻlaklari", "ru": "Лобные доли", "en": "The frontal lobes" },
+        { "uz": "Ensa boʻlaklari (koʻrish)", "ru": "Затылочные доли (зрение)", "en": "The occipital lobes (vision)" },
+        { "uz": "Quloq solinchaklari", "ru": "Мочки ушей", "en": "The ear lobes" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NINDS: peshona boʻlaklari qisqa muddatli saqlash joyi kabi ishlaydi.", "ru": "NINDS: лобные доли работают как место кратковременного хранения.", "en": "NINDS: the frontal lobes act as short-term storage sites, letting one idea be kept in mind." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "retrieval-practice",
+    "character": "memo",
+    "topic": "learning",
+    "title": { "uz": "Oʻzingizni tekshirish qayta oʻqishdan foydaliroq", "ru": "Проверять себя полезнее, чем перечитывать", "en": "Testing yourself beats rereading" },
+    "simple": {
+      "uz": "Oʻrganganingizni eslab koʻrishga urinish uni qayta oʻqishdan koʻra uzoqroq yodda saqlashga yordam beradi.",
+      "ru": "Если пытаться вспомнить выученное, оно запоминается дольше, чем при перечитывании.",
+      "en": "Trying to recall what you learned helps you remember it longer than rereading it."
+    },
+    "detail": {
+      "uz": "Oʻqiganingizni xotiradan eslab koʻrish (ingliz tilida “retrieval practice”) uni shunchaki qayta oʻqishga qaraganda uzoqroq yodda saqlashga yordam beradi. Roediger va Karpicke (2006) tadqiqotida eslab koʻrish mashqini bajargan talabalar bir haftadan keyin matnni koʻproq eslab qolgan.",
+      "ru": "Попытки вспомнить прочитанное (по-английски «retrieval practice») помогают запомнить надолго лучше, чем простое перечитывание. В исследовании Рёдигера и Карпики (2006) студенты, которые тренировались вспоминать текст, через неделю помнили больше.",
+      "en": "Trying to recall what you studied (retrieval practice) helps you remember it longer than simply rereading it. In a study by Roediger and Karpicke (2006), students who practised recalling a text remembered more of it a week later."
+    },
+    "source": { "name": "Roediger & Karpicke (2006), Psychological Science — Test-enhanced learning", "url": "https://pubmed.ncbi.nlm.nih.gov/16507066/" },
+    "quiz": {
+      "q": { "uz": "Qaysi usul uzoqroq eslab qolishga yordam beradi?", "ru": "Какой способ помогает запомнить надолго?", "en": "Which study method helps you remember longer?" },
+      "options": [
+        { "uz": "Oʻzini tekshirish (eslab koʻrish)", "ru": "Самопроверка (попытка вспомнить)", "en": "Testing yourself (trying to recall)" },
+        { "uz": "Shu sahifani qayta oʻqish", "ru": "Перечитывать ту же страницу", "en": "Rereading the same page" },
+        { "uz": "Hamma narsani belgilab chiqish", "ru": "Выделять всё маркером", "en": "Highlighting everything" }
+      ],
+      "answer": 0,
+      "why": { "uz": "Roediger va Karpicke (2006): eslab koʻrish mashqini qilgan talabalar bir haftadan keyin koʻproq eslab qolgan.", "ru": "Рёдигер и Карпики (2006): студенты, тренировавшиеся вспоминать, через неделю помнили больше.", "en": "Roediger & Karpicke (2006): students who practised recalling remembered more a week later than those who restudied." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "spacing",
+    "character": "memo",
+    "topic": "learning",
+    "title": { "uz": "Oʻqishni kunlarga taqsimlang", "ru": "Распределяйте учёбу во времени", "en": "Spread your studying out" },
+    "simple": {
+      "uz": "Bir necha kunga taqsimlangan qisqa mashgʻulotlar hammasini bir kechada yodlashdan samaraliroq.",
+      "ru": "Несколько коротких занятий в разные дни работают лучше, чем зубрёжка за один вечер.",
+      "en": "Studying in several short sessions spread over days works better than cramming all at once."
+    },
+    "detail": {
+      "uz": "Dunlosky va hamkasblarining 2013-yilgi katta sharhida ikki usul eng foydali (“high utility”) deb baholangan: oʻzini tekshirish va distributed practice (oʻqishni vaqt boʻyicha taqsimlash). Qayta oʻqish va matnni belgilash (highlighting) esa kam foydali deb topilgan.",
+      "ru": "В большом обзоре 2013 года Данлоски и коллеги признали самыми полезными («high utility») два метода: самопроверку и распределённую практику (занятия с промежутками). Перечитывание и выделение текста маркером получили оценку «низкая польза».",
+      "en": "A large 2013 review by Dunlosky and colleagues rated two techniques as 'high utility': practice testing and distributed practice (spreading study over time). Rereading and highlighting were rated 'low utility'."
+    },
+    "source": { "name": "Dunlosky et al. (2013), Psychological Science in the Public Interest — Improving Students' Learning With Effective Learning Techniques", "url": "https://pubmed.ncbi.nlm.nih.gov/26173288/" },
+    "quiz": {
+      "q": { "uz": "2013-yilgi sharh qaysi usulni eng foydali deb baholagan?", "ru": "Какой метод обзор 2013 года оценил как самый полезный?", "en": "Which technique did the 2013 review rate as high utility?" },
+      "options": [
+        { "uz": "Oʻqishni vaqt boʻyicha taqsimlash", "ru": "Распределять учёбу во времени", "en": "Spreading study over time" },
+        { "uz": "Matnni belgilash", "ru": "Выделять текст маркером", "en": "Highlighting" },
+        { "uz": "Qayta oʻqish", "ru": "Перечитывать", "en": "Rereading" }
+      ],
+      "answer": 0,
+      "why": { "uz": "Dunlosky va hamkasblari (2013) oʻzini tekshirish va taqsimlangan mashqni eng foydali, qayta oʻqish va belgilashni kam foydali deb baholagan.", "ru": "Данлоски и коллеги (2013) признали самыми полезными самопроверку и распределённую практику, а перечитывание и выделение — малополезными.", "en": "Dunlosky et al. (2013) rated practice testing and distributed practice as high utility; rereading and highlighting as low." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "left-right-myth",
+    "character": "dendi",
+    "topic": "myths",
+    "title": { "uz": "“Chap miyali” yoki “oʻng miyali” odamlar yoʻq", "ru": "«Левополушарных» и «правополушарных» людей не бывает", "en": "There are no 'left-brained' or 'right-brained' people" },
+    "simple": {
+      "uz": "Miya tasvirlari odamlarni “chap miyali” yoki “oʻng miyali”ga ajratish gʻoyasini tasdiqlamaydi.",
+      "ru": "Исследования мозга не подтверждают, что люди бывают «левополушарными» или «правополушарными».",
+      "en": "Brain scans don't support the idea that people are 'left-brained' or 'right-brained'."
+    },
+    "detail": {
+      "uz": "Nielsen va hamkasblari 2013-yilgi miya tasviri tadqiqotida umuman “chap” yoki “oʻng” yarimshari kuchliroq odamlarni izlagan. Natijalar butun miya darajasida bunday turlar borligini koʻrsatmagan: baʼzi funksiyalar alohida tarmoqlarda bir tomonga koʻproq tayanadi, lekin odamlar ikkala yarmidan ham foydalanadi.",
+      "ru": "В исследовании 2013 года с помощью МРТ Нильсен и коллеги искали людей с более сильным «левым» или «правым» полушарием в целом. Данные не подтвердили такие типы на уровне всего мозга: некоторые функции в отдельных сетях больше опираются на одну сторону, но люди используют обе половины.",
+      "en": "In a 2013 brain-imaging study, Nielsen and colleagues looked for people with a stronger 'left' or 'right' brain overall. Their data did not support a whole-brain 'left-brained' or 'right-brained' type; some functions lean to one side within specific networks, but people use both halves."
+    },
+    "source": { "name": "Nielsen et al. (2013), PLOS ONE — An Evaluation of the Left-Brain vs. Right-Brain Hypothesis with Resting State Functional Connectivity MRI", "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0071275" },
+    "quiz": {
+      "q": { "uz": "Odamlar “chap miyali” yoki “oʻng miyali” boʻladimi?", "ru": "Бывают ли люди «левополушарными» или «правополушарными»?", "en": "Are people 'left-brained' or 'right-brained'?" },
+      "options": [
+        { "uz": "Yoʻq — 2013-yilgi tadqiqot bunday turlarni topmagan", "ru": "Нет — исследование 2013 года таких типов не нашло", "en": "No, the 2013 study found no whole-brain type" },
+        { "uz": "Ha, har kim ulardan biriga kiradi", "ru": "Да, каждый относится к одному из них", "en": "Yes, everyone is one or the other" },
+        { "uz": "Faqat rassomlar “oʻng miyali”", "ru": "Только художники — «правополушарные»", "en": "Only artists are right-brained" }
+      ],
+      "answer": 0,
+      "why": { "uz": "Nielsen va hamkasblari (2013): maʼlumotlar butun miya darajasidagi “chap” yoki “oʻng” turni tasdiqlamagan.", "ru": "Нильсен и коллеги (2013): данные не подтвердили «левый» или «правый» тип на уровне всего мозга.", "en": "Nielsen et al. (2013): the data were not consistent with whole-brain 'left-brained' or 'right-brained' types." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "brain-training",
+    "character": "octa",
+    "topic": "myths",
+    "title": { "uz": "Miya oʻyinlari asosan oʻsha oʻyinni oʻrgatadi", "ru": "Игры для мозга тренируют в основном саму игру", "en": "Brain games mostly train the game" },
+    "simple": {
+      "uz": "Miya oʻyinini mashq qilsangiz, shu oʻyinda yaxshilanasiz, lekin bu kundalik hayotda aqlliroq qilishi deyarli isbotlanmagan.",
+      "ru": "Тренируясь в игре для мозга, вы становитесь лучше в этой игре, но доказательств, что это делает умнее в жизни, мало.",
+      "en": "Practising a brain game makes you better at that game, but there's little proof it makes you smarter in everyday life."
+    },
+    "detail": {
+      "uz": "Simons va hamkasblarining 2016-yilgi sharhiga koʻra, miya mashqlari asosan mashq qilingan vazifaning oʻzini yaxshilaydi; yaqin vazifalarga taʼsiri kamroq, kundalik fikrlashga taʼsiri esa juda kam isbotlangan. Shuning uchun bizning laboratoriyamiz biror narsani “kuchaytirish” uchun emas, qiziqish uchun.",
+      "ru": "Обзор Саймонса и коллег 2016 года показал: тренировки улучшают в основном результат в самом тренируемом задании; для похожих заданий доказательств меньше, а для повседневного мышления — очень мало. Поэтому наша лаборатория — для любопытства, а не для того, чтобы что-то «прокачать».",
+      "en": "A 2016 review by Simons and colleagues found that brain-training tasks seem to improve performance on the trained tasks themselves, with less evidence for closely related tasks and very little evidence for everyday thinking. That's why our Lab is for curiosity, not for 'boosting' anything."
+    },
+    "source": { "name": "Simons et al. (2016), Psychological Science in the Public Interest — Do \"Brain-Training\" Programs Work?", "url": "https://www.psychologicalscience.org/publications/brain-training.html" },
+    "quiz": {
+      "q": { "uz": "Miya oʻyinlari asosan nimani yaxshilaydi?", "ru": "Что в основном улучшают игры для мозга?", "en": "What do brain-training games mostly improve?" },
+      "options": [
+        { "uz": "Mashq qilingan oʻyinning oʻzini", "ru": "Результат в самой тренируемой игре", "en": "The trained game itself" },
+        { "uz": "IQ ni", "ru": "IQ", "en": "IQ" },
+        { "uz": "Hamma narsa uchun kundalik xotirani", "ru": "Повседневную память на всё", "en": "Everyday memory for everything" }
+      ],
+      "answer": 0,
+      "why": { "uz": "Simons va hamkasblari (2016): mashqlar asosan mashq qilingan vazifani yaxshilaydi, kundalik fikrlashga taʼsiri juda kam isbotlangan.", "ru": "Саймонс и коллеги (2016): тренировки улучшают в основном тренируемое задание; влияние на повседневное мышление почти не доказано.", "en": "Simons et al. (2016): training improves the trained tasks, with very little evidence for everyday cognition." }
+    },
+    "reviewed": false
+  },
+  {
+    "id": "pupil-light",
+    "character": "lumi",
+    "topic": "senses",
+    "title": { "uz": "Kamalak parda koʻzga qancha yorugʻlik kirishini boshqaradi", "ru": "Радужка решает, сколько света попадёт в глаз", "en": "Your iris controls how much light gets in" },
+    "simple": {
+      "uz": "Yorugʻlik koʻzga qorachiq orqali kiradi, rangli kamalak parda esa qancha yorugʻlik kirishini boshqaradi.",
+      "ru": "Свет попадает в глаз через зрачок, а цветная радужка регулирует, сколько его проходит.",
+      "en": "Light enters your eye through the pupil, and the coloured iris controls how much gets in."
+    },
+    "detail": {
+      "uz": "AQSh Milliy koʻz instituti (NEI) maʼlumotlariga koʻra, yorugʻlik koʻzga pupil (qorachiq) deb ataladigan teshik orqali kiradi, iris (kamalak parda — koʻzning rangli qismi) esa qorachiq qancha yorugʻlik oʻtkazishini boshqaradi. Retina (toʻr parda) yorugʻlikni elektr signallariga aylantiradi, ular koʻruv nervi orqali miyaga boradi va miya ulardan biz koʻradigan tasvirni yaratadi.",
+      "ru": "По данным Национального института глаза США (NEI), свет попадает в глаз через отверстие — зрачок, а радужка (цветная часть глаза) регулирует, сколько света пропускает зрачок. Сетчатка превращает свет в электрические сигналы; по зрительному нерву они идут в мозг, и мозг превращает их в изображение.",
+      "en": "The US National Eye Institute (NEI) explains that light enters the eye through an opening called the pupil, and the iris, the coloured part of the eye, controls how much light the pupil lets in. The retina turns light into electrical signals that travel through the optic nerve to the brain, which turns them into the images you see."
+    },
+    "source": { "name": "National Eye Institute (NIH) — How the Eyes Work", "url": "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/how-eyes-work" },
+    "quiz": {
+      "q": { "uz": "Koʻzning qaysi qismi qorachiq qancha yorugʻlik oʻtkazishini boshqaradi?", "ru": "Какая часть глаза регулирует, сколько света пропускает зрачок?", "en": "Which part of the eye controls how much light the pupil lets in?" },
+      "options": [
+        { "uz": "Kamalak parda (iris)", "ru": "Радужка", "en": "The iris" },
+        { "uz": "Kiprik", "ru": "Ресница", "en": "The eyelash" },
+        { "uz": "Koʻz yoshi kanali", "ru": "Слёзный канал", "en": "The tear duct" }
+      ],
+      "answer": 0,
+      "why": { "uz": "NEI: koʻzning rangli qismi — kamalak parda qorachiq qancha yorugʻlik oʻtkazishini boshqaradi.", "ru": "NEI: радужка — цветная часть глаза — регулирует, сколько света пропускает зрачок.", "en": "NEI: the iris, the coloured part of the eye, controls how much light the pupil lets in." }
+    },
+    "reviewed": false
+  }
+]

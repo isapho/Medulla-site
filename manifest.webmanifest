@@ -1,0 +1,21 @@
+{
+  "name": "Medulla — Mind • Learn • Grow",
+  "short_name": "Medulla",
+  "description": "Brain facts, experiments and a daily challenge in Uzbek, Russian and English.",
+  "lang": "uz",
+  "start_url": "./index.html?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "icons": [
+    { "src": "assets/brand/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/brand/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/brand/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Daily challenge", "short_name": "Daily", "url": "./explore.html#/daily", "icons": [{ "src": "assets/brand/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Brain Lab", "short_name": "Lab", "url": "./lab.html", "icons": [{ "src": "assets/brand/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Fact library", "short_name": "Facts", "url": "./learn.html", "icons": [{ "src": "assets/brand/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
