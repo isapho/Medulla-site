@@ -1,0 +1,69 @@
+/*
+ * Medulla site configuration: EVERY placeholder value lives in this file.
+ *
+ * Rules:
+ *  - `null` means "not known yet". The site then shows a dashed "TBD"
+ *    placeholder instead of the value. Never put guesses or fake data here.
+ *  - Text that differs per language can be a plain string or an object such
+ *    as { uz: "...", ru: "...", en: "..." }.
+ *  - Image paths are relative to the site root, e.g. "assets/team/aziz.jpg".
+ *
+ * See HANDOFF.md for the order to fill these in.
+ */
+window.MEDULLA_CONFIG = {
+  // Public site address without a trailing slash, e.g. "https://medulla.uz".
+  // Used for share links, Open Graph tags and sitemap.xml (run node tools/build.js after setting it).
+  domain: null,
+
+  // Contact email, e.g. "hello@medulla.uz". Builds every mailto: link.
+  contactEmail: null,
+
+  // Social handles, without "@".
+  instagramHandle: "medulla.mind",
+  telegramHandle: null, // e.g. "medulla_mind" → https://t.me/medulla_mind
+
+  // Optional backend for sync, anonymous counters and club totals.
+  // The site works fully WITHOUT it (guest mode, progress on the device).
+  // To switch on: create a Supabase project, run backend/schema.sql, then set
+  //   provider: "supabase", url: "https://xxxx.supabase.co", anonKey: "sb_publishable_..."
+  // (the publishable key, or a legacy anon key "eyJ...", is designed to be public;
+  // the database only allows the functions in backend/schema.sql). Never put the
+  // secret / service_role key here. Test without keys: add ?backend=mock.
+  // Step by step: backend/README.md.
+  backend: { provider: null, url: null, anonKey: null },
+
+  // Anonymous +1 counters for the impact bar (no ids, no personal data).
+  // Only used when the backend is switched on.
+  anonymousCounters: false,
+
+  // Team. `slot` picks the default title ("Founder" / "Co-founder") shown
+  // while `name` is empty. Add more people by copying an entry.
+  team: [
+    { slot: "founder", name: null, role: null, bio: null, photo: null },
+    { slot: "cofounder", name: null, role: null, bio: null, photo: null }
+  ],
+
+  // Advisors (for example doctors or researchers who review content).
+  // Empty list = "Advisors: coming soon". Add only people who have agreed.
+  // Example entry: { name: "Dr. First Last", field: { uz: "...", ru: "...", en: "Paediatric neurology" } }
+  advisors: [],
+
+  // Partners. Each entry is one grid slot; empty entries show "Partner logo here".
+  partners: [
+    { name: null, logo: null, url: null },
+    { name: null, logo: null, url: null },
+    { name: null, logo: null, url: null },
+    { name: null, logo: null, url: null }
+  ],
+
+  // Impact counters. `value: null` shows a dash until a real, counted number exists.
+  // `live` = filled automatically from the anonymous backend counter of that name.
+  // Labels come from js/lang/*.js (keys "impact.<key>").
+  impact: [
+    { key: "followers",   value: 150,  suffix: "+", icon: "instagram" }, // real (2026)
+    { key: "visits",      value: null, suffix: "",  icon: "heart" },
+    { key: "factsShared", value: null, suffix: "",  icon: "book" },
+    { key: "volunteers",  value: null, suffix: "",  icon: "users" },
+    { key: "experiments", value: null, suffix: "",  icon: "target", live: "games_played" }
+  ]
+};
