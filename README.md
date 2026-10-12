@@ -76,7 +76,7 @@ Useful while testing:
   every internal link works. `node tools/build.js --check` only checks.
 - Tests for the Telegram bot (a mock Telegram server; nothing is sent):
   ```bash
-  node --test telegram/
+  node --test telegram/bot.test.mjs
   ```
 
 ## Deploy

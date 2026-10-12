@@ -32,7 +32,7 @@ One channel for all three languages gets three posts a day. If that is too
 many, create three channels and set `CHANNEL_ID_UZ`, `CHANNEL_ID_RU` and
 `CHANNEL_ID_EN` instead, or set `LANGS=uz,ru` to post fewer languages.
 
-Tests (a mock Telegram server, nothing is sent): `node --test telegram/`
+Tests (a mock Telegram server, nothing is sent): `node --test telegram/bot.test.mjs`
 
 ## 2. Mini App (plan; the adapter is already in the site)
 

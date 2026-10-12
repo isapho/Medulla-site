@@ -20,4 +20,4 @@ jobs:
       - name: Content and translation checks
         run: node tools/build.js --check
       - name: Telegram bot tests (mock server, nothing is sent)
-        run: node --test telegram/
+        run: node --test telegram/bot.test.mjs
