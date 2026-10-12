@@ -1,88 +1,73 @@
-# Prompt: character poses and emotions for Medulla
+# Prompts: one emotion per chat, all five characters at once
 
-How to use: attach ONE image that shows all five characters side by side
-(your character sheet), paste the prompt below, and send it. Ask for one
-character at a time if the tool struggles with all five at once ("do only Dendi
-first"). Generate each pose as its own image, not as a collage, if the tool
-allows it.
+How to use, for each emotion:
+1. Open a new chat in your image tool.
+2. Attach the character sheet (Dendi, Lumi, Memo, Octa, Syno, in that order).
+3. Paste the BASE below, then add ONE scene line under it. Send.
+4. Name the result `all_<scene name>.png`, for example `all_hello.png`.
+5. Compare with the sheet. If any face, colour or shape drifted, regenerate it.
 
----
+Then send the images to the developer: each character is cut out and saved as
+`<character>_<scene>.webp`, and wired into the site.
 
-## The prompt (copy from here)
+## BASE (paste this first, every time)
 
-You are given a reference image with five mascots: **Dendi** (purple neuron
-with branching dendrites, the guide), **Memo** (elephant), **Octa** (octopus),
-**Syno** (jellyfish) and **Lumi** (firefly).
+```
+Reference image: five mascots in a row, left to right: Dendi (purple neuron
+with branching dendrites), Lumi (firefly), Memo (elephant), Octa (octopus),
+Syno (jellyfish).
 
-Create new poses and facial expressions for each of them, as separate images.
+Draw the same five characters again, in the same order and the same positions,
+now expressing the emotion or situation described below.
 
-**Identity rules (most important):**
+Strict rules:
 - Keep every character exactly as in the reference: same shape, proportions,
-  colours, outline style, shading, eyes, cheeks and level of detail. Do not
-  redraw, restyle, recolour, make more realistic, or change the face design.
-- Same camera angle and size as the reference, full body, character centred.
-- Only the pose, the eyes/mouth expression and small body movements may change.
-- No new clothes, accessories or text. A single simple prop is allowed only
-  where listed, drawn in the same style and only in these colours:
-  deep navy #0D1128, purple #6C5CE7, lavender #A29BFE, white #FFFFFF, orange #FF9F43.
-- Friendly and gentle for children and teenagers. Never scary, sad to the point
-  of crying, aggressive or sarcastic.
+  colours, outline style, soft shading, eyes, cheeks and level of detail.
+  Do not redraw, restyle, recolour or make anything more realistic.
+- Change only the pose, the eyes and mouth, and small body movements. Each
+  character expresses the emotion in its own way.
+- Same image size and layout as the reference (wide, five characters in a row,
+  each fully visible with space around it, nobody overlapping).
+- Same flat plain background as the reference, no floor, no shadows on the
+  ground, no border, no text, no letters, no watermark.
+- No new clothes or accessories. Props only where the scene says so, in the
+  same style, using only these colours: deep navy #0D1128, purple #6C5CE7,
+  lavender #A29BFE, white #FFFFFF, orange #FF9F43.
+- Friendly and gentle for children. Never scary, aggressive, sarcastic or
+  crying.
+```
 
-**Output rules:**
-- One character per image, one pose per image, plain flat white background
-  (#FFFFFF), no shadow on the floor, no ground, no border, no text, no watermark.
-- At least 1600 px tall, sharp edges, the whole character inside the frame with
-  empty space around it so it can be cut out cleanly.
-- Name each image `character_pose` (for example `memo_reading`).
+## Scenes (add one under the BASE)
 
-**Poses to create:**
+### Must have
 
-| Character | Pose name | What to show |
-|---|---|---|
-| Dendi | `wave` | Waving hello with one dendrite, big warm smile. |
-| Dendi | `curious` | Head tilted, one dendrite raised like a finger, wide curious eyes. |
-| Dendi | `cheer` | Both dendrites up, eyes closed with joy, a small spark of orange near it. |
-| Dendi | `point` | Pointing to the side with one dendrite, encouraging smile ("this way"). |
-| Memo | `reading` | Holding a small open book (navy cover), calm focused eyes. |
-| Memo | `aha` | Trunk raised, eyes wide, mouth a happy "O" ("did you know?"). |
-| Memo | `proud` | Eyes closed, content nod, ears slightly spread. |
-| Memo | `gentle` | Soft, kind smile, head slightly tilted, trunk curled ("not quite, try again"). |
-| Octa | `focus` | Two arms holding a small square tile, tongue-out concentration, eyes narrowed. |
-| Octa | `ready` | Leaning forward, arms ready like a sprinter, eyes locked ("get ready"). |
-| Octa | `win` | Several arms up, huge grin, eyes sparkling. |
-| Octa | `oops` | One arm scratching the head, sheepish smile, one eyebrow up. |
-| Syno | `inhale` | Eyes closed, calm smile, body gently rounded and expanded, tentacles floating up. |
-| Syno | `exhale` | Eyes closed, relaxed, body softly narrowed, tentacles drifting down. |
-| Syno | `kind` | Holding a small orange heart with its tentacles, warm shy smile. |
-| Syno | `hug` | Tentacles wrapped around itself in a self-hug, gentle closed eyes. |
-| Lumi | `idea` | Glowing brighter, wings spread, eyes wide, small orange glow around the body. |
-| Lumi | `sleepy` | Half-closed eyes, a big yawn, wings drooping, glow dimmed. |
-| Lumi | `asleep` | Eyes closed, tiny "Z" shapes in purple, curled up, glow very soft. |
-| Lumi | `goodnight` | Waving one wing with a sleepy smile, eyes half closed. |
+| # | Name | Used for | Scene line |
+|---|---|---|---|
+| 1 | `hello` | Welcome, onboarding, home | `Scene: HELLO. All five wave hello with a warm smile. Dendi waves with one dendrite, Lumi waves one wing, Memo waves with the trunk, Octa waves with two tentacles, Syno waves with one tentacle.` |
+| 2 | `curious` | Loading, search, "did you know" | `Scene: CURIOUS AND THINKING. Heads tilted, eyes looking up to one side, one eyebrow slightly raised. Dendi raises one dendrite like a finger, Lumi hovers with antennae wiggling, Memo touches its chin with the trunk, Octa holds up the magnifying glass, Syno tilts and looks around.` |
+| 3 | `aha` | Fact reveal, new discovery | `Scene: AHA, DELIGHTED SURPRISE. Eyes wide, small happy "O" mouth, a tiny orange spark near each. Dendi's dendrite tips glow orange, Lumi's glow flares, Memo's trunk goes up, Octa lifts all arms, Syno's bell lifts.` |
+| 4 | `correct` | Right answer | `Scene: PROUD AND HAPPY. Eyes closed in a contented smile, a small proud nod, a few tiny orange sparkles. Dendi stands tall, Lumi glows warmly, Memo spreads its ears, Octa folds two arms proudly, Syno bobs up happily.` |
+| 5 | `tryagain` | Wrong answer, gently | `Scene: GENTLE ENCOURAGEMENT, "almost, try again". A soft kind smile, head tilted slightly, a small friendly shrug. Not sad, not disappointed. Dendi tilts a dendrite, Lumi flutters closer, Memo curls its trunk, Octa opens two arms, Syno sways softly.` |
+| 6 | `focus` | Games running | `Scene: CONCENTRATING. Eyes slightly narrowed and fixed forward, the tip of a tongue out, leaning slightly forward. Dendi's dendrites point forward, Lumi holds perfectly still, Memo frowns in thought, Octa's arms hover ready, Syno floats very still.` |
+| 7 | `win` | Daily challenge done, badge, level up | `Scene: CELEBRATION. Big open smile, eyes sparkling, jumping or floating up with arms raised, a few small orange and lavender sparkles (no confetti, no text). Dendi raises both dendrites, Lumi loops in the air, Memo raises trunk and ears, Octa raises all arms, Syno bounces up.` |
+| 8 | `inhale` | Breathing in | `Scene: BREATHING IN, calm. Eyes closed, a peaceful small smile, bodies slightly bigger and lifted. Dendi lifts its dendrites, Lumi rises gently, Memo's chest is full and trunk lifted, Octa's arms float up, Syno's bell expands and rises.` |
+| 9 | `exhale` | Breathing out | `Scene: BREATHING OUT, calm. Eyes closed, relaxed small smile, bodies slightly smaller and lower, shoulders dropped. Dendi's dendrites relax down, Lumi settles lower, Memo's trunk rests, Octa's arms drift down, Syno's bell narrows and sinks.` |
+| 10 | `asleep` | Night mode, sleep | `Scene: FAST ASLEEP. Eyes closed, curled up or resting, a few small lavender "Z" shapes floating above, glows very soft and dim. Dendi leans against its own body, Lumi curled with a faint glow, Memo with ears wrapped, Octa with arms tucked, Syno hovering low.` |
 
-Before finishing, compare every result with the reference. If a character's
-face, colours or proportions differ, regenerate it.
+### Nice to have
 
-## (end of prompt)
+| # | Name | Used for | Scene line |
+|---|---|---|---|
+| 11 | `ready` | Reaction test waiting, countdown | `Scene: READY, STEADY. Leaning forward like a sprinter before the start, eyes locked straight ahead, a determined little smile. Dendi crouches, Lumi hovers tense, Memo plants its feet, Octa braces on its arms, Syno leans forward.` |
+| 12 | `oops` | Pressed too early, small mistake | `Scene: OOPS, SHEEPISH. An embarrassed smile with rosier cheeks, one small lavender sweat drop, one hand or limb scratching the head. Dendi scratches with a dendrite, Lumi covers its eyes with a wing, Memo covers its mouth with the trunk, Octa scratches its head with one arm, Syno hides half behind its tentacles.` |
+| 13 | `reading` | Fact page, reader | `Scene: READING AND LEARNING. Calm, focused eyes looking down at a small open navy book (each holds or has one; Lumi lands on it and lights it softly). Gentle smiles.` |
+| 14 | `kind` | Kindness wall, Syno tasks | `Scene: KINDNESS. Each character holds out one small orange heart toward the viewer with a warm, shy smile. Dendi with a dendrite, Lumi with its feet, Memo with its trunk, Octa with one arm, Syno with one tentacle.` |
+| 15 | `comfort` | Parents page, gentle moments | `Scene: COMFORT AND CARE. Each character hugs itself with a calm, safe smile and half-closed eyes, leaning slightly toward the next one as if close friends. Dendi crosses its dendrites, Lumi wraps its wings, Memo wraps its trunk, Octa wraps its arms, Syno wraps its tentacles.` |
+| 16 | `sleepy` | Wind-down, "time for bed" | `Scene: SLEEPY. A big yawn, half-closed eyes, drooping posture, glows dimmed. Dendi's dendrites droop, Lumi's wings sag, Memo's ears droop, Octa's arms hang, Syno sinks slightly.` |
+| 17 | `goodnight` | End of wind-down | `Scene: GOOD NIGHT. A sleepy smile, eyes half closed, a slow wave. Dendi waves one dendrite, Lumi waves one wing, Memo waves its trunk, Octa waves one arm, Syno waves one tentacle.` |
+| 18 | `offline` | No internet page | `Scene: LOST, LOOKING AROUND. Head tilted, eyes glancing left and right, one limb shading the eyes as if searching. A calm, slightly puzzled look, not worried. Dendi tilts its dendrites in different directions, Lumi hovers looking down, Memo turns its head, Octa holds the magnifying glass out, Syno looks over its shoulder.` |
+| 19 | `safe` | Privacy page, "your data is yours" | `Scene: PROTECTING. The five stand close together in a loose half circle around one small glowing orange dot on the ground between them, shielding it gently with arms, wings, trunk and tentacles. Calm, kind and reassuring faces.` |
 
----
-
-## Notes for you
-
-- **Why these poses.** Each one has a place on the site: Dendi leads the
-  welcome, the daily challenge and the "level up"; Memo presents facts and
-  reacts to quiz answers; Octa hosts the games (ready, focus, win, oops);
-  Syno guides breathing (inhale/exhale) and kindness; Lumi covers ideas and the
-  night wind-down.
-- **Check before use.** AI tools often drift from the original design. Compare
-  with the sheet. Anything that is off, or has strange hands, extra limbs or
-  garbled props, should be redone or drawn by the illustrator. The same list
-  works as a brief for a human illustrator.
-- **Colours.** The Stroop test colours are the only non-brand colours in the
-  site, so poses should stay inside the palette.
-- **Next step.** Send me the images (white background). I cut them out, convert
-  them to WebP and wire the poses into the site (quiz feedback, game states,
-  breathing, night mode). Only whole images move, never parts, unless you have
-  layered files.
-- **Children.** Never add real photos or identifiable details of children to
-  the prompt or the results.
+Why the order: scenes 1 to 10 cover every place the site shows a character
+reacting (welcome, facts, quiz, games, win, breathing, sleep). The rest add
+polish and can wait.
