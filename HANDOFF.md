@@ -43,15 +43,16 @@ https://isapho.github.io/Medulla-site/ (Settings → Pages → Source: GitHub Ac
 - [ ] `contactEmail`: a shared inbox, for example `hello@…`. It powers every
       "write to us" button: visit requests, fact suggestions and reports,
       kindness messages and privacy questions.
-- [ ] `telegramHandle`: the channel username, without `@`.
+- [x] Telegram is set: channel `medullamind` (`telegramHandle`), contact account `medulla_mind` (`telegramContact`).
 - [ ] Check `instagramHandle` (`medulla.mind`).
 
 ## 4. Real people and partners → `js/config.js`
 
 Only with each person's permission. Names and photos of adults only.
 
-- [ ] `team`: names, roles (uz/ru/en), one-line bios. Add a photo only if the
-      person wants one (`assets/team/…`).
+- [x] `team`: 8 names and roles are in `js/config.js`.
+- [ ] `team`: one-line bios (uz/ru/en), and a photo only if the person wants one
+      (`assets/team/…`). Until then each card shows "TBD".
 - [ ] `advisors`: only specialists who have agreed to be listed.
 - [ ] `partners`: only organisations that have agreed in writing, with their logo file and URL.
 

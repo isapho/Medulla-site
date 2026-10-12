@@ -182,6 +182,7 @@
   function srExternal() { return '<span class="sr-only"> ' + esc(t("a11y.external")) + "</span>"; }
   function instagramUrl() { return CFG.instagramHandle ? "https://www.instagram.com/" + encodeURIComponent(CFG.instagramHandle) + "/" : null; }
   function telegramUrl() { return CFG.telegramHandle ? "https://t.me/" + encodeURIComponent(CFG.telegramHandle) : null; }
+  function telegramContactUrl() { var h = CFG.telegramContact || CFG.telegramHandle; return h ? "https://t.me/" + encodeURIComponent(h) : null; }
   function mailtoUrl(subjectKey, bodyKey) {
     if (!CFG.contactEmail) return null;
     return "mailto:" + CFG.contactEmail + "?subject=" + encodeURIComponent(t(subjectKey || "join.subject.general")) +
@@ -703,7 +704,7 @@
           : '<div class="photo photo-slot">' + icon("user") + "<span>" + esc(t("team.photoTbd")) + "</span></div>";
         return '<li class="card person' + (filled ? "" : " is-placeholder") + '">' + photo +
           '<div class="person-body"><h3>' + esc(name || t("team.nameTbd", { slot: slotName })) + "</h3>" +
-            '<p class="person-role">' + esc(role ? slotName + " · " + role : (name ? slotName : t("team.roleTbd"))) + "</p>" +
+            '<p class="person-role">' + esc(role ? ((m.slot || "member") === "member" ? role : slotName + " · " + role) : (name ? slotName : t("team.roleTbd"))) + "</p>" +
             (compact ? "" : '<p class="person-bio">' + esc(bio || t("team.bioTbd")) + "</p>") +
           "</div>" + (filled ? "" : '<span class="tbd">' + esc(t("common.tbd")) + "</span>") + "</li>";
       }).join("");
@@ -741,7 +742,7 @@
     },
 
     contact: function (el) {
-      var mail = mailtoUrl("join.subject.general"), tg = telegramUrl();
+      var mail = mailtoUrl("join.subject.general"), tg = telegramContactUrl();
       el.innerHTML =
         (mail ? '<a class="btn btn-light press" href="' + esc(mail) + '">' + icon("mail") + "<span>" + esc(t("join.emailButton")) + "</span></a>" : placeholderChip(t("join.emailTbd"), "mail")) +
         (tg ? '<a class="btn btn-outline-light press" href="' + tg + '"' + externalAttrs() + ">" + icon("telegram") + "<span>" + esc(t("join.telegramButton")) + "</span>" + srExternal() + "</a>" : placeholderChip(t("join.telegramTbd"), "telegram"));

@@ -20,7 +20,8 @@ window.MEDULLA_CONFIG = {
 
   // Social handles, without "@".
   instagramHandle: "medulla.mind",
-  telegramHandle: null, // e.g. "medulla_mind" → https://t.me/medulla_mind
+  telegramHandle: "medullamind",    // the public channel → https://t.me/medullamind
+  telegramContact: "medulla_mind",  // the account people write to → https://t.me/medulla_mind
 
   // Optional backend for sync, anonymous counters and club totals.
   // The site works fully WITHOUT it (guest mode, progress on the device).
@@ -36,11 +37,18 @@ window.MEDULLA_CONFIG = {
   // Only used when the backend is switched on.
   anonymousCounters: false,
 
-  // Team. `slot` picks the default title ("Founder" / "Co-founder") shown
-  // while `name` is empty. Add more people by copying an entry.
+  // Team: names and Telegram roles as given by the team (October 2026).
+  // slot is founder / cofounder / member. Bios and photos stay null (shown as
+  // "TBD") until each person has written one and agreed to a photo.
   team: [
-    { slot: "founder", name: null, role: null, bio: null, photo: null },
-    { slot: "cofounder", name: null, role: null, bio: null, photo: null }
+    { slot: "founder", name: "Sevara",              role: null,   bio: null, photo: null },
+    { slot: "member",  name: "Madina",              role: { uz: "CEO", ru: "CEO", en: "CEO" }, bio: null, photo: null },
+    { slot: "member",  name: "Dilrabo",             role: { uz: "CEO", ru: "CEO", en: "CEO" }, bio: null, photo: null },
+    { slot: "member",  name: "Nazarbek",            role: { uz: "Koordinator", ru: "Координатор", en: "Coordinator" }, bio: null, photo: null },
+    { slot: "member",  name: "Fayruza",             role: { uz: "Koordinator", ru: "Координатор", en: "Coordinator" }, bio: null, photo: null },
+    { slot: "member",  name: "Munavvar Abdullayeva", role: { uz: "Koordinator", ru: "Координатор", en: "Coordinator" }, bio: null, photo: null },
+    { slot: "member",  name: "Sevara M",            role: { uz: "Kopirayter", ru: "Копирайтер", en: "Copywriter" }, bio: null, photo: null },
+    { slot: "member",  name: "Dono",                role: { uz: "Kopirayter", ru: "Копирайтер", en: "Copywriter" }, bio: null, photo: null }
   ],
 
   // Advisors (for example doctors or researchers who review content).
