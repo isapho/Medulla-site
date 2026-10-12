@@ -13,6 +13,8 @@
   "use strict";
 
   var CFG = window.MEDULLA_CONFIG || {};
+  // ?placeholders=1 shows the dashed "TBD" stand-ins (for the team checking what is still missing).
+  try { if (new URLSearchParams(location.search).get("placeholders") === "1") CFG.showPlaceholders = true; } catch (e) { /* old browser */ }
   var I18N = window.MEDULLA_I18N;
   var prefs = window.MedullaPrefs;
   var Store = window.MedullaStore;
@@ -170,6 +172,9 @@
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>',
     headphones: '<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3.5" y="14" width="4.5" height="6.5" rx="1.5"/><rect x="16" y="14" width="4.5" height="6.5" rx="1.5"/>',
     copy: '<rect x="8.5" y="8.5" width="12" height="12" rx="2"/><path d="M15.5 8.5V5a1.5 1.5 0 0 0-1.5-1.5H5A1.5 1.5 0 0 0 3.5 5v9A1.5 1.5 0 0 0 5 15.5h3.5"/>',
+    bot: '<rect x="4" y="8" width="16" height="12" rx="4"/><path d="M12 8V4.5M9 13.5h.01M15 13.5h.01M9.5 17h5"/><circle cx="12" cy="3.5" r="1"/>',
+    textSize: '<path d="M3 19 8 5l5 14M4.8 14h6.4M14 19l3.5-9 3.5 9M15.2 16h4.6"/>',
+    contrast: '<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>',
     sliders: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>'
   };
 
@@ -182,6 +187,8 @@
   function srExternal() { return '<span class="sr-only"> ' + esc(t("a11y.external")) + "</span>"; }
   function instagramUrl() { return CFG.instagramHandle ? "https://www.instagram.com/" + encodeURIComponent(CFG.instagramHandle) + "/" : null; }
   function telegramUrl() { return CFG.telegramHandle ? "https://t.me/" + encodeURIComponent(CFG.telegramHandle) : null; }
+  function telegramBotUrl(start) { return CFG.telegramBot ? "https://t.me/" + encodeURIComponent(CFG.telegramBot) + (start ? "?start=" + encodeURIComponent(start) : "") : null; }
+  function initials(name) { return String(name || "").trim().split(/s+/).slice(0, 2).map(function (w) { return w.charAt(0).toUpperCase(); }).join(""); }
   function telegramContactUrl() { var h = CFG.telegramContact || CFG.telegramHandle; return h ? "https://t.me/" + encodeURIComponent(h) : null; }
   function mailtoUrl(subjectKey, bodyKey) {
     if (!CFG.contactEmail) return null;
@@ -191,6 +198,7 @@
 
   // A dashed, obviously temporary stand-in for a missing config value.
   function placeholderChip(text, iconName) {
+    if (!CFG.showPlaceholders) return "";
     return '<span class="btn btn-placeholder" aria-disabled="true">' + (iconName ? icon(iconName) : "") +
       "<span>" + esc(text) + '</span><span class="tbd">' + esc(t("common.tbd")) + "</span></span>";
   }
@@ -199,11 +207,11 @@
 
   // The Medulla character system: transparent cut-outs of the original sheet.
   var CHARACTERS = {
-    dendi: { name: "Dendi", w: 197, h: 281, tint: "#EFEDFF", guide: true },
-    memo:  { name: "Memo",  w: 278, h: 233, tint: "#E8E5FF" },
-    octa:  { name: "Octa",  w: 201, h: 235, tint: "#F3F1FF" },
-    syno:  { name: "Syno",  w: 171, h: 250, tint: "#ECE9FF" },
-    lumi:  { name: "Lumi",  w: 162, h: 164, tint: "#FFF3E6" }
+    dendi: { name: "Dendi", w: 194, h: 280, tint: "#EFEDFF", guide: true },
+    memo:  { name: "Memo",  w: 276, h: 229, tint: "#E8E5FF" },
+    octa:  { name: "Octa",  w: 198, h: 233, tint: "#F3F1FF" },
+    syno:  { name: "Syno",  w: 168, h: 248, tint: "#ECE9FF" },
+    lumi:  { name: "Lumi",  w: 160, h: 161, tint: "#FFF3E6" }
   };
   var CHARACTER_ORDER = ["dendi", "memo", "octa", "syno", "lumi"];
 
@@ -433,6 +441,8 @@
     { page: "about", href: "about.html", key: "nav.about", primary: true },
     { page: "partners", href: "partners.html", key: "nav.partners" },
     { page: "join", href: "join.html", key: "nav.join" },
+    { page: "glossary", href: "glossary.html", key: "nav.glossary" },
+    { page: "accessibility", href: "accessibility.html", key: "nav.accessibility" },
     { page: "privacy", href: "privacy.html", key: "nav.privacy" }
   ];
 
@@ -450,11 +460,6 @@
       '<span class="brand-text"><span class="brand-name">Medulla</span><span class="brand-tag" data-i18n="brand.tagline"></span></span></a>';
   }
 
-  function switchRow(id, key, on) {
-    return '<button type="button" class="switch" role="switch" data-switch="' + id + '" aria-checked="' + !!on + '">' +
-      '<span data-i18n="' + key + '"></span><span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span></button>';
-  }
-
   function renderHeader() {
     var header = document.getElementById("site-header");
     if (!header) return;
@@ -467,23 +472,12 @@
         '<div class="header-tools">' +
           '<div class="lang-switch wide-only" role="group" data-i18n-attr="aria-label:lang.label">' + langButtons + "</div>" +
           '<button type="button" class="icon-btn sound-btn mid-only" data-sound-toggle aria-pressed="false" data-i18n-attr="aria-label:sound.toggle;title:sound.toggle">' + icon("mute", "icon-off") + icon("sound", "icon-on") + "</button>" +
-          '<button type="button" class="icon-btn" id="display-toggle" aria-expanded="false" aria-controls="display-panel" data-i18n-attr="aria-label:display.button;title:display.button">' + icon("sliders") + "</button>" +
+          '<button type="button" class="icon-btn ax-toggle" id="display-toggle" aria-expanded="false" aria-controls="a11y-drawer" data-i18n-attr="aria-label:ax.buttonAria;title:ax.buttonAria">' + icon("access") + '<span class="ax-toggle-text" data-i18n="ax.button"></span></button>' +
           '<a class="me-pill" href="' + ROOT + 'explore.html" data-me-pill></a>' +
           '<a class="btn btn-primary btn-sm header-cta press" href="' + ROOT + 'join.html"><span data-i18n="nav.cta"></span></a>' +
           '<button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-expanded="false" aria-controls="site-nav" data-i18n-attr="aria-label:nav.menu">' + icon("menu", "icon-open") + icon("close", "icon-close") + "</button>" +
         "</div>" +
-      "</div>" +
-      '<div class="display-panel" id="display-panel" hidden><div class="container display-inner">' +
-        '<p class="display-title" data-i18n="display.title"></p>' +
-        '<div class="lang-choice" role="group" data-i18n-attr="aria-label:lang.label">' + I18N.languages.map(function (l) {
-          return '<button type="button" class="lang-btn lang-big" data-lang="' + l.code + '" lang="' + l.code + '">' + esc(l.name) + "</button>";
-        }).join("") + "</div>" +
-        switchRow("sound", "display.sound", window.MedullaSound && window.MedullaSound.isOn()) +
-        switchRow("calm", "display.calm", root.classList.contains("calm")) +
-        switchRow("largeText", "display.largeText", root.classList.contains("a11y-large")) +
-        switchRow("dyslexia", "display.dyslexia", root.classList.contains("a11y-dyslexia")) +
-        '<p class="display-note" data-i18n="display.note"></p>' +
-      "</div></div>";
+      "</div>";
     updateMePill();
   }
 
@@ -504,7 +498,8 @@
       '<div class="container footer-grid">' +
         "<div>" + brandHtml() + '<p class="closing-line" data-i18n="brand.closing"></p></div>' +
         '<nav data-i18n-attr="aria-label:footer.pages"><p class="footer-heading" data-i18n="footer.pages"></p><ul class="footer-links">' + navLinks(false) + "</ul></nav>" +
-        '<div><p class="footer-heading" data-i18n="footer.follow"></p><div class="follow-row" data-render="follow"></div></div>' +
+        '<div><p class="footer-heading" data-i18n="footer.follow"></p><div class="follow-row" data-render="follow"></div>' +
+          '<a class="footer-access" href="' + ROOT + 'accessibility.html">' + icon("access") + '<span><strong data-i18n="footer.accessTitle"></strong><small data-i18n="footer.accessText"></small></span></a></div>' +
       "</div>" +
       '<div class="container footer-bottom">' +
         '<p class="demo-note">' + icon("info") + '<span data-i18n="footer.demo"></span></p>' +
@@ -526,7 +521,6 @@
     var menuBtn = document.getElementById("menu-toggle");
     var nav = document.getElementById("site-nav");
     var displayBtn = document.getElementById("display-toggle");
-    var panel = document.getElementById("display-panel");
     if (!menuBtn) return;
 
     function setMenu(open) {
@@ -535,25 +529,11 @@
       menuBtn.setAttribute("aria-label", t(open ? "nav.closeMenu" : "nav.menu"));
       nav.classList.toggle("is-open", open);
     }
-    function setPanel(open) { displayBtn.setAttribute("aria-expanded", String(open)); panel.hidden = !open; }
-
-    menuBtn.addEventListener("click", function () { var o = menuBtn.getAttribute("aria-expanded") !== "true"; setMenu(o); if (o) setPanel(false); });
-    displayBtn.addEventListener("click", function () { var o = displayBtn.getAttribute("aria-expanded") !== "true"; setPanel(o); if (o) setMenu(false); });
+    menuBtn.addEventListener("click", function () { var o = menuBtn.getAttribute("aria-expanded") !== "true"; setMenu(o); });
+    displayBtn.addEventListener("click", function () { setMenu(false); if (window.MedullaAccess) window.MedullaAccess.toggle(displayBtn); });
     document.querySelectorAll(".lang-btn").forEach(function (b) { b.addEventListener("click", function () { setLang(b.getAttribute("data-lang")); }); });
     document.querySelectorAll("[data-sound-toggle]").forEach(function (b) {
       b.addEventListener("click", function () { window.MedullaSound.setEnabled(!window.MedullaSound.isOn()); });
-    });
-    panel.querySelectorAll(".switch").forEach(function (sw) {
-      sw.addEventListener("click", function () {
-        var id = sw.getAttribute("data-switch");
-        if (id === "sound") { window.MedullaSound.setEnabled(!window.MedullaSound.isOn()); return; }
-        var cls = { calm: "calm", largeText: "a11y-large", dyslexia: "a11y-dyslexia" }[id];
-        var on = !root.classList.contains(cls);
-        root.classList.toggle(cls, on);
-        sw.setAttribute("aria-checked", String(on));
-        prefs.set(prefs.KEYS[id], on ? "1" : null);
-        if (id === "calm") document.dispatchEvent(new CustomEvent("medulla:calm", { detail: { on: on } }));
-      });
     });
     document.addEventListener("medulla:sound", function (e) {
       updateSoundButtons();
@@ -562,11 +542,10 @@
     updateSoundButtons();
     document.addEventListener("keydown", function (e) {
       if (e.key !== "Escape" || (reader.dialog && reader.dialog.open)) return;
-      if (!panel.hidden) { setPanel(false); displayBtn.focus(); }
       if (nav.classList.contains("is-open")) { setMenu(false); menuBtn.focus(); }
     });
     document.addEventListener("click", function (e) {
-      if (!document.getElementById("site-header").contains(e.target)) { setPanel(false); setMenu(false); }
+      if (!document.getElementById("site-header").contains(e.target)) setMenu(false);
     });
   }
 
@@ -578,7 +557,163 @@
     { key: "practical", char: "octa", href: "lab.html" }
   ];
 
+  // Number of Brain Lab activities (js/games.js). tools/build.js checks it matches.
+  var LAB_ACTIVITIES = 6;
+
+  // Public "trust strip": only numbers that are real. Counted values from
+  // js/config.js (null = not counted yet, so not shown) plus facts the site
+  // can count itself (checked facts, Lab activities, languages).
+  function trustStrip(el, items) {
+    function cell(iconName, value, label, extra) {
+      return '<li class="stat"><span class="tile">' + icon(iconName) + "</span>" + value + '<span class="stat-label">' + esc(label) + (extra || "") + "</span></li>";
+    }
+    function num(v, suffix) { return '<span class="stat-value" data-count="' + Number(v) + '" data-suffix="' + esc(suffix || "") + '">' + fmt(v) + esc(suffix || "") + "</span>"; }
+    function draw(nFacts, live) {
+      var out = [];
+      items.forEach(function (item) {
+        var v = item.value;
+        if (item.live && live && typeof live[item.live] === "number") v = live[item.live];
+        if (v === null || v === undefined) return;
+        out.push(cell(item.icon || "sparkle", num(v, item.suffix), t("impact." + item.key), item.live ? ' <span class="live-dot" title="' + esc(t("impact.liveTitle")) + '"></span>' : ""));
+      });
+      if (nFacts) out.push(cell("book", num(nFacts), t("impact.factsChecked")));
+      out.push(cell("target", num(LAB_ACTIVITIES), t("impact.labActivities")));
+      out.push(cell("globe", num(I18N.languages.length), t("impact.languages")));
+      el.className = el.className.replace(/\bstats-\d\b/g, "").trim() + " stats-" + out.length;
+      el.innerHTML = out.join("");
+      animateCounters(el);
+    }
+    draw(0, null);
+    loadFacts().then(function (f) {
+      draw(f.length, null);
+      if (window.MedullaBackend && window.MedullaBackend.countersOn()) window.MedullaBackend.counters().then(function (r) { if (r.ok) draw(f.length, r.values); });
+    }).catch(function () { /* keeps the first draw */ });
+  }
+
   var renderers = {
+    // Telegram bot card: what the bot does, and a button once the bot exists.
+    botCard: function (el) {
+      var url = telegramBotUrl("site");
+      var icons = { fact: "book", quiz: "bolt", words: "bulb", breathe: "wind" };
+      var feats = ["fact", "quiz", "words", "breathe"].map(function (k) {
+        return "<li>" + icon(icons[k]) + "<span>" + esc(t("botcard." + k)) + "</span></li>";
+      }).join("");
+      el.innerHTML = '<div class="bot-card">' +
+        '<div class="bot-card-art" aria-hidden="true"><span class="bot-bubble b1">/fact</span><span class="bot-bubble b2">/quiz</span><span class="bot-bubble b3">/word</span>' + charImg("dendi", "idle idle-dendi", "") + "</div>" +
+        '<div class="bot-card-body"><p class="eyebrow">' + icon("bot") + "<span>" + esc(t("botcard.eyebrow")) + "</span></p>" +
+          "<h3>" + esc(t("botcard.title")) + "</h3><p>" + esc(t("botcard.text")) + "</p>" +
+          '<ul class="bot-feats">' + feats + "</ul>" +
+          '<div class="btn-row">' + (url ? '<a class="btn btn-primary press" href="' + url + '"' + externalAttrs() + ">" + icon("telegram") + "<span>" + esc(t("botcard.open")) + "</span>" + srExternal() + "</a>"
+            : '<span class="btn btn-soon" aria-disabled="true">' + icon("clock") + "<span>" + esc(t("botcard.soon")) + "</span></span>") +
+          (telegramUrl() ? '<a class="btn btn-ghost press" href="' + telegramUrl() + '"' + externalAttrs() + ">" + icon("telegram") + "<span>@" + esc(CFG.telegramHandle) + "</span>" + srExternal() + "</a>" : "") +
+          (instagramUrl() ? '<a class="btn btn-ghost press" href="' + instagramUrl() + '"' + externalAttrs() + ">" + icon("instagram") + "<span>@" + esc(CFG.instagramHandle) + "</span>" + srExternal() + "</a>" : "") + "</div>" +
+          '<p class="bot-privacy">' + icon("lock") + "<span>" + esc(t("botcard.privacy")) + "</span></p>" +
+        "</div></div>";
+    },
+
+    // Glossary page: every hard word with its plain-language meaning.
+    glossaryList: function (el) {
+      var draw = function (terms) {
+        var list = terms.slice().sort(function (a, b) { return (localized(a.term) || "").localeCompare(localized(b.term) || "", lang); });
+        el.innerHTML = '<div class="gl-tools"><label class="sr-only" for="gl-q">' + esc(t("glossary.search")) + "</label>" +
+          '<span class="search-field">' + icon("search") + '<input id="gl-q" type="search" autocomplete="off" placeholder="' + esc(t("glossary.search")) + '"></span>' +
+          '<p class="muted gl-count" aria-live="polite"></p></div>' +
+          '<dl class="gl-list">' + list.map(function (g) {
+            return '<div class="gl-item card" id="' + esc(g.id) + '" data-gl="' + esc(((localized(g.term) || "") + " " + (localized(g.def) || "")).toLowerCase()) + '">' +
+              '<dt><span class="gl-term">' + esc(localized(g.term) || "") + "</span></dt>" +
+              "<dd><p>" + esc(localized(g.def) || "") + "</p>" +
+              '<div class="gl-actions"><button type="button" class="btn btn-ghost btn-sm press" data-gl-listen="' + esc(g.id) + '">' + icon("headphones") + "<span>" + esc(t("gloss.listen")) + "</span></button>" +
+              (g.fact ? '<a class="text-link" href="' + ROOT + "facts/" + esc(g.fact) + '.html">' + esc(t("glossary.inFact")) + icon("arrow", "icon-sm") + "</a>" : "") +
+              (g.reviewed ? "" : '<span class="review-badge">' + icon("clock") + esc(t("common.pendingReview")) + "</span>") + "</div></dd></div>";
+          }).join("") + "</dl>";
+        var q = el.querySelector("#gl-q"), count = el.querySelector(".gl-count");
+        function filter() {
+          var v = q.value.trim().toLowerCase(), n = 0;
+          el.querySelectorAll(".gl-item").forEach(function (it) { var ok = !v || it.getAttribute("data-gl").indexOf(v) !== -1; it.hidden = !ok; if (ok) n++; });
+          count.textContent = t("glossary.count", { n: n });
+        }
+        q.addEventListener("input", filter); filter();
+        if (!el._wired) {
+          el._wired = true;
+          el.addEventListener("click", function (e) {
+            var b = e.target.closest("[data-gl-listen]");
+            if (!b || !window.MedullaAccess || !window.MedullaGlossary) return;
+            window.MedullaGlossary.load().then(function () {
+              var g = window.MedullaGlossary.term(b.getAttribute("data-gl-listen"));
+              if (g) window.MedullaAccess.speak((localized(g.term) || "") + ". " + (localized(g.def) || ""));
+            });
+          });
+        }
+        if (location.hash) { var target = document.getElementById(location.hash.slice(1)); if (target) { target.classList.add("is-target"); target.scrollIntoView({ block: "center" }); } }
+      };
+      loadJSON("data/glossary.json", { terms: [] }).then(function (d) { draw((d && d.terms) || []); });
+    },
+
+    // Home page: one toggle chip per comfort profile.
+    axChips: function (el) {
+      var A = window.MedullaAccess;
+      if (!A) { el.hidden = true; return; }
+      var s = prefs.a11y();
+      el.innerHTML = A.profiles.map(function (p) {
+        var on = A.profileOn(p, s);
+        return '<li><button type="button" data-ax-chip="' + p.id + '" aria-pressed="' + on + '" title="' + esc(t("ax.p." + p.id + ".for")) + '">' + icon(p.icon) + "<span>" + esc(t("ax.p." + p.id + ".title")) + "</span></button></li>";
+      }).join("");
+      if (!el._wired) {
+        el._wired = true;
+        el.addEventListener("click", function (e) {
+          var b = e.target.closest("[data-ax-chip]");
+          if (!b) return;
+          var id = b.getAttribute("data-ax-chip");
+          var p = A.profiles.filter(function (x) { return x.id === id; })[0], ch = {};
+          var on = A.profileOn(p, prefs.a11y());
+          for (var k in p.set) ch[k] = on ? prefs.DEFAULTS[k] : p.set[k];
+          prefs.setA11y(ch);
+          if (!on && p.mute && window.MedullaSound && window.MedullaSound.isOn()) window.MedullaSound.setEnabled(false);
+          toast({ icon: "access", title: t(on ? "ax.profileOff" : "ax.profileOn", { name: t("ax.p." + id + ".title") }), ms: 2200 });
+        });
+        document.addEventListener("medulla:a11y", function () {
+          var f = document.activeElement && el.contains(document.activeElement) ? document.activeElement.getAttribute("data-ax-chip") : null;
+          renderers.axChips(el);
+          if (f) { var n = el.querySelector('[data-ax-chip="' + f + '"]'); if (n) n.focus(); }
+        });
+      }
+    },
+
+    // Accessibility page: one card per comfort profile.
+    axProfiles: function (el) {
+      var A = window.MedullaAccess;
+      if (!A) { el.innerHTML = ""; return; }
+      var s = prefs.a11y();
+      el.innerHTML = A.profiles.map(function (p) {
+        var on = A.profileOn(p, s);
+        return '<li class="card ax-pcard' + (on ? " is-on" : "") + '"><span class="ax-p-icon" aria-hidden="true">' + icon(p.icon) + "</span>" +
+          "<h3>" + esc(t("ax.p." + p.id + ".title")) + "</h3>" +
+          '<p class="ax-pfor">' + esc(t("ax.p." + p.id + ".for")) + "</p>" +
+          "<p>" + esc(t("ax.p." + p.id + ".what")) + "</p>" +
+          '<button type="button" class="btn ' + (on ? "btn-ghost" : "btn-primary") + ' btn-sm press" data-ax-apply="' + p.id + '" aria-pressed="' + on + '">' + icon(on ? "check" : "plus") + "<span>" + esc(t(on ? "ax.turnOff" : "ax.turnOn")) + "</span></button></li>";
+      }).join("");
+      if (!el._wired) {
+        el._wired = true;
+        el.addEventListener("click", function (e) {
+          var b = e.target.closest("[data-ax-apply]");
+          if (!b) return;
+          var id = b.getAttribute("data-ax-apply");
+          var p = A.profiles.filter(function (x) { return x.id === id; })[0], cur = prefs.a11y(), ch = {};
+          var on = A.profileOn(p, cur);
+          for (var k in p.set) ch[k] = on ? prefs.DEFAULTS[k] : p.set[k];
+          prefs.setA11y(ch);
+          if (!on && p.mute && window.MedullaSound && window.MedullaSound.isOn()) window.MedullaSound.setEnabled(false);
+          toast({ icon: "access", title: t(on ? "ax.profileOff" : "ax.profileOn", { name: t("ax.p." + p.id + ".title") }), ms: 2200 });
+          var nb = el.querySelector('[data-ax-apply="' + id + '"]'); if (nb) nb.focus();
+        });
+        document.addEventListener("medulla:a11y", function () {
+          var f = document.activeElement && el.contains(document.activeElement) ? document.activeElement.getAttribute("data-ax-apply") : null;
+          renderers.axProfiles(el);
+          if (f) { var n = el.querySelector('[data-ax-apply="' + f + '"]'); if (n) n.focus(); }
+        });
+      }
+    },
+
     characters: function (el) {
       var full = el.getAttribute("data-variant") === "full";
       el.innerHTML = CHARACTER_ORDER.map(function (id) {
@@ -617,6 +752,7 @@
     // backend counters when those are switched on, otherwise they stay "—".
     impact: function (el) {
       var items = (CFG.impact || []);
+      if (!CFG.showPlaceholders) return trustStrip(el, items);
       function draw(live) {
         el.innerHTML = items.map(function (item) {
           var v = item.value;
@@ -709,6 +845,17 @@
 
     team: function (el) {
       var compact = el.hasAttribute("data-compact");
+      if (!CFG.showPlaceholders) {
+        var people = (CFG.team || []).filter(function (m) { return localized(m.name); });
+        el.innerHTML = people.map(function (m, i) {
+          var name = localized(m.name), role = localized(m.role) || t("team.slot." + (m.slot || "member")), bio = localized(m.bio);
+          var face = m.photo ? '<img class="photo" src="' + esc(ROOT + m.photo) + '" alt="' + esc(t("team.photoAlt", { name: name })) + '" width="160" height="160" loading="lazy">'
+            : '<span class="photo initials" aria-hidden="true" style="--hue:' + ((i * 47) % 360) + '">' + esc(initials(name)) + "</span>";
+          return '<li class="card person is-clean">' + face + '<div class="person-body"><h3>' + esc(name) + "</h3>" +
+            '<p class="person-role">' + esc(role) + "</p>" + (!compact && bio ? '<p class="person-bio">' + esc(bio) + "</p>" : "") + "</div></li>";
+        }).join("");
+        return;
+      }
       el.innerHTML = (CFG.team || []).map(function (m) {
         var slotName = t("team.slot." + (m.slot || "member"));
         var name = localized(m.name), role = localized(m.role), bio = localized(m.bio);
@@ -726,6 +873,10 @@
 
     advisors: function (el) {
       var list = CFG.advisors || [];
+      if (!list.length && !CFG.showPlaceholders) {
+        el.innerHTML = '<p class="soft-empty">' + icon("users") + "<span>" + esc(t("advisors.open")) + "</span></p>";
+        return;
+      }
       if (!list.length) {
         el.innerHTML = '<div class="advisor-row is-placeholder"><span class="avatar-slot">' + icon("user") + '</span><span class="avatar-slot">' + icon("user") + '</span><span class="avatar-slot">' + icon("user") + "</span>" +
           '<p class="advisor-soon">' + esc(t("advisors.soon")) + '</p><span class="tbd">' + esc(t("common.tbd")) + "</span></div>";
@@ -738,6 +889,24 @@
 
     partners: function (el) {
       var compact = el.hasAttribute("data-compact");
+      var real = (CFG.partners || []).filter(function (p) { return p.logo || localized(p.name); });
+      if (!real.length && !CFG.showPlaceholders && el.getAttribute("data-cta") === "none") {
+        el.innerHTML = '<li class="soft-empty">' + icon("link") + "<span>" + esc(t("partners.openText")) + "</span></li>";
+        return;
+      }
+      if (!real.length && !CFG.showPlaceholders) {
+        el.innerHTML = '<li class="partner-cta"><span class="pc-icon">' + icon("plus") + '</span><span><strong>' + esc(t("partners.openTitle")) + "</strong><small>" + esc(t("partners.openText")) + "</small></span>" +
+          '<a class="btn btn-ghost btn-sm press" href="' + ROOT + 'partners.html#become-partner">' + esc(t("partners.openButton")) + icon("arrow", "icon-sm") + "</a></li>";
+        return;
+      }
+      if (!CFG.showPlaceholders) {
+        el.innerHTML = real.map(function (p) {
+          var name = localized(p.name), inner = p.logo ? '<img src="' + esc(ROOT + p.logo) + '" alt="' + esc(t("partners.logoAlt", { name: name || "" })) + '" loading="lazy">' : '<span class="partner-name">' + esc(name) + "</span>";
+          if (p.url) inner = '<a href="' + esc(p.url) + '"' + externalAttrs() + ">" + inner + srExternal() + "</a>";
+          return '<li class="partner">' + inner + "</li>";
+        }).join("");
+        return;
+      }
       el.innerHTML = (CFG.partners || []).map(function (p) {
         var name = localized(p.name), inner;
         if (p.logo) inner = '<img src="' + esc(ROOT + p.logo) + '" alt="' + esc(t("partners.logoAlt", { name: name || "" })) + '" loading="lazy">';
@@ -766,7 +935,9 @@
     mailto: function (el) {
       var mail = mailtoUrl(el.getAttribute("data-subject"), el.getAttribute("data-body"));
       var label = el.getAttribute("data-label") || "join.write";
+      var tgc = telegramContactUrl();
       el.innerHTML = mail ? '<a class="btn ' + (el.getAttribute("data-style") || "btn-ghost") + ' press" href="' + esc(mail) + '">' + icon(el.getAttribute("data-icon") || "mail") + "<span>" + esc(t(label)) + "</span></a>"
+        : tgc && !CFG.showPlaceholders ? '<a class="btn ' + (el.getAttribute("data-style") || "btn-ghost") + ' press" href="' + tgc + '"' + externalAttrs() + ">" + icon("telegram") + "<span>" + esc(t(label)) + "</span>" + srExternal() + "</a>"
         : placeholderChip(t("join.emailTbd"), "mail");
     },
 
@@ -800,7 +971,7 @@
       loadJSON("data/resources.json", { resources: [] }).then(function (data) {
         var list = (data && data.resources) || [];
         if (!list.length) {
-          el.innerHTML = '<div class="empty-state">' + icon("shield") + "<h3>" + esc(t("parents.dirEmptyTitle")) + "</h3><p>" + esc(t("parents.dirEmpty")) + '</p><span class="tbd">' + esc(t("common.tbd")) + "</span></div>";
+          el.innerHTML = '<div class="empty-state">' + icon("shield") + "<h3>" + esc(t("parents.dirEmptyTitle")) + "</h3><p>" + esc(t("parents.dirEmpty")) + "</p>" + (CFG.showPlaceholders ? '<span class="tbd">' + esc(t("common.tbd")) + "</span>" : "") + "</div>";
           return;
         }
         el.innerHTML = '<ul class="resource-list">' + list.map(function (r) {
@@ -890,11 +1061,16 @@
     mailtoUrl: mailtoUrl,
     placeholderChip: placeholderChip,
     reducedMotion: function () { return reducedMotion.matches || root.classList.contains("calm"); },
+    // Timing multiplier for memory games ("More time" setting).
+    pace: function () { return root.classList.contains("a11y-slow") ? 1.6 : 1; },
+    initials: initials,
+    telegramBotUrl: telegramBotUrl,
     externalAttrs: externalAttrs,
     srExternal: srExternal
   };
 
   function init() {
+    root.classList.toggle("show-tbd", !!CFG.showPlaceholders);
     renderHeader();
     renderFooter();
     renderIcons();

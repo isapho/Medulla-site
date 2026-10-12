@@ -1,5 +1,59 @@
 # Changelog
 
+## 2.1.0 (12 October 2026): every brain, Telegram assistant, new look
+
+### Added
+- **Accessibility & comfort panel** (header button or Alt + A on any page) with six
+  ready-made profiles: Focus, Easier reading, Calm senses, Seizure-safe, Simple &
+  slow, See better. Single settings: text size up to 150%, wider spacing, fonts
+  (Standard, Atkinson Hyperlegible, dyslexia-friendly), light / dark / auto theme,
+  high contrast, underlined links, stop animations, hide decorations, no flashes,
+  sound, reading guide, hard-word explanations, read-aloud buttons, more time.
+  Saved on the device only; applied before the first paint.
+- **Accessibility page** (`accessibility.html`): the profiles, what each setting
+  does and why, keyboard shortcuts, honest limits and sources.
+- **Hard words:** `data/glossary.json` (29 terms in uz/ru/en with sources), dotted
+  underlines on the first use of each term with a pop-up explanation you can
+  listen to, and a searchable **glossary page** (`glossary.html`).
+- **Read aloud** for a whole page (current block highlighted, pause/next/stop),
+  a paragraph or any selection.
+- **Dark theme** for the whole site, following the device by default.
+- **Interactive Telegram bot** (`telegram/assistant.mjs`): fact of the day, random
+  and sleep facts, simple/detailed switch, anonymous quiz polls, hard words, fact
+  search by plain text, a guided breathing minute, inline sharing, three
+  languages, nothing stored. Runs with long polling (`telegram/poll.mjs`) or as a
+  free Cloudflare Worker (`telegram/worker.mjs`). Guide: `telegram/BOT.md`.
+  17 tests (`telegram/assistant.test.mjs`), also run in CI.
+- **Telegram card** on the home and Join pages (bot, channel, Instagram).
+- **"Medulla for every brain"** section on the home page with one-tap profiles.
+- `data/bot-strings.json` written by the build for the Worker.
+- `?placeholders=1` / `showPlaceholders` show the team every missing value.
+
+### Changed
+- **Characters** replaced with the team's clean Canva cut-out at twice the
+  resolution, edges cleaned for dark backgrounds; the 41 reaction poses got the
+  same edge clean-up.
+- **Logo** recoloured to the palette; new app icons, favicon and a designed
+  share image (`og-image.jpg`, 138 KB instead of a PNG).
+- **New imagery:** glass-brain hero, neuron network, night sky for Lumi's
+  chapter, violet waves for the closing band (Canva AI, see CREDITS).
+- **Visual polish** (`css/polish.css`): layered shadows, glass cards, gradient
+  brand mark, a fine grain on soft sections, refined header and footer.
+- **Trust strip** shows only real numbers (followers, checked facts, Lab
+  activities, languages) instead of "TBD" dashes; team cards show initials
+  instead of "photo TBD"; empty partner slots became one "partner places are
+  open" card; missing email falls back to the Telegram contact.
+- The service worker now loads JS, CSS and JSON **network-first**, so a new
+  page never runs with old cached code.
+- Memory games accept "More time" (×1.6) and say so on the result card.
+- Privacy page: new settings, read-aloud voices and the bot.
+
+### Fixed
+- The Lab's empty "All activities" box showed under the activity list
+  (a CSS rule overrode `hidden`).
+- Home page called eight people "co-founders".
+- Dark theme passes axe-core colour-contrast checks on every page tested.
+
 ## 2.0.0 (12 October 2026): from demo to web app
 
 ### Added

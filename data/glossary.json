@@ -1,0 +1,909 @@
+{
+  "_about": "Hard words explained on the site (dotted underline) and on glossary.html. Definitions are plain-language summaries of the linked sources and stay \"reviewed\": false until a specialist checks them. match: word starts per language; \"=word\" matches only the whole word.",
+  "terms": [
+    {
+      "id": "neuron",
+      "term": {
+        "uz": "Neyron",
+        "ru": "Нейрон",
+        "en": "Neuron"
+      },
+      "match": {
+        "uz": [
+          "neyron"
+        ],
+        "ru": [
+          "нейрон"
+        ],
+        "en": [
+          "neuron"
+        ]
+      },
+      "def": {
+        "uz": "Nerv hujayrasi. Neyronlar xabarlarni juda kichik elektr signallari shaklida tashiydi va boshqa hujayralarga uzatadi.",
+        "ru": "Нервная клетка. Нейроны передают сообщения в виде крошечных электрических сигналов и отправляют их другим клеткам.",
+        "en": "A nerve cell. Neurons carry messages as tiny electrical signals and pass them on to other cells."
+      },
+      "fact": "neuron-count",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Know Your Brain",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "axon",
+      "term": {
+        "uz": "Akson",
+        "ru": "Аксон",
+        "en": "Axon"
+      },
+      "match": {
+        "uz": [
+          "akson"
+        ],
+        "ru": [
+          "аксон"
+        ],
+        "en": [
+          "axon"
+        ]
+      },
+      "def": {
+        "uz": "Neyronning uzun va ingichka “simi”. U neyron signalini boshqa hujayralarga olib boradi.",
+        "ru": "Длинный тонкий «провод» нейрона. По нему сигнал нейрона уходит к другим клеткам.",
+        "en": "The long, thin ‘cable’ of a neuron. It carries the neuron’s signal away to other cells."
+      },
+      "fact": "myelin",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Know Your Brain",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "synapse",
+      "term": {
+        "uz": "Sinaps",
+        "ru": "Синапс",
+        "en": "Synapse"
+      },
+      "match": {
+        "uz": [
+          "sinaps"
+        ],
+        "ru": [
+          "синапс"
+        ],
+        "en": [
+          "synapse",
+          "synaptic"
+        ]
+      },
+      "def": {
+        "uz": "Bir neyron xabarini kimyoviy moddalar yordamida keyingi hujayraga uzatadigan juda kichik tutashgan joy.",
+        "ru": "Крошечный промежуток, где нейрон с помощью химических веществ передаёт сообщение следующей клетке.",
+        "en": "The tiny gap where one neuron passes its message to the next cell, using chemicals."
+      },
+      "fact": "synapse",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Know Your Brain",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "neurotransmitter",
+      "term": {
+        "uz": "Neyromediator",
+        "ru": "Нейромедиатор",
+        "en": "Neurotransmitter"
+      },
+      "match": {
+        "uz": [
+          "neyromediator"
+        ],
+        "ru": [
+          "нейромедиатор"
+        ],
+        "en": [
+          "neurotransmitter"
+        ]
+      },
+      "def": {
+        "uz": "Kimyoviy “xabarchi”. Neyron uni sinapsga chiqaradi va signal shu orqali keyingi hujayraga yetib boradi.",
+        "ru": "Химический «посыльный». Нейрон выделяет его в синапсе, чтобы сигнал дошёл до следующей клетки.",
+        "en": "A chemical messenger. A neuron releases it at the synapse so the signal can reach the next cell."
+      },
+      "fact": "synapse",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Know Your Brain",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "myelin",
+      "term": {
+        "uz": "Mielin",
+        "ru": "Миелин",
+        "en": "Myelin"
+      },
+      "match": {
+        "uz": [
+          "mielin"
+        ],
+        "ru": [
+          "миелин"
+        ],
+        "en": [
+          "myelin"
+        ]
+      },
+      "def": {
+        "uz": "Nerv tolalarini oʻrab turadigan oqsil va yogʻsimon moddalardan iborat qobiq — xuddi sim atrofidagi plastik kabi. U signallarning tez oʻtishiga yordam beradi.",
+        "ru": "Оболочка из белков и жироподобных веществ вокруг нервных волокон — как пластик вокруг провода. Помогает сигналам проходить быстро.",
+        "en": "A coating of protein and fatty substances around nerve fibres, like the plastic around a wire. It helps signals travel fast."
+      },
+      "fact": "myelin",
+      "source": {
+        "name": "MedlinePlus (NIH) — Myelin",
+        "url": "https://medlineplus.gov/ency/article/002261.htm"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "nerve",
+      "term": {
+        "uz": "Nerv",
+        "ru": "Нерв",
+        "en": "Nerve"
+      },
+      "match": {
+        "uz": [
+          "nerv"
+        ],
+        "ru": [
+          "нерв"
+        ],
+        "en": [
+          "nerve"
+        ]
+      },
+      "def": {
+        "uz": "Miya yoki orqa miya bilan tananing boshqa qismlari oʻrtasida signal tashiydigan tolalar tutami.",
+        "ru": "Пучок волокон, по которому сигналы идут между головным или спинным мозгом и остальным телом.",
+        "en": "A bundle of fibres that carries signals between the brain or spinal cord and the rest of the body."
+      },
+      "fact": "myelin",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Know Your Brain",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "cortex",
+      "term": {
+        "uz": "Miya poʻstlogʻi",
+        "ru": "Кора мозга",
+        "en": "Cortex"
+      },
+      "match": {
+        "uz": [
+          "poʻstlo"
+        ],
+        "ru": [
+          "=кора",
+          "=коры",
+          "=коре",
+          "=кору",
+          "=корой"
+        ],
+        "en": [
+          "cortex"
+        ]
+      },
+      "def": {
+        "uz": "Miyaning yupqa, burmali tashqi qatlami. Fikrlash, rejalashtirish, nutq va sezgilar unga bogʻliq.",
+        "ru": "Тонкий складчатый наружный слой мозга. От него зависят мышление, планирование, речь и ощущения.",
+        "en": "The thin, wrinkled outer layer of the brain. Thinking, planning, language and the senses depend on it."
+      },
+      "fact": "teen-brain-matures",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Know Your Brain",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "prefrontal-cortex",
+      "term": {
+        "uz": "Peshona oldi poʻstlogʻi",
+        "ru": "Префронтальная кора",
+        "en": "Prefrontal cortex"
+      },
+      "match": {
+        "uz": [
+          "prefrontal cortex",
+          "peshona oldi poʻstlo"
+        ],
+        "ru": [
+          "префронтальн"
+        ],
+        "en": [
+          "prefrontal cortex",
+          "prefrontal"
+        ]
+      },
+      "def": {
+        "uz": "Poʻstloqning peshona ortidagi old qismi. U rejalashtirish va qaror qabul qilishga yordam beradi hamda miyaning eng oxirgi yetiladigan qismlaridan biri.",
+        "ru": "Передняя часть коры прямо за лбом. Помогает планировать и принимать решения и созревает одной из последних.",
+        "en": "The front part of the cortex, just behind the forehead. It helps with planning and decisions and is one of the last parts of the brain to mature."
+      },
+      "fact": "teen-brain-matures",
+      "source": {
+        "name": "NIMH (NIH) — The Teen Brain: 7 Things to Know",
+        "url": "https://www.nimh.nih.gov/health/publications/the-teen-brain-7-things-to-know"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "frontal-lobe",
+      "term": {
+        "uz": "Peshona boʻlagi",
+        "ru": "Лобная доля",
+        "en": "Frontal lobe"
+      },
+      "match": {
+        "uz": [
+          "frontal lobe",
+          "peshona boʻla"
+        ],
+        "ru": [
+          "лобн"
+        ],
+        "en": [
+          "frontal lobe"
+        ]
+      },
+      "def": {
+        "uz": "Miyaning peshona ortidagi qismi. U fikrni yodda tutish, rejalashtirish va oʻz harakatlarini boshqarishga yordam beradi.",
+        "ru": "Часть мозга за лбом. Помогает удерживать мысли в голове, планировать и управлять своими действиями.",
+        "en": "The part of the brain behind your forehead. It helps you keep ideas in mind, plan and control what you do."
+      },
+      "fact": "working-memory",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Know Your Brain",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "temporal-lobe",
+      "term": {
+        "uz": "Chakka boʻlagi",
+        "ru": "Височная доля",
+        "en": "Temporal lobe"
+      },
+      "match": {
+        "uz": [
+          "temporal lobe",
+          "chakka boʻla"
+        ],
+        "ru": [
+          "височн"
+        ],
+        "en": [
+          "temporal lobe"
+        ]
+      },
+      "def": {
+        "uz": "Boshning ikki yonida, quloqlar yaqinida joylashgan miya qismi. U xotiralarni shakllantirish va tovushlarni tushunishga yordam beradi.",
+        "ru": "Часть мозга по бокам головы, рядом с ушами. Помогает создавать воспоминания и понимать звуки.",
+        "en": "The part of the brain on each side of the head, near the ears. It helps form memories and makes sense of sounds."
+      },
+      "fact": "temporal-memory",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Know Your Brain",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "cerebellum",
+      "term": {
+        "uz": "Miyacha",
+        "ru": "Мозжечок",
+        "en": "Cerebellum"
+      },
+      "match": {
+        "uz": [
+          "miyacha",
+          "cerebellum"
+        ],
+        "ru": [
+          "мозжеч"
+        ],
+        "en": [
+          "cerebellum"
+        ]
+      },
+      "def": {
+        "uz": "Boshning orqa qismidagi “kichik miya”. U harakatlarni muvofiqlashtiradi va muvozanatni saqlashga yordam beradi.",
+        "ru": "«Малый мозг» в задней части головы. Координирует движения и помогает держать равновесие.",
+        "en": "The ‘little brain’ at the back of the head. It coordinates movement and helps you keep your balance."
+      },
+      "fact": "cerebellum",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Know Your Brain",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "brainstem",
+      "term": {
+        "uz": "Miya ustuni",
+        "ru": "Ствол мозга",
+        "en": "Brainstem"
+      },
+      "match": {
+        "uz": [
+          "miya ustun"
+        ],
+        "ru": [
+          "ствол мозга",
+          "стволе мозга",
+          "ствола мозга",
+          "стволом мозга"
+        ],
+        "en": [
+          "brainstem",
+          "brain stem"
+        ]
+      },
+      "def": {
+        "uz": "Miyani orqa miya bilan bogʻlaydigan qism. U nafas olish va yurak urishi kabi avtomatik ishlarni boshqaradi.",
+        "ru": "Часть, которая соединяет головной мозг со спинным. Управляет автоматическими процессами — дыханием и сердцебиением.",
+        "en": "The part that connects the brain to the spinal cord. It runs automatic jobs such as breathing and heartbeat."
+      },
+      "fact": "hindbrain-breathing",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Know Your Brain",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "medulla-oblongata",
+      "term": {
+        "uz": "Uzunchoq miya",
+        "ru": "Продолговатый мозг",
+        "en": "Medulla oblongata"
+      },
+      "match": {
+        "uz": [
+          "uzunchoq miya"
+        ],
+        "ru": [
+          "продолговат"
+        ],
+        "en": [
+          "medulla oblongata"
+        ]
+      },
+      "def": {
+        "uz": "Miya ustunining eng pastki, orqa miyaga tutashgan qismi. U nafas olish va yurak urishini boshqarishga yordam beradi. Loyihamiz nomi undan olingan.",
+        "ru": "Нижняя часть ствола мозга, переходящая в спинной мозг. Помогает управлять дыханием и сердцебиением. В его честь назван наш проект.",
+        "en": "The lowest part of the brainstem, just above the spinal cord. It helps control breathing and heart rate. Our project is named after it."
+      },
+      "fact": "hindbrain-breathing",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Know Your Brain",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "hemisphere",
+      "term": {
+        "uz": "Yarimshar",
+        "ru": "Полушарие",
+        "en": "Hemisphere"
+      },
+      "match": {
+        "uz": [
+          "yarimshar",
+          "yarim shar"
+        ],
+        "ru": [
+          "полушари"
+        ],
+        "en": [
+          "hemisphere"
+        ]
+      },
+      "def": {
+        "uz": "Miyaning bir yarmi — chap yoki oʻng. Ikki yarmini qalin nerv tolalari tutami bogʻlaydi, shuning uchun ular birga ishlaydi.",
+        "ru": "Одна половина мозга — левая или правая. Толстый пучок нервных волокон соединяет половины, поэтому они работают вместе.",
+        "en": "One half of the brain, left or right. A thick bundle of nerve fibres joins the two halves so they work together."
+      },
+      "fact": "opposite-side",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Know Your Brain",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "neuroplasticity",
+      "term": {
+        "uz": "Neyroplastiklik",
+        "ru": "Нейропластичность",
+        "en": "Neuroplasticity"
+      },
+      "match": {
+        "uz": [
+          "neyroplastik"
+        ],
+        "ru": [
+          "нейропластичн"
+        ],
+        "en": [
+          "neuroplasticity",
+          "plasticity"
+        ]
+      },
+      "def": {
+        "uz": "Miyaning tajriba taʼsirida, masalan, oʻrganish va mashq qilish orqali oʻz aloqalarini oʻzgartira olish qobiliyati.",
+        "ru": "Способность мозга менять свои связи под влиянием опыта — например, когда вы учитесь и тренируетесь.",
+        "en": "The brain’s ability to change its connections with experience, for example when you learn and practise."
+      },
+      "fact": "neuroplasticity",
+      "source": {
+        "name": "NIH National Library of Medicine — StatPearls: Neuroplasticity",
+        "url": "https://www.ncbi.nlm.nih.gov/books/NBK557811/"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "melatonin",
+      "term": {
+        "uz": "Melatonin",
+        "ru": "Мелатонин",
+        "en": "Melatonin"
+      },
+      "match": {
+        "uz": [
+          "melatonin"
+        ],
+        "ru": [
+          "мелатонин"
+        ],
+        "en": [
+          "melatonin"
+        ]
+      },
+      "def": {
+        "uz": "Qorongʻi tushganda organizm ishlab chiqaradigan gormon. U uxlab qolishga yordam beradi.",
+        "ru": "Гормон, который организм вырабатывает, когда темнеет. Помогает заснуть.",
+        "en": "A hormone the body makes when it gets dark. It helps you fall asleep."
+      },
+      "fact": "body-clock",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Understanding Sleep",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-understanding-sleep"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "body-clock",
+      "term": {
+        "uz": "Ichki soat",
+        "ru": "Внутренние часы",
+        "en": "Body clock"
+      },
+      "match": {
+        "uz": [
+          "ichki soat",
+          "biologik soat",
+          "tana soat"
+        ],
+        "ru": [
+          "внутренние часы",
+          "внутренним часам",
+          "внутренних час",
+          "внутренними час",
+          "биологические часы"
+        ],
+        "en": [
+          "body clock",
+          "circadian"
+        ]
+      },
+      "def": {
+        "uz": "Miyadagi kichik hujayralar guruhi: u uyqu va uygʻoqlikning taxminan 24 soatlik ritmini ushlab turadi. Koʻzga tushadigan yorugʻlik uni toʻgʻri vaqtga moslaydi.",
+        "ru": "Небольшая группа клеток в мозге, которая поддерживает почти 24-часовой ритм сна и бодрствования. Свет, попадающий в глаза, подводит эти часы.",
+        "en": "A small group of cells in the brain that keeps a roughly 24-hour rhythm of sleeping and waking. Light reaching the eyes keeps it on time."
+      },
+      "fact": "body-clock",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Understanding Sleep",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-understanding-sleep"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "rem-sleep",
+      "term": {
+        "uz": "REM uyqu",
+        "ru": "Быстрый сон (REM)",
+        "en": "REM sleep"
+      },
+      "match": {
+        "uz": [
+          "=rem"
+        ],
+        "ru": [
+          "=rem",
+          "быстрый сон",
+          "быстрого сна"
+        ],
+        "en": [
+          "=rem"
+        ]
+      },
+      "def": {
+        "uz": "Uyquning koʻzlar yopiq qovoq ostida tez harakatlanadigan va eng yorqin tushlar koʻriladigan bosqichi. U bir kechada bir necha marta takrorlanadi.",
+        "ru": "Стадия сна, когда глаза быстро двигаются под закрытыми веками и снятся самые яркие сны. За ночь она повторяется несколько раз.",
+        "en": "The stage of sleep when the eyes move quickly under closed lids and most vivid dreams happen. It comes back several times a night."
+      },
+      "fact": "sleep-cycles",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Understanding Sleep",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-understanding-sleep"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "hormone",
+      "term": {
+        "uz": "Gormon",
+        "ru": "Гормон",
+        "en": "Hormone"
+      },
+      "match": {
+        "uz": [
+          "gormon"
+        ],
+        "ru": [
+          "гормон"
+        ],
+        "en": [
+          "hormone"
+        ]
+      },
+      "def": {
+        "uz": "Tananing bir qismida ishlab chiqariladigan va qon orqali boshqa qismlarga nima qilish kerakligini yetkazadigan kimyoviy xabarchi.",
+        "ru": "Химический посыльный: вырабатывается в одной части тела и с кровью передаёт другим частям, что делать.",
+        "en": "A chemical messenger made in one part of the body and carried by the blood to tell other parts what to do."
+      },
+      "fact": "teen-melatonin",
+      "source": {
+        "name": "MedlinePlus (NIH) — Hormones",
+        "url": "https://medlineplus.gov/hormones.html"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "pupil",
+      "term": {
+        "uz": "Qorachiq",
+        "ru": "Зрачок",
+        "en": "Pupil"
+      },
+      "match": {
+        "uz": [
+          "qorachiq"
+        ],
+        "ru": [
+          "зрачо",
+          "зрачк"
+        ],
+        "en": [
+          "pupil"
+        ]
+      },
+      "def": {
+        "uz": "Koʻz oʻrtasidagi qora teshik. U yorugʻlikni ichkariga oʻtkazadi: qorongʻida kattalashadi, yorugʻda kichrayadi.",
+        "ru": "Чёрное отверстие в центре глаза. Пропускает свет внутрь: в темноте расширяется, на ярком свете сужается.",
+        "en": "The black opening in the middle of the eye. It lets light in, getting bigger in the dark and smaller in bright light."
+      },
+      "fact": "pupil-light",
+      "source": {
+        "name": "National Eye Institute (NIH) — How the Eyes Work",
+        "url": "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/how-eyes-work"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "iris",
+      "term": {
+        "uz": "Kamalak parda",
+        "ru": "Радужка",
+        "en": "Iris"
+      },
+      "match": {
+        "uz": [
+          "kamalak parda"
+        ],
+        "ru": [
+          "радужк"
+        ],
+        "en": [
+          "=iris"
+        ]
+      },
+      "def": {
+        "uz": "Koʻzning rangli halqasi. U qorachiqni kattalashtirib yoki kichraytirib, koʻzga qancha yorugʻlik kirishini boshqaradi.",
+        "ru": "Цветное кольцо глаза. Оно расширяет или сужает зрачок и так регулирует, сколько света попадает внутрь.",
+        "en": "The coloured ring of the eye. It makes the pupil bigger or smaller to control how much light gets in."
+      },
+      "fact": "pupil-light",
+      "source": {
+        "name": "National Eye Institute (NIH) — How the Eyes Work",
+        "url": "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/how-eyes-work"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "retina",
+      "term": {
+        "uz": "Toʻr parda",
+        "ru": "Сетчатка",
+        "en": "Retina"
+      },
+      "match": {
+        "uz": [
+          "toʻr parda",
+          "retina"
+        ],
+        "ru": [
+          "сетчатк"
+        ],
+        "en": [
+          "retina"
+        ]
+      },
+      "def": {
+        "uz": "Koʻzning orqa qismidagi yupqa qatlam: u yorugʻlikni miya uchun elektr signallariga aylantiradi.",
+        "ru": "Тонкий слой в задней части глаза, который превращает свет в электрические сигналы для мозга.",
+        "en": "The thin layer at the back of the eye that turns light into electrical signals for the brain."
+      },
+      "fact": "pupil-light",
+      "source": {
+        "name": "National Eye Institute (NIH) — How the Eyes Work",
+        "url": "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/how-eyes-work"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "working-memory",
+      "term": {
+        "uz": "Qisqa muddatli xotira",
+        "ru": "Кратковременная (рабочая) память",
+        "en": "Working memory"
+      },
+      "match": {
+        "uz": [
+          "qisqa muddatli xotira"
+        ],
+        "ru": [
+          "кратковременн",
+          "рабочая память",
+          "рабочей памяти"
+        ],
+        "en": [
+          "working memory",
+          "short-term memory"
+        ]
+      },
+      "def": {
+        "uz": "Bir nechta narsani qisqa vaqt yodda tutib, ular bilan ishlash — masalan, telefon raqamini terayotganda eslab turish.",
+        "ru": "Умение недолго держать в голове несколько вещей и работать с ними — например, номер телефона, пока вы его набираете.",
+        "en": "Holding a few things in mind for a short time while you use them, like a phone number while you type it."
+      },
+      "fact": "working-memory",
+      "source": {
+        "name": "NINDS (NIH) — Brain Basics: Know Your Brain",
+        "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-know-your-brain"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "retrieval-practice",
+      "term": {
+        "uz": "Eslab koʻrish mashqi",
+        "ru": "Практика вспоминания",
+        "en": "Retrieval practice"
+      },
+      "match": {
+        "uz": [
+          "retrieval practice",
+          "eslab koʻrish"
+        ],
+        "ru": [
+          "retrieval practice",
+          "попытки вспомнить",
+          "пытаться вспомнить"
+        ],
+        "en": [
+          "retrieval practice",
+          "testing yourself"
+        ]
+      },
+      "def": {
+        "uz": "Biror narsani faqat qayta oʻqish oʻrniga, uni xotiradan eslab koʻrish orqali oʻrganish — masalan, savollarga javob berib.",
+        "ru": "Учёба через попытку вспомнить материал, например с помощью теста, а не только через перечитывание.",
+        "en": "Learning by trying to recall something from memory, for example with a quiz, instead of only rereading it."
+      },
+      "fact": "retrieval-practice",
+      "source": {
+        "name": "Roediger & Karpicke (2006), Psychological Science — Test-enhanced learning",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16507066/"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "spaced-practice",
+      "term": {
+        "uz": "Taqsimlangan mashq",
+        "ru": "Распределённая практика",
+        "en": "Spaced practice"
+      },
+      "match": {
+        "uz": [
+          "distributed practice",
+          "taqsimlangan qisqa mashgʻulot"
+        ],
+        "ru": [
+          "распределённ",
+          "распределенн"
+        ],
+        "en": [
+          "spaced practice",
+          "distributed practice"
+        ]
+      },
+      "def": {
+        "uz": "Oʻqishni bir kechada yodlash oʻrniga, turli kunlardagi bir necha qisqa mashgʻulotga taqsimlash.",
+        "ru": "Распределение учёбы на несколько коротких занятий в разные дни вместо зубрёжки за один раз.",
+        "en": "Spreading study into several short sessions on different days instead of cramming it all at once."
+      },
+      "fact": "spacing",
+      "source": {
+        "name": "Dunlosky et al. (2013), Psychological Science in the Public Interest — Improving Students' Learning With Effective Learning Techniques",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/26173288/"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "stroop-effect",
+      "term": {
+        "uz": "Strup effekti",
+        "ru": "Эффект Струпа",
+        "en": "Stroop effect"
+      },
+      "match": {
+        "uz": [
+          "strup"
+        ],
+        "ru": [
+          "струп"
+        ],
+        "en": [
+          "stroop"
+        ]
+      },
+      "def": {
+        "uz": "Rang nomi boshqa rangda yozilganda (masalan, “QIZIL” soʻzi koʻk rangda), harflar rangini aytish koʻproq vaqt oladi. Shu kechikish Strup effekti deyiladi.",
+        "ru": "Когда название цвета напечатано другим цветом (слово «КРАСНЫЙ» синими буквами), назвать цвет букв получается медленнее. Эта задержка называется эффектом Струпа.",
+        "en": "When a colour word is printed in a different ink (RED written in blue), naming the ink colour takes longer. That delay is the Stroop effect."
+      },
+      "fact": null,
+      "source": {
+        "name": "Stroop (1935), Journal of Experimental Psychology — Studies of interference in serial verbal reactions",
+        "url": "https://doi.org/10.1037/h0054651"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "reaction-time",
+      "term": {
+        "uz": "Reaksiya vaqti",
+        "ru": "Время реакции",
+        "en": "Reaction time"
+      },
+      "match": {
+        "uz": [
+          "reaksiya vaqt"
+        ],
+        "ru": [
+          "время реакции",
+          "времени реакции"
+        ],
+        "en": [
+          "reaction time"
+        ]
+      },
+      "def": {
+        "uz": "Signal paydo boʻlishi bilan unga javob berish orasidagi vaqt. U millisekundlarda (soniyaning mingdan bir ulushida) oʻlchanadi.",
+        "ru": "Время между появлением сигнала и ответом на него. Измеряется в миллисекундах — тысячных долях секунды.",
+        "en": "The time between a signal appearing and your response to it. It is measured in milliseconds (thousandths of a second)."
+      },
+      "fact": null,
+      "source": null,
+      "reviewed": false
+    },
+    {
+      "id": "cognitive",
+      "term": {
+        "uz": "Kognitiv",
+        "ru": "Когнитивный",
+        "en": "Cognitive"
+      },
+      "match": {
+        "uz": [
+          "kognitiv"
+        ],
+        "ru": [
+          "когнитивн"
+        ],
+        "en": [
+          "cognitive"
+        ]
+      },
+      "def": {
+        "uz": "Fikrlashga oid: diqqat qilish, eslab qolish, oʻrganish, muammolarni hal qilish va tildan foydalanish.",
+        "ru": "Связанный с мышлением: вниманием, памятью, учёбой, решением задач и речью.",
+        "en": "To do with thinking: paying attention, remembering, learning, solving problems and using language."
+      },
+      "fact": "exercise-learning",
+      "source": null,
+      "reviewed": false
+    },
+    {
+      "id": "early-intervention",
+      "term": {
+        "uz": "Erta aralashuv",
+        "ru": "Ранняя помощь",
+        "en": "Early intervention"
+      },
+      "match": {
+        "uz": [
+          "erta aralashuv"
+        ],
+        "ru": [
+          "ранняя помощь",
+          "ранней помощи",
+          "раннюю помощь"
+        ],
+        "en": [
+          "early intervention"
+        ]
+      },
+      "def": {
+        "uz": "Rivojlanishida kechikish yoki nogironligi bor chaqaloqlar va yosh bolalar hamda ularning oilalari uchun imkon qadar erta boshlanadigan xizmatlar va yordam.",
+        "ru": "Услуги и поддержка для младенцев и маленьких детей с задержками развития или инвалидностью и для их семей, начатые как можно раньше.",
+        "en": "Services and support for babies and young children with developmental delays or disabilities, and for their families, started as early as possible."
+      },
+      "fact": null,
+      "source": {
+        "name": "CDC — Learn the Signs. Act Early: early intervention",
+        "url": "https://www.cdc.gov/ncbddd/actearly/parents/states.html"
+      },
+      "reviewed": false
+    }
+  ]
+}

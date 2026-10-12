@@ -258,6 +258,141 @@ It also contains the site's checks (`node tools/build.js --check`). Offline supp
 
 ---
 
+## 8. Accessibility for people with brain differences (2.1)
+
+**Question.** What helps people with cognitive, learning and neurological
+disabilities (ADHD, dyslexia, autism, epilepsy, intellectual disability,
+aphasia, brain injury, low vision) use a site like Medulla, and what is myth?
+
+**Found.**
+- **W3C COGA** ("Making Content Usable for People with Cognitive and Learning
+  Disabilities", W3C Working Group Note, 2021) groups its design patterns into
+  objectives such as clear purpose, clear and understandable content, helping
+  users focus, helping users avoid mistakes, and supporting personalisation. It
+  is guidance beyond WCAG, not a conformance standard.
+- **WCAG 2.2** (W3C Recommendation, October 2023) added criteria that matter for
+  cognition: 3.2.6 Consistent Help (help in the same place on every page),
+  3.3.8 Accessible Authentication (no memory or puzzle tests to log in) and
+  2.5.8 Target Size (Minimum). 2.3.1 keeps the "no more than three flashes per
+  second" rule for seizure safety.
+- **Letter spacing helps dyslexic readers:** Zorzi et al. (2012, PNAS 109:11455)
+  found extra-large letter spacing roughly doubled reading accuracy and raised
+  speed by more than 20% in 74 Italian and French dyslexic children, without
+  training.
+- **"Dyslexia fonts" do not:** Wery & Diliberto (2017, Annals of Dyslexia 67)
+  found no improvement in reading rate or accuracy with OpenDyslexic; Kuster et
+  al. (2018) found the same for the Dyslexie font, and children preferred
+  standard fonts.
+- **Text-to-speech helps comprehension a little:** the Wood et al. (2018,
+  Journal of Learning Disabilities 51:73) meta-analysis found an average effect
+  of d = 0.35 for students with reading disabilities.
+- **Atkinson Hyperlegible** was designed by the Braille Institute for readers
+  with low vision (clearly different 1/l/I, B/8 and so on); SIL Open Font
+  License; available on Google Fonts.
+- **Easy-to-read:** Inclusion Europe's "Information for all" (2010) asks for
+  plain words, an explanation for any hard word that can't be avoided, and one
+  word for one thing throughout.
+- **Dyslexia style guides** (British Dyslexia Association, as summarised by
+  several universities): sans-serif text, 1.5 line spacing, letter spacing about
+  35% of letter width, no italics for emphasis, left-aligned text.
+
+**Sources.**
+[W3C COGA](https://www.w3.org/TR/coga-usable/) ·
+[WCAG 2.2](https://www.w3.org/TR/WCAG22/) ·
+[Zorzi et al. 2012](https://doi.org/10.1073/pnas.1205566109) ·
+[Wery & Diliberto 2017](https://doi.org/10.1007/s11881-016-0127-1) ·
+[Wood et al. 2018](https://pmc.ncbi.nlm.nih.gov/articles/PMC5494021/) ·
+[Atkinson Hyperlegible](https://fonts.google.com/specimen/Atkinson+Hyperlegible) ·
+[Inclusion Europe: easy-to-read standards](https://www.inclusion-europe.eu/easy-to-read-standards-guidelines/)
+
+**Decision.**
+1. **Personalisation, not a separate "disability site".** One panel ("Accessibility
+   & comfort", Alt + A, in the same place on every page) with six ready-made
+   profiles that are only bundles of settings. No profile asks for or records a
+   diagnosis.
+
+   | Profile | For | Turns on |
+   |---|---|---|
+   | Focus | ADHD, easily distracted | hide decorations, stop animation, reading guide, sound off |
+   | Easier reading | dyslexia | larger text, wider spacing, plain font (Verdana), read-aloud buttons |
+   | Calm senses | autism, sensory sensitivity, migraine | no animation, no decorations, sound off |
+   | Seizure-safe | epilepsy, photosensitivity | no animation, glows or flashes at all, sound off |
+   | Simple & slow | learning disability, aphasia, after a brain injury or stroke | bigger text, spacing, hard words explained, read aloud, more time in games |
+   | See better | low vision | 150% text, high contrast, underlined links, Atkinson Hyperlegible |
+2. **Spacing over special fonts.** The "dyslexia-friendly" option is a plain
+   system font with wider spacing (supported by Zorzi), not OpenDyslexic (not
+   supported by Wery & Diliberto). The Accessibility page says so.
+3. **Hard words explained in place** (COGA, Inclusion Europe). `data/glossary.json`
+   has 29 terms with plain definitions in three languages, each with a source and
+   the fact it comes from. The first use on each page gets a dotted underline and
+   opens a small explanation that can be read aloud. Matching uses word starts, so
+   Uzbek and Russian endings work ("neyronlar", "нейронов"); "=word" means whole
+   word only ("REM" is not "remember"). Quiz answers are never underlined, which
+   would give the answer away.
+4. **Read aloud** with the device's own voices (Web Speech API): the whole page
+   with the current block highlighted, one paragraph, or a selection. Uzbek
+   voices are missing on many devices; the site says so instead of reading Uzbek
+   with a Russian or Turkish voice.
+5. **More time** multiplies display and pause times in digit span and sequence
+   memory by 1.6, and the result card says the score isn't comparable with the
+   standard pace (honest results, §6).
+6. **Dark theme and high contrast** for light sensitivity and low vision. Every
+   page passes axe-core's WCAG 2.2 A/AA rules in light and dark (October 2026).
+7. **Not done, on purpose:** no OpenDyslexic download, no "brain age" or
+   diagnosis-like wording, no automatic profile switching from device signals,
+   no tracking of which profile anyone uses.
+
+---
+
+## 9. The interactive Telegram bot (2.1)
+
+**Question.** How can young people use Medulla inside Telegram, where much of
+online life in Uzbekistan happens, without us storing anything about them?
+
+**Found.**
+- Bot API features that need no storage: inline keyboards with callback data
+  (up to 64 bytes), `sendPoll` with `type: "quiz"` (question up to 300
+  characters, options up to 100, explanation up to 200), inline mode
+  (`answerInlineQuery`), `setMyCommands` per language, a `web_app` menu button
+  for the Mini App, and webhooks protected with a `secret_token` header.
+- A webhook needs an always-on HTTPS endpoint; Cloudflare Workers' free plan is
+  enough for a small bot. Long polling works from any computer.
+
+**Sources.**
+[Bot API](https://core.telegram.org/bots/api) ·
+[sendPoll](https://core.telegram.org/bots/api#sendpoll) ·
+[Inline mode](https://core.telegram.org/bots/inline) ·
+[setWebhook](https://core.telegram.org/bots/api#setwebhook)
+
+**Decision.**
+1. **Stateless by design.** The language travels inside each button's callback
+   data; nothing is written anywhere. Quizzes are anonymous polls.
+2. **One core, two runners:** `telegram/assistant.mjs` (no packages) is used by
+   `poll.mjs` (a laptop or small server) and `worker.mjs` (Cloudflare Worker).
+   The Worker reads facts, glossary and texts from the published site, so the
+   bot and the site can't drift apart.
+3. **Same content rules as the site:** a source on every fact, "Pending expert
+   review" until reviewed, no medical advice, and the breathing exercise is the
+   NHS 5-in / 5-out one already used in the Lab.
+
+---
+
+## 10. What 2.1 removed, and why
+
+- **Dashed "TBD" boxes in public view** (four empty impact numbers, eight "TBD"
+  team chips, four empty partner slots). They made a real project look
+  unfinished. Visitors now see only real values; the team can still see every
+  missing value with `?placeholders=1` or `showPlaceholders: true`.
+- **The impact bar of mostly dashes** became a trust strip of numbers the site
+  can count itself (checked facts, Lab activities, languages) plus the counted
+  Instagram followers.
+- **"Stay in the loop"** became the Telegram card (bot, channel, Instagram),
+  because it now does more than link out.
+- **The grey wireframe brain as decoration** (it read as a grey smudge at small
+  sizes). The logo keeps the same artwork, recoloured to the palette.
+
+---
+
 ## Corrections to the project brief
 
 - **Brain Awareness Week:** the Dana Foundation says no registration or permission is needed, and that it does not partner with individual organizers. "Register Medulla as a partner" became "take part and use Dana's free materials". 2027 dates: **15–21 March**.

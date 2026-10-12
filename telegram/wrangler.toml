@@ -1,0 +1,14 @@
+# Cloudflare Worker for the interactive Medulla bot (see telegram/BOT.md).
+# Deploy from the telegram/ folder:  npx wrangler deploy
+name = "medulla-bot"
+main = "worker.mjs"
+compatibility_date = "2026-09-01"
+
+[vars]
+# The public address of the website (no trailing slash). The bot reads
+# data/facts.json, data/glossary.json and data/bot-strings.json from it.
+SITE_URL = "https://isapho.github.io/Medulla-site"
+
+# Secrets (never put them here):
+#   npx wrangler secret put BOT_TOKEN
+#   npx wrangler secret put WEBHOOK_SECRET

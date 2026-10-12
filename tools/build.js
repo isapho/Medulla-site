@@ -13,6 +13,7 @@
  *   4. writes data/facts.js (copy used when the site is opened from disk),
  *   5. writes sitemap.xml and robots.txt,
  *   6. updates the offline file list and cache version in sw.js,
+ *   6b. writes data/bot-strings.json (the texts the Telegram bot needs),
  *   7. checks: same keys in every language, every key used exists, facts are
  *      complete in every language, internal links point to real files.
  */
@@ -60,8 +61,9 @@ const loc = (v, lang) => (v && typeof v === "object" ? v[lang || DEFAULT] || v.e
 const esc = Tpl.esc;
 
 const TOPICS = ["sleep", "learning", "brain", "movement", "senses", "myths"];
-const PAGES = ["index", "learn", "lab", "explore", "parents", "events", "activities", "about", "partners", "join", "privacy", "offline", "404"];
-const CHAR_DIMS = { dendi: [197, 281], memo: [278, 233], octa: [201, 235], syno: [171, 250], lumi: [162, 164] };
+const PAGES = ["index", "learn", "lab", "explore", "parents", "events", "activities", "about", "partners", "join", "glossary", "accessibility", "privacy", "offline", "404"];
+const glossary = JSON.parse(read("data/glossary.json")).terms || [];
+const CHAR_DIMS = { dendi: [194, 280], memo: [276, 229], octa: [198, 233], syno: [168, 248], lumi: [160, 161] };
 
 /* --------------------------------------------------------------- checks */
 
@@ -124,6 +126,30 @@ function checkFacts() {
   });
 }
 
+function checkGlossary() {
+  const ids = new Set(), factIds = new Set(facts.map((f) => f.id));
+  glossary.forEach((g, i) => {
+    const where = `[glossary] #${i + 1} ${g.id || "(no id)"}`;
+    if (!g.id || !/^[a-z0-9-]+$/.test(g.id)) warn(`${where}: id must be lowercase letters, digits and dashes`);
+    if (ids.has(g.id)) warn(`${where}: duplicate id`);
+    ids.add(g.id);
+    LANGS.forEach((l) => {
+      if (!g.term || !g.term[l]) warn(`${where}: missing term.${l}`);
+      if (!g.def || !g.def[l]) warn(`${where}: missing def.${l}`);
+      if (!g.match || !Array.isArray(g.match[l]) || !g.match[l].length) warn(`${where}: needs at least one match.${l} word start`);
+      (g.match && g.match[l] || []).forEach((m) => { if (m.replace(/^=/, "").length < 3) warn(`${where}: match "${m}" is too short (min 3 letters)`); });
+    });
+    if (g.fact && !factIds.has(g.fact)) warn(`${where}: fact "${g.fact}" does not exist`);
+    if (g.source && !/^https:\/\//.test(g.source.url || "")) warn(`${where}: source.url must start with https://`);
+    if (g.reviewed !== false && g.reviewed !== true) warn(`${where}: reviewed must be true or false`);
+  });
+  // The Brain Lab count shown on the home page must match js/games.js.
+  const games = (read("js/games.js").match(/var LIST = \[([\s\S]*?)\];/) || [])[1] || "";
+  const n = (games.match(/\{ id: "/g) || []).length;
+  const shown = Number((read("js/main.js").match(/var LAB_ACTIVITIES = (\d+);/) || [])[1]);
+  if (n && shown !== n) warn(`[main.js] LAB_ACTIVITIES is ${shown} but js/games.js lists ${n} activities`);
+}
+
 function checkLinks(files) {
   files.forEach((f) => {
     const s = read(f);
@@ -143,7 +169,7 @@ function checkLinks(files) {
 
 function metaBlock(o) {
   const url = DOMAIN ? DOMAIN + "/" + o.path : null;
-  const img = DOMAIN ? DOMAIN + "/assets/brand/og-image.png" : o.base + "assets/brand/og-image.png";
+  const img = DOMAIN ? DOMAIN + "/assets/brand/og-image.jpg" : o.base + "assets/brand/og-image.jpg";
   return [
     "<!-- meta:start (filled by node tools/build.js from js/lang/uz.js) -->",
     `  <title>${esc(o.title)}</title>`,
@@ -207,13 +233,14 @@ function shellHead(meta, base, extraHead) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&amp;family=Manrope:wght@700;800&amp;display=swap">
   <link rel="stylesheet" href="${base}css/styles.css">
-  <link rel="stylesheet" href="${base}css/app.css">${extraHead || ""}
+  <link rel="stylesheet" href="${base}css/app.css">
+  <link rel="stylesheet" href="${base}css/polish.css">${extraHead || ""}
   <script src="${base}js/prefs.js"></script>
 </head>`;
 }
 
 function scripts(base, extra) {
-  return ["config", "i18n", "store", "backend", "sound", "motion", "main"].concat(extra)
+  return ["config", "i18n", "store", "backend", "sound", "motion", "main", "access"].concat(extra)
     .map((s) => `  <script src="${base}js/${s}.js"></script>`).join("\n");
 }
 
@@ -316,6 +343,7 @@ ${scripts(base, ["learn"])}
 
 checkKeys();
 checkFacts();
+checkGlossary();
 
 if (!CHECK_ONLY) {
   // 1–2. top-level pages
@@ -343,6 +371,15 @@ if (!CHECK_ONLY) {
   // 4. file:// mirror
   write("data/facts.js", "// GENERATED from data/facts.json by tools/build.js. Do not edit by hand.\n// Used only when the site is opened directly from disk (file://).\nwindow.MEDULLA_FACTS = " + JSON.stringify(facts, null, 2) + ";\n");
 
+  // 4b. texts for the Telegram bot (telegram/worker.js reads this from the site)
+  const botStrings = {};
+  LANGS.forEach((l) => {
+    botStrings[l] = {};
+    Object.keys(STR[l]).filter((k) => k.startsWith("bot.") || k === "common.source" || k === "common.pendingReview").sort()
+      .forEach((k) => { botStrings[l][k] = STR[l][k]; });
+  });
+  write("data/bot-strings.json", JSON.stringify(botStrings, null, 2) + "\n");
+
   // 5. sitemap + robots
   const urls = PAGES.filter((p) => ["404", "offline", "explore"].indexOf(p) === -1).map((p) => (p === "index" ? "" : p + ".html"))
     .concat(facts.map((f) => "facts/" + f.id + ".html")).concat(TOPICS.map((k) => "topics/" + k + ".html"));
@@ -357,12 +394,14 @@ if (!CHECK_ONLY) {
   // 6. service-worker precache list + version
   const precache = [
     "./", "index.html", "learn.html", "lab.html", "explore.html", "offline.html", "manifest.webmanifest",
-    "css/styles.css", "css/app.css",
-    "js/prefs.js", "js/config.js", "js/i18n.js", "js/store.js", "js/backend.js", "js/sound.js", "js/motion.js", "js/main.js",
+    "css/styles.css", "css/app.css", "css/polish.css",
+    "js/prefs.js", "js/config.js", "js/i18n.js", "js/store.js", "js/backend.js", "js/sound.js", "js/motion.js", "js/main.js", "js/access.js",
     "js/home.js", "js/learn.js", "js/lab.js", "js/games.js", "js/explore.js", "js/fact-template.js", "js/fact.js",
     "js/lang/uz.js", "js/lang/ru.js", "js/lang/en.js",
-    "data/facts.json", "data/kindness.json", "data/resources.json",
-    "assets/brand/logo-96.webp", "assets/brand/logo-192.webp", "assets/brand/favicon-64.png"
+    "data/facts.json", "data/kindness.json", "data/resources.json", "data/glossary.json",
+    "glossary.html", "accessibility.html",
+    "assets/brand/logo-96.webp", "assets/brand/logo-192.webp", "assets/brand/logo-white-96.webp", "assets/brand/favicon-64.png",
+    "assets/img/brain-glass.webp"
   ]
     .concat(Object.keys(CHAR_DIMS).map((c) => "assets/characters/" + c + ".webp"))
     // reactions used offline: quiz feedback, game results and the offline page

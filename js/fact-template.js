@@ -8,11 +8,11 @@
   "use strict";
 
   var CHARS = {
-    dendi: { name: "Dendi", w: 197, h: 281, tint: "#EFEDFF" },
-    memo: { name: "Memo", w: 278, h: 233, tint: "#E8E5FF" },
-    octa: { name: "Octa", w: 201, h: 235, tint: "#F3F1FF" },
-    syno: { name: "Syno", w: 171, h: 250, tint: "#ECE9FF" },
-    lumi: { name: "Lumi", w: 162, h: 164, tint: "#FFF3E6" }
+    dendi: { name: "Dendi", w: 194, h: 280, tint: "#EFEDFF" },
+    memo: { name: "Memo", w: 276, h: 229, tint: "#E8E5FF" },
+    octa: { name: "Octa", w: 198, h: 233, tint: "#F3F1FF" },
+    syno: { name: "Syno", w: 168, h: 248, tint: "#ECE9FF" },
+    lumi: { name: "Lumi", w: 160, h: 161, tint: "#FFF3E6" }
   };
 
   function esc(s) {

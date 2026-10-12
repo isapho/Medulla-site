@@ -11,7 +11,7 @@
   <meta property="og:site_name" content="Medulla">
   <meta property="og:title" content="Bizga qoʻshiling — Medulla">
   <meta property="og:description" content="Medullaga qanday yordam berish mumkin: kuzatish, ulashish, koʻngillilik, maktabda toʻgarak, hamkorlik yoki mashgʻulot soʻrash.">
-  <meta property="og:image" content="assets/brand/og-image.png">
+  <meta property="og:image" content="assets/brand/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Medulla — Mind • Learn • Grow">
@@ -29,6 +29,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&amp;family=Manrope:wght@700;800&amp;display=swap">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/polish.css">
   <script src="js/prefs.js"></script>
 </head>
 <body data-page="join">
@@ -46,7 +47,7 @@
         </div>
         <div class="page-hero-art">
           <p class="bubble" data-i18n="join.synoSays">Har bir yordam muhim!</p>
-          <img src="assets/characters/syno.webp" class="idle idle-syno" data-char="syno" alt="" width="171" height="250">
+          <img src="assets/characters/syno.webp" class="idle idle-syno" data-char="syno" alt="" width="168" height="248">
         </div>
       </div>
     </section>
@@ -55,42 +56,50 @@
       <div class="container">
         <ul class="ways">
           <li class="card way tilt" data-tilt id="follow" data-reveal>
-            <div class="pillar-art" style="--tint:#FFF3E6"><img src="assets/characters/lumi.webp" data-char="lumi" alt="" width="162" height="164" loading="lazy"></div>
+            <div class="pillar-art" style="--tint:#FFF3E6"><img src="assets/characters/lumi.webp" data-char="lumi" alt="" width="160" height="161" loading="lazy"></div>
             <h2 data-i18n="join.follow.title">Kuzatib boring</h2>
             <p data-i18n="join.follow.text">Har kungi faktlar Instagram va Telegramda.</p>
             <div class="btn-row light-social" data-render="follow"></div>
           </li>
           <li class="card way tilt" data-tilt id="share" data-reveal>
-            <div class="pillar-art" style="--tint:#EFEDFF"><img src="assets/characters/dendi.webp" data-char="dendi" alt="" width="197" height="281" loading="lazy"></div>
+            <div class="pillar-art" style="--tint:#EFEDFF"><img src="assets/characters/dendi.webp" data-char="dendi" alt="" width="194" height="280" loading="lazy"></div>
             <h2 data-i18n="join.share.title">Ulashing</h2>
             <p data-i18n="join.share.text">Biror faktni doʻstingiz yoki yaqiningizga yuboring.</p>
             <div data-render="share"></div>
           </li>
           <li class="card way tilt" data-tilt id="volunteer" data-reveal>
-            <div class="pillar-art" style="--tint:#ECE9FF"><img src="assets/characters/syno.webp" data-char="syno" alt="" width="171" height="250" loading="lazy"></div>
+            <div class="pillar-art" style="--tint:#ECE9FF"><img src="assets/characters/syno.webp" data-char="syno" alt="" width="168" height="248" loading="lazy"></div>
             <h2 data-i18n="join.volunteer.title">Koʻngilli boʻling</h2>
             <p data-i18n="join.volunteer.text">Kontent, tarjima, dizayn yoki tashriflarda yordam bering.</p>
             <div class="btn-row" data-render="mailto" data-subject="join.subject.volunteer"></div>
           </li>
           <li class="card way tilt" data-tilt id="club" data-reveal>
-            <div class="pillar-art" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="201" height="235" loading="lazy"></div>
+            <div class="pillar-art" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="198" height="233" loading="lazy"></div>
             <h2 data-i18n="join.club.title">Maktabingizda toʻgarak oching</h2>
             <p data-i18n="join.club.text">Sinfdoshlaringiz bilan miya haqidagi faktlar va laboratoriya tajribalarini oʻrganing.</p>
             <div class="btn-row" data-render="mailto" data-subject="join.subject.club"></div>
           </li>
           <li class="card way tilt" data-tilt id="partner" data-reveal>
-            <div class="pillar-art" style="--tint:#E8E5FF"><img src="assets/characters/memo.webp" data-char="memo" alt="" width="278" height="233" loading="lazy"></div>
+            <div class="pillar-art" style="--tint:#E8E5FF"><img src="assets/characters/memo.webp" data-char="memo" alt="" width="276" height="229" loading="lazy"></div>
             <h2 data-i18n="join.partner.title">Hamkor boʻling</h2>
             <p data-i18n="join.partner.text">Tashkilotlar: keling, birgalikda foydali ish qilaylik.</p>
             <div class="btn-row" data-render="mailto" data-subject="join.subject.partner"></div>
           </li>
           <li class="card way tilt" data-tilt id="workshop" data-reveal>
-            <div class="pillar-art" style="--tint:#FFF3E6"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="201" height="235" loading="lazy"></div>
+            <div class="pillar-art" style="--tint:#FFF3E6"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="198" height="233" loading="lazy"></div>
             <h2 data-i18n="visit.title">Tashrif yoki mashgʻulot soʻrash</h2>
             <p data-i18n="visit.short">Maktablar, toʻgaraklar, tashkilotlar va oilalar uchun.</p>
             <div class="btn-row" data-render="mailto" data-subject="visit.subject" data-body="visit.body" data-label="visit.button"></div>
           </li>
         </ul>
+      </div>
+    </section>
+
+    <!-- The Telegram bot -->
+    <section class="section" style="padding-top:0" aria-labelledby="bot-title">
+      <div class="container">
+        <h2 id="bot-title" class="sr-only" data-i18n="botcard.eyebrow">Medulla Telegramda</h2>
+        <div data-render="botCard"></div>
       </div>
     </section>
 
@@ -115,7 +124,7 @@
             <p data-i18n="join.noForms">Saytda hech qanday shakl yoʻq va bu yerda maʼlumotlaringiz yigʻilmaydi. Xabar yozish uchun email yoki Telegramdan foydalaning.</p>
             <div class="btn-row" data-render="contact"></div>
           </div>
-          <div class="cta-art"><img src="assets/characters/dendi.webp" class="idle idle-dendi" data-char="dendi" alt="" width="197" height="281" loading="lazy"></div>
+          <div class="cta-art"><img src="assets/characters/dendi.webp" class="idle idle-dendi" data-char="dendi" alt="" width="194" height="280" loading="lazy"></div>
         </div>
       </div>
     </section>
@@ -130,5 +139,6 @@
   <script src="js/sound.js"></script>
   <script src="js/motion.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/access.js"></script>
 </body>
 </html>

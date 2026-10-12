@@ -6,6 +6,25 @@ goes. Tick the boxes as you go.
 
 ---
 
+## 0. Version 2.1: check it, then publish (new)
+
+Version 2.1 (accessibility & comfort, dark theme, hard words, the interactive
+Telegram bot, new character art and imagery) is in this folder but **not yet
+committed or pushed**. Pushing to `main` publishes it on GitHub Pages.
+
+- [ ] Open the site locally (`npx serve .`), try the accessibility button
+      (or Alt + A), a few profiles, the dark theme and a dotted hard word.
+- [ ] If you like it, commit and push:
+      ```bash
+      git add -A
+      git commit -m "Medulla 2.1: accessibility & comfort, hard words, Telegram assistant, new look"
+      git push
+      ```
+- [ ] Canva: a working copy called **"Medulla website images (working copy)"**
+      was created in your Canva account to export the generated images at full
+      size. Your original "Untitled design" (the character cut-out) was not
+      changed. You can delete the working copy.
+
 ## 1. Version control: DONE
 
 Git is installed, the work is committed, and the repository is
@@ -98,6 +117,18 @@ Only with each person's permission. Names and photos of adults only.
 
 ## 9. Telegram (optional)
 
+**Interactive bot (new in 2.1)**, full guide in `telegram/BOT.md`:
+
+- [ ] @BotFather → `/newbot` (or use the channel bot), then `/setinline` to allow sharing facts in any chat.
+- [ ] Put the bot's username (without @) in `js/config.js` → `telegramBot`, build, push.
+      Until then the site shows "Bot coming soon".
+- [ ] Free hosting: a Cloudflare account, then `npx wrangler deploy` in `telegram/`,
+      the two secrets (`BOT_TOKEN`, `WEBHOOK_SECRET`) and the one `setWebhook` link (BOT.md §3).
+- [ ] Run `node telegram/poll.mjs --setup` once with the token: command menu and
+      descriptions in uz/ru/en.
+
+**Daily channel post:**
+
 - [ ] Create the bot with @BotFather and make it an admin of the channel (Post messages only).
 - [ ] GitHub → Settings → Secrets and variables → Actions: add the secret
       `BOT_TOKEN`, plus the variables `CHANNEL_ID` and `SITE_URL`.
@@ -121,10 +152,31 @@ Only with each person's permission. Names and photos of adults only.
       look), and Syno in `aha`, `inhale`, `exhale`, `asleep` (different body, missing the
       orange spark). The other scenes in `assets/source/character-poses-prompt.md`
       (ready, oops, reading, kind, comfort, sleepy, goodnight, offline, safe) are optional.
+- [x] **Characters:** replaced with your clean Canva cut-out (October 2026),
+      edges cleaned, twice the old resolution. For even sharper art, export the
+      original line-up at a larger size from its source file.
+- [ ] Decide whether you are happy with the four Canva-AI scenes (glass brain,
+      neurons, night sky, waves; listed in CREDITS.md). Replace any you don't like
+      with the same file names in `assets/img/`.
 - [ ] **Clean line art** for the colouring pages. It replaces the automatic
       tracing in `assets/printables/*-lines.png`.
 - [ ] A designed 1200×630 share image if you want one instead of
-      `assets/brand/og-image.png`.
+      `assets/brand/og-image.jpg`.
+
+## 10b. Accessibility (new in 2.1)
+
+- [ ] **Test with real people.** Ask 3–5 people who live with ADHD, dyslexia, autism,
+      epilepsy, low vision or after a brain injury (adults, or children only with
+      their parents' agreement) to try the matching profile for 10 minutes. Note
+      what was hard. Don't record names or health details.
+- [ ] Try the site with a screen reader (TalkBack on Android, VoiceOver on iPhone,
+      NVDA on Windows) and with only a keyboard. axe-core found no problems, but
+      tools catch only part of what matters.
+- [ ] **Hard words:** have a native speaker check the Uzbek and Russian wording in
+      `data/glossary.json`, and a specialist check the definitions (same as the
+      facts). Set `"reviewed": true` per word when approved.
+- [ ] Read aloud needs an Uzbek voice on the device. If you know a good free one
+      for Android/Windows, add a tip to the Accessibility page.
 
 ## 11. Ongoing
 

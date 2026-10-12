@@ -1,6 +1,8 @@
 # Telegram: daily-fact channel and Mini App
 
 Two separate things. You can do the first without the second.
+The **interactive bot** (facts, quizzes, hard words, breathing, inline sharing)
+is a third, separate part: see [`BOT.md`](BOT.md). It can use the same bot token.
 
 ## 1. Daily-fact channel bot (ready)
 

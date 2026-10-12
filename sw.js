@@ -3,10 +3,11 @@
  *  - Precaches the app shell, the Lab and the facts (list below is written by
  *    node tools/build.js, which also bumps VERSION so old caches are cleared).
  *  - Pages: network first, then the cached copy, then offline.html.
- *  - Other same-origin files: served from cache, refreshed in the background.
+ *  - JS, CSS and JSON: network first (so code always matches the page), cache when offline.
+ *  - Other same-origin files (images): served from cache, refreshed in the background.
  *  - Google Fonts: cached after first use. Everything else: network only.
  */
-const VERSION = "medulla-14a34fb727";
+const VERSION = "medulla-29682c118d";
 const PRECACHE = [
   "./",
   "index.html",
@@ -17,6 +18,7 @@ const PRECACHE = [
   "manifest.webmanifest",
   "css/styles.css",
   "css/app.css",
+  "css/polish.css",
   "js/prefs.js",
   "js/config.js",
   "js/i18n.js",
@@ -25,6 +27,7 @@ const PRECACHE = [
   "js/sound.js",
   "js/motion.js",
   "js/main.js",
+  "js/access.js",
   "js/home.js",
   "js/learn.js",
   "js/lab.js",
@@ -38,9 +41,14 @@ const PRECACHE = [
   "data/facts.json",
   "data/kindness.json",
   "data/resources.json",
+  "data/glossary.json",
+  "glossary.html",
+  "accessibility.html",
   "assets/brand/logo-96.webp",
   "assets/brand/logo-192.webp",
+  "assets/brand/logo-white-96.webp",
   "assets/brand/favicon-64.png",
+  "assets/img/brain-glass.webp",
   "assets/characters/dendi.webp",
   "assets/characters/memo.webp",
   "assets/characters/octa.webp",
@@ -112,6 +120,13 @@ self.addEventListener("fetch", (event) => {
             .then((hit) => hit || offlinePage())
         )
       );
+      return;
+    }
+    // Code and data (JS, CSS, JSON) must match the page that loads them, so
+    // they come from the network first; the cache is only the offline copy.
+    // Images and other files: cache first, refreshed in the background.
+    if (/\.(js|css|json|webmanifest)$/.test(url.pathname)) {
+      event.respondWith(fromNetworkAndCache(req, VERSION).catch(() => caches.match(req, { ignoreSearch: true }).then((hit) => hit || Response.error())));
       return;
     }
     event.respondWith(

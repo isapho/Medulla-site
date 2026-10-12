@@ -22,6 +22,13 @@ window.MEDULLA_CONFIG = {
   instagramHandle: "medulla.mind",
   telegramHandle: "medullamind",    // the public channel → https://t.me/medullamind
   telegramContact: "medulla_mind",  // the account people write to → https://t.me/medulla_mind
+  // Username of the Medulla Telegram bot, without "@" (created with @BotFather,
+  // see telegram/BOT.md). null = the site shows "coming soon" instead of a button.
+  telegramBot: "medulla_mind_bot",
+
+  // true = show the dashed "TBD" stand-ins for every missing value (team
+  // previews). false = visitors only see what is real; empty parts are hidden.
+  showPlaceholders: false,
 
   // Optional backend for sync, anonymous counters and club totals.
   // The site works fully WITHOUT it (guest mode, progress on the device).

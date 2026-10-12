@@ -11,7 +11,7 @@
   <meta property="og:site_name" content="Medulla">
   <meta property="og:title" content="Medulla — Mind • Learn • Grow">
   <meta property="og:description" content="Medulla — miya salomatligi, kognitiv rivojlanish va miya kasalliklari bor bolalarni qoʻllab-quvvatlashga bagʻishlangan Oʻzbekistondagi talabalar loyihasi. Faktlar, tajribalar va kunlik topshiriq oʻzbek, rus va ingliz tillarida.">
-  <meta property="og:image" content="assets/brand/og-image.png">
+  <meta property="og:image" content="assets/brand/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Medulla — Mind • Learn • Grow">
@@ -29,7 +29,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&amp;family=Manrope:wght@700;800&amp;display=swap">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/polish.css">
   <link rel="preload" as="image" href="assets/characters/dendi.webp" type="image/webp">
+  <link rel="preload" as="image" href="assets/img/brain-glass.webp" type="image/webp">
   <script src="js/prefs.js"></script>
 </head>
 <body data-page="home">
@@ -57,17 +59,17 @@
           <div class="hero-layer" data-depth="0.015" aria-hidden="true">
             <div class="hero-dots"></div>
             <div class="hero-circle"></div>
-            <img class="hero-net" src="assets/brand/logo-192.webp" width="192" height="192" alt="">
+            <img class="hero-brain" src="assets/img/brain-glass.webp" width="900" height="741" alt="" fetchpriority="high" decoding="async">
           </div>
           <div class="hero-layer" data-depth="0.06" aria-hidden="true">
             <svg class="hero-path" viewBox="0 0 160 90" fill="none"><path d="M2 86C30 60 52 74 76 52S118 8 156 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 7"/></svg>
-            <img class="hero-lumi idle idle-lumi" src="assets/characters/lumi.webp" width="162" height="164" alt="">
+            <img class="hero-lumi idle idle-lumi" src="assets/characters/lumi.webp" width="160" height="161" alt="">
           </div>
           <div class="hero-layer" data-depth="0.035">
-            <img class="hero-dendi idle idle-dendi" src="assets/characters/dendi.webp" width="197" height="281" data-i18n-attr="alt:char.dendi.alt" fetchpriority="high" alt="Dendi — Medullaning neyron qahramoni">
+            <img class="hero-dendi idle idle-dendi" src="assets/characters/dendi.webp" width="194" height="280" data-i18n-attr="alt:char.dendi.alt" fetchpriority="high" alt="Dendi — Medullaning neyron qahramoni">
           </div>
           <a class="float-card fc-fact" href="learn.html" data-render="heroFact">
-            <span class="avatar" style="--tint:#E8E5FF"><img src="assets/characters/memo.webp" width="278" height="233" alt=""></span>
+            <span class="avatar" style="--tint:#E8E5FF"><img src="assets/characters/memo.webp" width="276" height="229" alt=""></span>
             <span><small data-i18n="home.card.fact">Kun fakti</small><strong></strong></span>
           </a>
           <a class="float-card fc-lab" href="lab.html#stroop">
@@ -86,7 +88,7 @@
       <div class="container" data-reveal>
         <h2 id="impact-title" class="sr-only" data-i18n="impact.title">Hozirgacha qilganlarimiz</h2>
         <ul class="stats five" data-render="impact"></ul>
-        <p class="note"><span data-icon="info"></span><span data-i18n="impact.note">Faqat haqiqiy raqamlar. Chiziqcha — hali hisoblanmagan degani.</span></p>
+        <p class="note"><span data-icon="info"></span><span data-i18n="impact.note2">Faqat haqiqiy raqamlar: sanalgan, taxmin qilinmagan.</span></p>
       </div>
     </section>
 
@@ -107,11 +109,11 @@
 
     <!-- Story: one chapter per pillar, each led by its character -->
     <nav class="story-nav" data-story-nav data-i18n-attr="aria-label:story.nav" aria-label="Boblar">
-      <a href="#ch-memo" style="--tint:#E8E5FF"><img src="assets/characters/memo.webp" data-char="memo" alt="" width="278" height="233"><span class="sr-only" data-i18n="story.memo.eyebrow">Memoning faktlari</span></a>
-      <a href="#ch-octa" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="201" height="235"><span class="sr-only" data-i18n="story.octa.eyebrow">Octaning laboratoriyasi</span></a>
-      <a href="#ch-syno" style="--tint:#ECE9FF"><img src="assets/characters/syno.webp" data-char="syno" alt="" width="171" height="250"><span class="sr-only" data-i18n="story.syno.eyebrow">Synoning burchagi</span></a>
-      <a href="#ch-lumi" style="--tint:#FFF3E6"><img src="assets/characters/lumi.webp" data-char="lumi" alt="" width="162" height="164"><span class="sr-only" data-i18n="story.lumi.eyebrow">Lumining kechasi</span></a>
-      <a href="#ch-dendi" style="--tint:#EFEDFF"><img src="assets/characters/dendi.webp" data-char="dendi" alt="" width="197" height="281"><span class="sr-only" data-i18n="story.dendi.eyebrow">Dendining yoʻli</span></a>
+      <a href="#ch-memo" style="--tint:#E8E5FF"><img src="assets/characters/memo.webp" data-char="memo" alt="" width="276" height="229"><span class="sr-only" data-i18n="story.memo.eyebrow">Memoning faktlari</span></a>
+      <a href="#ch-octa" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="198" height="233"><span class="sr-only" data-i18n="story.octa.eyebrow">Octaning laboratoriyasi</span></a>
+      <a href="#ch-syno" style="--tint:#ECE9FF"><img src="assets/characters/syno.webp" data-char="syno" alt="" width="168" height="248"><span class="sr-only" data-i18n="story.syno.eyebrow">Synoning burchagi</span></a>
+      <a href="#ch-lumi" style="--tint:#FFF3E6"><img src="assets/characters/lumi.webp" data-char="lumi" alt="" width="160" height="161"><span class="sr-only" data-i18n="story.lumi.eyebrow">Lumining kechasi</span></a>
+      <a href="#ch-dendi" style="--tint:#EFEDFF"><img src="assets/characters/dendi.webp" data-char="dendi" alt="" width="194" height="280"><span class="sr-only" data-i18n="story.dendi.eyebrow">Dendining yoʻli</span></a>
     </nav>
 
     <div class="story" data-story>
@@ -122,7 +124,7 @@
         <div class="container chapter-grid">
           <div class="chapter-host" data-reveal="left">
             <span class="chapter-num" data-i18n="story.memo.num">01 · Taʼlimiy</span>
-            <div class="host-circle" style="--tint:#E8E5FF"><img src="assets/characters/memo.webp" class="idle idle-memo" data-char="memo" alt="" width="278" height="233" loading="lazy"></div>
+            <div class="host-circle" style="--tint:#E8E5FF"><img src="assets/characters/memo.webp" class="idle idle-memo" data-char="memo" alt="" width="276" height="229" loading="lazy"></div>
             <p class="bubble" style="position:static" data-i18n="story.memo.says">Har kuni bitta fakt keltiraman — doim manbasi bilan.</p>
           </div>
           <div class="chapter-body">
@@ -172,7 +174,7 @@
         <div class="container chapter-grid">
           <div class="chapter-host" data-reveal="left">
             <span class="chapter-num" data-i18n="story.octa.num">02 · Amaliy</span>
-            <div class="host-circle" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" class="idle idle-octa" data-char="octa" alt="" width="201" height="235" loading="lazy"></div>
+            <div class="host-circle" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" class="idle idle-octa" data-char="octa" alt="" width="198" height="233" loading="lazy"></div>
             <p class="bubble" style="position:static" data-i18n="story.octa.says">Taxmin qilmaymiz — sinab koʻramiz!</p>
           </div>
           <div class="chapter-body">
@@ -180,9 +182,9 @@
             <h2 id="ch-octa-title" data-i18n="story.octa.title">Haqiqiy psixologik tajribalarni sinab koʻring</h2>
             <p data-i18n="story.octa.text">Oltita mashgʻulot, har biri halol natija kartochkasi bilan tugaydi: nimani oʻlchaydi va nimani koʻrsatmaydi.</p>
             <ul class="activity-grid chapter-demo" data-reveal>
-              <li><a class="activity-card tilt press" data-tilt href="lab.html#stroop"><span class="act-meta"><span class="chip" data-i18n="game.kind.test">Tajriba</span></span><span class="act-art" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="201" height="235" loading="lazy"></span><h3 data-i18n="game.stroop.title">Strup testi</h3><p data-i18n="game.stroop.short">Soʻzni emas, siyoh rangini tanlang.</p></a></li>
-              <li><a class="activity-card tilt press" data-tilt href="lab.html#digits"><span class="act-meta"><span class="chip" data-i18n="game.kind.test">Tajriba</span></span><span class="act-art" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="201" height="235" loading="lazy"></span><h3 data-i18n="game.digits.title">Raqamlar xotirasi</h3><p data-i18n="game.digits.short">Raqamlar qatorini eslab qoling va qayta yozing.</p></a></li>
-              <li><a class="activity-card tilt press" data-tilt href="lab.html#breathing"><span class="act-meta"><span class="chip" data-i18n="game.kind.exercise">Mashq</span></span><span class="act-art" style="--tint:#ECE9FF"><img src="assets/characters/syno.webp" data-char="syno" alt="" width="171" height="250" loading="lazy"></span><h3 data-i18n="game.breathing.title">Syno bilan nafas olish</h3><p data-i18n="game.breathing.short">Sekin, yoʻl-yoʻriqli nafas mashqi.</p></a></li>
+              <li><a class="activity-card tilt press" data-tilt href="lab.html#stroop"><span class="act-meta"><span class="chip" data-i18n="game.kind.test">Tajriba</span></span><span class="act-art" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="198" height="233" loading="lazy"></span><h3 data-i18n="game.stroop.title">Strup testi</h3><p data-i18n="game.stroop.short">Soʻzni emas, siyoh rangini tanlang.</p></a></li>
+              <li><a class="activity-card tilt press" data-tilt href="lab.html#digits"><span class="act-meta"><span class="chip" data-i18n="game.kind.test">Tajriba</span></span><span class="act-art" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="198" height="233" loading="lazy"></span><h3 data-i18n="game.digits.title">Raqamlar xotirasi</h3><p data-i18n="game.digits.short">Raqamlar qatorini eslab qoling va qayta yozing.</p></a></li>
+              <li><a class="activity-card tilt press" data-tilt href="lab.html#breathing"><span class="act-meta"><span class="chip" data-i18n="game.kind.exercise">Mashq</span></span><span class="act-art" style="--tint:#ECE9FF"><img src="assets/characters/syno.webp" data-char="syno" alt="" width="168" height="248" loading="lazy"></span><h3 data-i18n="game.breathing.title">Syno bilan nafas olish</h3><p data-i18n="game.breathing.short">Sekin, yoʻl-yoʻriqli nafas mashqi.</p></a></li>
             </ul>
             <p class="note"><span data-icon="info"></span><span data-i18n="lab.note">Miya oʻyinlari asosan aynan oʻsha oʻyinni yaxshiroq oʻynashga oʻrgatadi. Ularning kundalik fikrlashga yoki IQ ga taʼsiri ilmiy jihatdan deyarli isbotlanmagan. Bu mashgʻulotlar qiziqish uchun, tashxis qoʻyish uchun emas.</span></p>
             <div class="btn-row chapter-demo"><a class="btn btn-primary press" href="lab.html"><span data-icon="target"></span><span data-i18n="story.octa.cta">Laboratoriyani ochish</span></a></div>
@@ -195,7 +197,7 @@
         <div class="container chapter-grid">
           <div class="chapter-host" data-reveal="left" data-anim-root>
             <span class="chapter-num" data-i18n="story.syno.num">03 · Ijtimoiy</span>
-            <div class="breath-visual mini-breath" aria-hidden="true"><div class="breath-blob"></div><img src="assets/characters/syno.webp" class="breath-syno" data-char="syno" alt="" width="171" height="250" loading="lazy"></div>
+            <div class="breath-visual mini-breath" aria-hidden="true"><div class="breath-blob"></div><img src="assets/characters/syno.webp" class="breath-syno" data-char="syno" alt="" width="168" height="248" loading="lazy"></div>
             <p class="mini-breath-label" aria-hidden="true"><span data-i18n="game.breathing.in">Nafas oling…</span><span data-i18n="game.breathing.out">…va chiqaring</span></p>
           </div>
           <div class="chapter-body">
@@ -216,11 +218,12 @@
       </section>
 
       <!-- 4. Lumi · Sleep and ideas -->
-      <section class="chapter" id="ch-lumi" data-chapter aria-labelledby="ch-lumi-title">
+      <section class="chapter is-night" id="ch-lumi" data-chapter aria-labelledby="ch-lumi-title">
+        <div class="chapter-bg" aria-hidden="true"><img src="assets/img/night.webp" srcset="assets/img/night-sm.webp 800w, assets/img/night.webp 1600w" sizes="100vw" width="1600" height="807" alt="" loading="lazy" decoding="async"></div>
         <div class="container chapter-grid">
           <div class="chapter-host" data-reveal="left">
             <span class="chapter-num" data-i18n="story.lumi.num">04 · Uyqu va gʻoyalar</span>
-            <div class="host-circle" style="--tint:#FFF3E6"><img src="assets/characters/lumi.webp" class="idle idle-lumi" data-char="lumi" alt="" width="162" height="164" loading="lazy"></div>
+            <div class="host-circle" style="--tint:#FFF3E6"><img src="assets/characters/lumi.webp" class="idle idle-lumi" data-char="lumi" alt="" width="160" height="161" loading="lazy"></div>
             <p class="bubble" style="position:static" data-i18n="story.lumi.says">Bilasizmi? Uxlayotganingizda miyangiz band boʻladi.</p>
           </div>
           <div class="chapter-body">
@@ -270,7 +273,7 @@
         <div class="container chapter-grid">
           <div class="chapter-host" data-reveal="left">
             <span class="chapter-num" data-i18n="story.dendi.num">05 · Kashfiyot</span>
-            <div class="host-circle" style="--tint:#EFEDFF"><img src="assets/characters/dendi.webp" class="idle idle-dendi" data-char="dendi" alt="" width="197" height="281" loading="lazy"></div>
+            <div class="host-circle" style="--tint:#EFEDFF"><img src="assets/characters/dendi.webp" class="idle idle-dendi" data-char="dendi" alt="" width="194" height="280" loading="lazy"></div>
             <p class="bubble" style="position:static" data-i18n="story.dendi.says">Har bir kichik qadam yangi shoxcha oʻstiradi.</p>
           </div>
           <div class="chapter-body">
@@ -290,9 +293,10 @@
     <!-- Why Medulla -->
     <section class="section" aria-labelledby="why-title">
       <div class="container split">
-        <div class="why-art" data-reveal="zoom">
-          <img class="logo-big" src="assets/brand/logo-384.webp" width="384" height="384" data-i18n-attr="alt:brand.logoAlt" loading="lazy" alt="Medulla logotipi: tarmoq bilan oʻralgan miya">
-          <img src="assets/characters/syno.webp" class="why-syno idle idle-syno" data-char="syno" alt="" width="171" height="250" loading="lazy">
+        <div class="why-art why-photo" data-reveal="zoom">
+          <img class="why-neurons" src="assets/img/neurons.webp" width="1200" height="897" alt="" loading="lazy" decoding="async">
+          <span class="why-tag" aria-hidden="true"><span data-icon="shield"></span><span data-i18n="value.evidence.title">Avvalo dalil</span></span>
+          <img src="assets/characters/syno.webp" class="why-syno idle idle-syno" data-char="syno" alt="" width="168" height="248" loading="lazy">
         </div>
         <div data-reveal>
           <p class="eyebrow"><span data-icon="shield"></span><span data-i18n="why.eyebrow">Nega Medulla?</span></p>
@@ -309,13 +313,39 @@
       </div>
     </section>
 
+    <!-- Medulla for every brain: accessibility & comfort -->
+    <section class="section" style="padding-top:0" aria-labelledby="access-title">
+      <div class="container">
+        <div class="access-teaser" data-reveal>
+          <div>
+            <p class="eyebrow"><span data-icon="access"></span><span data-i18n="home.access.eyebrow">Maxsus imkoniyatlar</span></p>
+            <h2 id="access-title" data-i18n="home.access.title">Har bir miya uchun Medulla</h2>
+            <p class="lead" data-i18n="home.access.text">Har bir miya oʻzicha ishlaydi. Saytni sokinroq, tushunarliroq yoki sekinroq qiling: katta matn, oʻqish chizgʻichi, qiyin soʻzlar izohi, ovoz chiqarib oʻqish va qorongʻi mavzu.</p>
+            <ul class="access-chips" data-render="axChips"></ul>
+            <div class="btn-row">
+              <button type="button" class="btn btn-primary press" data-open-access><span data-icon="access"></span><span data-i18n="home.access.cta">Qulaylik panelini ochish</span></button>
+              <a class="btn btn-ghost press" href="accessibility.html"><span data-i18n="home.access.more">Bu qanday ishlaydi</span><span data-icon="arrow"></span></a>
+            </div>
+          </div>
+          <div class="access-art" aria-hidden="true">
+            <div class="demo-card">
+              <p><span data-i18n="home.access.demoA">Miyangizda taxminan 86 milliard </span><span class="demo-gloss" data-i18n="home.access.demoWord">neyron</span><span data-i18n="home.access.demoB"> bor.</span></p>
+              <span class="demo-ruler"></span>
+              <div class="demo-pop"><strong data-i18n="ax.glossary">Qiyin soʻzlarni izohlash</strong><span data-i18n="home.access.demoDef">Neyron — kichik elektr signallarini tashiydigan nerv hujayrasi.</span></div>
+            </div>
+            <img src="assets/characters/memo.webp" data-char="memo" alt="" width="276" height="229" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Team & partners -->
     <section class="section is-soft" aria-labelledby="team-title">
       <div class="container">
-        <div class="section-head" data-reveal><div><h2 id="team-title" data-i18n="home.team.title">Jamoa va hamkorlar</h2><p data-i18n="home.team.lead">Loyihani ikki hammuassis boshqaradi. Hamkorlar uchun joy ochiq.</p></div></div>
+        <div class="section-head" data-reveal><div><h2 id="team-title" data-i18n="home.team.title">Jamoa va hamkorlar</h2><p data-i18n="home.team.lead2">Medulla ortidagi talabalar. Hamkorlar uchun joy ochiq.</p></div></div>
         <div class="team-preview" data-reveal>
           <div>
-            <h3 data-i18n="home.team.teamTitle">Hammuassislar</h3>
+            <h3 data-i18n="about.teamTitle">Jamoa</h3>
             <ul class="people people--compact" data-render="team" data-compact></ul>
             <a class="text-link" href="about.html#team"><span data-i18n="home.team.ctaTeam">Jamoa bilan tanishing</span><span data-icon="arrow"></span></a>
           </div>
@@ -328,21 +358,13 @@
       </div>
     </section>
 
-    <!-- Updates -->
-    <section class="section" aria-labelledby="updates-title">
+    <!-- Medulla in Telegram: the bot, the channel and Instagram -->
+    <section class="section" style="padding-top:0" aria-labelledby="bot-title">
       <div class="container">
-        <div class="updates" data-reveal>
-          <div>
-            <h2 id="updates-title" data-i18n="updates.title">Yangiliklardan xabardor boʻling</h2>
-            <p data-i18n="updates.text">Har kungi faktlar, tajribalar va loyiha yangiliklari — Instagram va Telegramda.</p>
-            <div class="btn-row light-social" style="margin-top:18px" data-render="follow"></div>
-            <p class="lumi-tip"><span data-icon="sparkle"></span><span data-i18n="updates.tip">Lumi eslatadi: yaxshi uyqu ham oʻrganishning bir qismi.</span></p>
-          </div>
-          <div class="updates-art"><img src="assets/characters/lumi.webp" class="idle idle-lumi" data-char="lumi" alt="" width="162" height="164" loading="lazy"></div>
-        </div>
+        <h2 id="bot-title" class="sr-only" data-i18n="botcard.eyebrow">Medulla Telegramda</h2>
+        <div data-render="botCard" data-reveal></div>
       </div>
     </section>
-
     <!-- Closing -->
     <section class="section" style="padding-top:0">
       <div class="container">
@@ -355,7 +377,7 @@
               <a class="btn btn-outline-light press" href="explore.html"><span data-i18n="cta.secondary">“Mening Medullam”ni ochish</span><span data-icon="arrow"></span></a>
             </div>
           </div>
-          <div class="cta-art"><img src="assets/characters/dendi.webp" class="idle idle-dendi" data-char="dendi" alt="" width="197" height="281" loading="lazy"></div>
+          <div class="cta-art"><img src="assets/characters/dendi.webp" class="idle idle-dendi" data-char="dendi" alt="" width="194" height="280" loading="lazy"></div>
         </div>
       </div>
     </section>
@@ -370,6 +392,7 @@
   <script src="js/sound.js"></script>
   <script src="js/motion.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/access.js"></script>
   <script src="js/home.js"></script>
 </body>
 </html>

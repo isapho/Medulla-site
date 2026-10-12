@@ -58,6 +58,7 @@
       poseFor(id) + "<h3>" + M.icon("check") + esc(t("lab.yourResult")) + "</h3>" +
       (stats.length ? '<ul class="result-stats">' + stats.map(function (s) { return statItem(s[0], s[1]); }).join("") + "</ul>" : "") +
       (extra || "") +
+      ((id === "digits" || id === "sequence") && M.pace() > 1 ? '<p class="pace-note">' + M.icon("clock") + "<span>" + esc(t("lab.paceNote")) + "</span></p>" : "") +
       '<div class="result-explain">' +
         "<div>" + M.icon("target") + "<p><strong>" + esc(t("lab.whatTitle")) + "</strong>" + esc(t("game." + id + ".what")) + "</p></div>" +
         "<div>" + M.icon("info") + "<p><strong>" + esc(t("lab.limitsTitle")) + "</strong>" + esc(t("game." + id + ".limits")) + "</p></div>" +
@@ -295,12 +296,13 @@
       hint.textContent = t("game.digits.watch");
       big.textContent = "·";
       try {
-        await sleep(700, signal);
+        var pace = M.pace();
+        await sleep(700 * pace, signal);
         for (var k = 0; k < target.length; k++) {
           big.textContent = target[k]; big.classList.add("pop");
-          await sleep(900, signal);
+          await sleep(900 * pace, signal);
           big.textContent = "·"; big.classList.remove("pop");
-          await sleep(300, signal);
+          await sleep(300 * pace, signal);
         }
       } catch (e) { return; }
       hint.textContent = t("game.digits.yourTurn");
@@ -315,7 +317,7 @@
       hint.textContent = ok ? t("game.span.right") : t("game.span.wrong", { seq: target.join(" ") });
       if (ok) S.correct(); else S.wrong();
       var step = sc.answer(ok);
-      setTimeout(function () { if (!running) return; if (step === "end") end(); else round(); }, 1300);
+      setTimeout(function () { if (!running) return; if (step === "end") end(); else round(); }, 1300 * M.pace());
     }
     function key(k) {
       if (!accepting) return;
@@ -371,12 +373,13 @@
       }
       hint.textContent = t("game.sequence.watch");
       try {
-        await sleep(700, signal);
+        var pace = M.pace();
+        await sleep(700 * pace, signal);
         for (var k = 0; k < target.length; k++) {
           tiles[target[k]].classList.add("lit"); S.tap();
-          await sleep(600, signal);
+          await sleep(600 * pace, signal);
           tiles[target[k]].classList.remove("lit");
-          await sleep(300, signal);
+          await sleep(300 * pace, signal);
         }
       } catch (e) { return; }
       hint.textContent = t("game.sequence.yourTurn");
@@ -397,7 +400,7 @@
       hint.textContent = ok ? t("game.span.right") : t("game.sequence.wrong");
       if (ok) S.correct(); else S.wrong();
       var step = sc.answer(ok);
-      setTimeout(function () { if (!running) return; if (step === "end") end(); else round(); }, 1200);
+      setTimeout(function () { if (!running) return; if (step === "end") end(); else round(); }, 1200 * M.pace());
     }
     function begin() { sc = staircase({ startLen: 3, maxLen: 9 }); running = true; res.hidden = true; start.hidden = true; round(); }
     function end() {
@@ -473,7 +476,7 @@
   // ends by asking the visitor to put the phone away.
   function sleepMode(g, el, opts, signal) {
     el.innerHTML = head(g, opts.heading) +
-      '<div class="stage night-preview"><img src="' + M.root() + 'assets/characters/lumi.png" width="162" height="164" alt="" class="night-lumi-small">' +
+      '<div class="stage night-preview"><img src="' + M.root() + 'assets/characters/lumi.png" width="160" height="161" alt="" class="night-lumi-small">' +
       '<ul class="small-notes">' + ["game.sleep.note1", "game.sleep.note2"].map(function (k) { return "<li>" + M.icon("moon") + "<span>" + esc(t(k)) + "</span></li>"; }).join("") + "</ul>" +
       '<div class="btn-row"><button type="button" class="btn btn-night g-start">' + M.icon("moon") + "<span>" + esc(t("game.sleep.start")) + "</span></button></div></div>" +
       '<div class="result-card" hidden></div>';
@@ -494,7 +497,7 @@
       }
       overlay.innerHTML = '<div class="night-sky" aria-hidden="true">' + stars + "</div>" +
         '<div class="night-inner"><div class="night-moon" aria-hidden="true"></div>' +
-        '<img class="night-lumi" src="' + M.root() + 'assets/characters/lumi.png" width="162" height="164" alt="">' +
+        '<img class="night-lumi" src="' + M.root() + 'assets/characters/lumi.png" width="160" height="161" alt="">' +
         '<p class="night-step" aria-live="polite"></p>' +
         '<div class="night-ring" aria-hidden="true"><span></span></div>' +
         '<div class="btn-row"><button type="button" class="btn btn-night-ghost night-end">' + esc(t("game.sleep.end")) + "</button></div></div>";

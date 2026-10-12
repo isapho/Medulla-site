@@ -11,7 +11,7 @@
   <meta property="og:site_name" content="Medulla">
   <meta property="og:title" content="Maxfiylik — Medulla">
   <meta property="og:description" content="Medulla maʼlumotlar bilan qanday ishlaydi: natijalaringiz qurilmangizda qoladi, sizni aniqlaydigan hech narsa yigʻilmaydi.">
-  <meta property="og:image" content="assets/brand/og-image.png">
+  <meta property="og:image" content="assets/brand/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Medulla — Mind • Learn • Grow">
@@ -29,6 +29,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&amp;family=Manrope:wght@700;800&amp;display=swap">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/polish.css">
   <script src="js/prefs.js"></script>
 </head>
 <body data-page="privacy">
@@ -46,7 +47,7 @@
         </div>
         <div class="page-hero-art">
           <p class="bubble" data-i18n="privacy.synoSays">Sizning miyangiz, sizning maʼlumotlaringiz, sizning tanlovingiz.</p>
-          <img src="assets/characters/syno.webp" class="idle idle-syno" data-char="syno" alt="" width="171" height="250">
+          <img src="assets/characters/syno.webp" class="idle idle-syno" data-char="syno" alt="" width="168" height="248">
         </div>
       </div>
     </section>
@@ -66,7 +67,7 @@
         <h2 data-i18n="privacy.deviceTitle">Qurilmangizda nima qoladi</h2>
         <p data-i18n="privacy.deviceText">Medulla quyidagilarni brauzeringiz xotirasida (localStorage) saqlaydi. Siz sinxronlashni yoqmaguningizcha ular qurilmangizdan chiqmaydi:</p>
         <ul>
-          <li data-i18n="privacy.d1">sozlamalar: til, ovoz, sokin rejim, matn oʻlchami, disleksiya shrifti</li>
+          <li data-i18n="privacy.d1">sozlamalar: til, ovoz, mavzu, matn oʻlchami, shriftlar, sokin rejim va boshqa maxsus imkoniyatlar tanlovlaringiz</li>
           <li data-i18n="privacy.d2">taxallus soʻzlari va sevimli qahramon</li>
           <li data-i18n="privacy.d3">oʻqilgan va saqlangan faktlar, savollarga javoblar, nishonlar, XP va faol kunlar</li>
           <li data-i18n="privacy.d4">laboratoriya natijalari (faqat raqamlar) va mehribonlik belgilari</li>
@@ -92,10 +93,12 @@
 
         <h2 data-i18n="privacy.thirdTitle">Sayt foydalanadigan boshqa xizmatlar</h2>
         <ul>
-          <li data-i18n="privacy.t1">Google Fonts: sarlavha shriftlari Googledan yuklanadi va u IP manzilingizni koʻrishi mumkin.</li>
+          <li data-i18n="privacy.t1">Google Fonts: sarlavha shriftlari (va faqat siz tanlasangiz, Hyperlegible shrifti) Googledan yuklanadi va u IP manzilingizni koʻrishi mumkin.</li>
           <li data-i18n="privacy.t2">Xosting (masalan, GitHub Pages): xosting odatiy server jurnallarini yuritadi.</li>
           <li data-i18n="privacy.t3">Telegram: faqat Medullani Telegram ichida ochganingizda uning skripti yuklanadi; biz Telegram maʼlumotlaringizni oʻqimaymiz.</li>
           <li data-i18n="privacy.t4">Supabase (faqat sinxronlash yoki hisoblagichlar yoqilgan boʻlsa): maʼlumotlar bazamiz xostingi soʻrovlar jurnalini qisqa muddat saqlaydi. Jadvallarimizda ism, email yoki IP manzil saqlanmaydi.</li>
+          <li data-i18n="privacy.t5">Ovoz chiqarib oʻqish: qurilmangizdagi ovozlardan foydalanadi. Baʼzi brauzerlar ishlab chiqaruvchining onlayn ovozlarini ishlatadi; u holda oʻqilayotgan matn (saytning ochiq matni yoki siz belgilagan qism) oʻsha kompaniyaga boradi.</li>
+          <li data-i18n="privacy.t6">Medulla Telegram boti (undan foydalansangiz): Telegram xabarlaringizni botga yetkazadi, bot javob beradi va hech narsani saqlamaydi (ism, ID yoki xabarlar yoʻq). Tilni tanlash uchun faqat Telegramdagi til sozlamangizga qaraydi.</li>
         </ul>
 
         <h2 data-i18n="privacy.choicesTitle">Sizning tanlovingiz</h2>
@@ -107,7 +110,7 @@
         <div class="btn-row" data-render="mailto" data-subject="privacy.subject" data-icon="mail"></div>
 
         <p class="review-line" style="margin-top:28px"><span data-icon="shield"></span><span data-i18n="privacy.reviewed">Huquqiy tekshiruv: kutilmoqda</span> <span class="tbd" data-i18n="common.tbd">TBD</span></p>
-        <p class="muted" style="font-size:.88rem" data-i18n="privacy.updated">Oxirgi yangilanish: 2026-yil 12-oktabr</p>
+        <p class="muted" style="font-size:.88rem" data-i18n="privacy.updated">Oxirgi yangilanish: 2026-yil 12-oktabr (2.1-versiya)</p>
       </div>
     </section>
   </main>
@@ -121,5 +124,6 @@
   <script src="js/sound.js"></script>
   <script src="js/motion.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/access.js"></script>
 </body>
 </html>
