@@ -117,9 +117,9 @@ Only with each person's permission. Names and photos of adults only.
       animated without redrawing.
 - [x] First set of 10 emotion images received (hello, curious, aha, correct, tryagain,
       focus, win, inhale, exhale, asleep). **Redo these**, because they drifted from the
-      sheet: ocus for all five (frowning, looks angry; ask for a calm, determined
-      look), and Syno in ha, inhale, exhale, sleep (different body, missing the
-      orange spark). The other scenes in ssets/source/character-poses-prompt.md
+      sheet: `focus` for all five (frowning, looks angry; ask for a calm, determined
+      look), and Syno in `aha`, `inhale`, `exhale`, `asleep` (different body, missing the
+      orange spark). The other scenes in `assets/source/character-poses-prompt.md`
       (ready, oops, reading, kind, comfort, sleepy, goodnight, offline, safe) are optional.
 - [ ] **Clean line art** for the colouring pages. It replaces the automatic
       tracing in `assets/printables/*-lines.png`.

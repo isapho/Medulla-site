@@ -51,8 +51,8 @@
 - Used in: quiz feedback on fact pages and in the daily challenge (the presenter
   cheers or encourages), game result cards (the host celebrates), the welcome
   dialog (Dendi waves) and the 404 page (Dendi looks around).
-- Not used yet: ocus (faces look angry), Syno ha, inhale, exhale,
-  sleep (body shape differs from the sheet).
+- Not used yet: `focus` (faces look angry), Syno `aha`, `inhale`, `exhale`,
+  `asleep` (body shape differs from the sheet).
 - Team list and Telegram channel/contact filled in from the team's details.
 
 ### Changed
