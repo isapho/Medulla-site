@@ -246,6 +246,20 @@
     var day = Math.floor((Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) - Date.UTC(now.getFullYear(), 0, 0)) / 86400000);
     return n ? day % n : 0;
   }
+  // Reaction poses (assets/characters/poses/<character>-<pose>.webp). Only poses that exist are listed;
+  // anything else falls back to the normal character image.
+  var POSES = {
+    dendi: ["hello", "curious", "aha", "correct", "tryagain", "win", "inhale", "exhale", "asleep"],
+    lumi:  ["hello", "curious", "aha", "correct", "tryagain", "win", "inhale", "exhale", "asleep"],
+    memo:  ["hello", "curious", "aha", "correct", "tryagain", "win", "inhale", "exhale", "asleep"],
+    octa:  ["hello", "curious", "aha", "correct", "tryagain", "win", "inhale", "exhale", "asleep"],
+    syno:  ["hello", "curious", "correct", "tryagain", "win"]
+  };
+  function poseImg(id, pose, cls, eager) {
+    if (!CHARACTERS[id] || (POSES[id] || []).indexOf(pose) === -1) return charImg(id, cls, "", eager);
+    return '<img src="' + ROOT + "assets/characters/poses/" + id + "-" + pose + '.webp" alt=""' +
+      (cls ? ' class="' + cls + '"' : "") + (eager ? "" : ' loading="lazy"') + ' decoding="async">';
+  }
   function factChar(f) { return CHARACTERS[f.character] ? f.character : "memo"; }
   function topicName(f) { return t("topic." + f.topic); }
   function publisher(f) { return ((f.source && f.source.name) || "").split(" — ")[0]; }
@@ -866,6 +880,7 @@
     barsHtml: barsHtml,
     msText: msText,
     charImg: charImg,
+    poseImg: poseImg,
     characters: CHARACTERS,
     characterOrder: CHARACTER_ORDER,
     toast: toast,

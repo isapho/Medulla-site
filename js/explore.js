@@ -204,7 +204,7 @@ Medulla.ready(function () {
         if (ok) S.correct(); else S.wrong();
         Store.record("quiz", { correct: ok, fact: f.id });
         var last = i === qs.length - 1;
-        box.querySelector(".quiz-why-slot").innerHTML = '<p class="quiz-why">' + icon(ok ? "check" : "info") + "<span><strong>" + esc(t(ok ? "quiz.right" : "quiz.notQuite")) + "</strong> " + esc(M.localized(f.quiz.why)) + "</span></p>" +
+        box.querySelector(".quiz-why-slot").innerHTML = '<div class="quiz-react">' + M.poseImg(M.factChar(f), ok ? "correct" : "tryagain", "pose", true) + '<p class="quiz-why">' + icon(ok ? "check" : "info") + "<span><strong>" + esc(t(ok ? "quiz.right" : "quiz.notQuite")) + "</strong> " + esc(M.localized(f.quiz.why)) + "</span></p></div>" +
           '<div class="btn-row" style="margin-top:12px"><button type="button" class="btn btn-primary press" data-qnext>' + esc(t(last ? "daily.toGame" : "daily.nextQuestion")) + icon("arrow") + "</button></div>";
         box.querySelector("[data-qnext]").focus({ preventScroll: true });
         return;
@@ -445,7 +445,7 @@ Medulla.ready(function () {
     if (p.onboarded) return;
     var chosen = p.avatar || "dendi";
     modal("onboard",
-      '<div class="modal-art">' + M.charImg("dendi", "idle idle-dendi", "", true) + "</div>" +
+      '<div class="modal-art">' + M.poseImg("dendi", "hello", "idle idle-dendi", true) + "</div>" +
       "<h2>" + esc(t("onboard.title")) + "</h2><p>" + esc(t("onboard.lead")) + '</p><ul class="plain-list">' +
         ["onboard.p1", "onboard.p2", "onboard.p3"].map(function (k) { return "<li>" + esc(t(k)) + "</li>"; }).join("") + "</ul>" +
       '<p style="margin:0"><strong>' + esc(t("onboard.yourName")) + '</strong> <span class="nick" style="font-size:1.1rem" id="ob-nick">' + esc(nick()) + '</span> <button type="button" class="link-btn" id="ob-nick-btn">' + esc(t("me.newNick")) + "</button></p>" +

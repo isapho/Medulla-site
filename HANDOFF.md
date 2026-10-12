@@ -115,6 +115,12 @@ Only with each person's permission. Names and photos of adults only.
 - [ ] Optional for richer animation: **layered files** (for example Dendi's
       branches, Octa's arms and Lumi's wings as separate parts), so they can be
       animated without redrawing.
+- [x] First set of 10 emotion images received (hello, curious, aha, correct, tryagain,
+      focus, win, inhale, exhale, asleep). **Redo these**, because they drifted from the
+      sheet: ocus for all five (frowning, looks angry; ask for a calm, determined
+      look), and Syno in ha, inhale, exhale, sleep (different body, missing the
+      orange spark). The other scenes in ssets/source/character-poses-prompt.md
+      (ready, oops, reading, kind, comfort, sleepy, goodnight, offline, safe) are optional.
 - [ ] **Clean line art** for the colouring pages. It replaces the automatic
       tracing in `assets/printables/*-lines.png`.
 - [ ] A designed 1200×630 share image if you want one instead of

@@ -138,8 +138,9 @@ Medulla.ready(function () {
       if (oi === fact.quiz.answer) b.classList.add("is-right");
       else if (b === btn) b.classList.add("is-wrong");
     });
-    box.querySelector(".quiz-why-slot").innerHTML = '<p class="quiz-why">' + M.icon(ok ? "check" : "info") + "<span><strong>" +
-      M.esc(M.t(ok ? "quiz.right" : "quiz.notQuite")) + "</strong> " + M.esc(M.localized(fact.quiz.why)) + "</span></p>";
+    box.querySelector(".quiz-why-slot").innerHTML = '<div class="quiz-react">' + M.poseImg(M.factChar(fact), ok ? "correct" : "tryagain", "pose", true) +
+      '<p class="quiz-why">' + M.icon(ok ? "check" : "info") + "<span><strong>" +
+      M.esc(M.t(ok ? "quiz.right" : "quiz.notQuite")) + "</strong> " + M.esc(M.localized(fact.quiz.why)) + "</span></p></div>";
     if (ok) S.correct(); else S.wrong();
     Store.record("quiz", { correct: ok, fact: fact.id });
   }

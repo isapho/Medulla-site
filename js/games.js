@@ -47,9 +47,15 @@
 
   function statItem(value, label) { return "<li><strong>" + esc(value) + "</strong><span>" + esc(label) + "</span></li>"; }
 
+  // The game's host character cheers next to the result (the sleep wind-down is calmer: Lumi hovers).
+  function poseFor(id) {
+    var g = LIST.filter(function (x) { return x.id === id; })[0];
+    return g ? '<span class="result-pose">' + M.poseImg(g.char, "win", "pose", true) + "</span>" : "";
+  }
+
   function resultCard(el, id, stats, extra) {
     el.innerHTML =
-      "<h3>" + M.icon("check") + esc(t("lab.yourResult")) + "</h3>" +
+      poseFor(id) + "<h3>" + M.icon("check") + esc(t("lab.yourResult")) + "</h3>" +
       (stats.length ? '<ul class="result-stats">' + stats.map(function (s) { return statItem(s[0], s[1]); }).join("") + "</ul>" : "") +
       (extra || "") +
       '<div class="result-explain">' +

@@ -71,3 +71,9 @@ Strict rules:
 Why the order: scenes 1 to 10 cover every place the site shows a character
 reacting (welcome, facts, quiz, games, win, breathing, sleep). The rest add
 polish and can wait.
+
+## Status (12 October 2026)
+
+Received and cut out: hello, curious, aha, correct, tryagain, win, inhale, exhale, asleep (in use, except Syno aha/inhale/exhale/asleep).
+To redo: **focus** (all five look angry; ask for a calm, determined look, no frown) and Syno in aha, inhale, exhale and asleep (the body changed and the orange spark is missing).
+Not yet generated: ready, oops, reading, kind, comfort, sleepy, goodnight, offline, safe.

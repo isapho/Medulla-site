@@ -45,6 +45,16 @@
 - **GitHub Actions:** deploy to Pages, checks on every push, the daily bot.
 - **Docs:** `RESEARCH.md`, `HANDOFF.md`, `CREDITS.md`, `backend/README.md`, `telegram/MINI_APP.md`.
 
+### Poses (added after 2.0.0)
+- 41 reaction poses (hello, curious, aha, correct, tryagain, win, inhale, exhale,
+  asleep) for the five characters, cut out from the team's generated images.
+- Used in: quiz feedback on fact pages and in the daily challenge (the presenter
+  cheers or encourages), game result cards (the host celebrates), the welcome
+  dialog (Dendi waves) and the 404 page (Dendi looks around).
+- Not used yet: ocus (faces look angry), Syno ha, inhale, exhale,
+  sleep (body shape differs from the sheet).
+- Team list and Telegram channel/contact filled in from the team's details.
+
 ### Changed
 - `tools/build.js` replaces `tools/sync-facts.js`. It pre-renders pages,
   generates fact and topic pages, the sitemap and the offline list, and checks

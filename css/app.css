@@ -668,3 +668,17 @@ html.calm [data-reveal] { opacity: 1; transform: none; }
   [data-reveal] { opacity: 1; transform: none; }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }
+
+/* Reaction poses (assets/characters/poses) */
+.pose { display: block; width: auto; height: 104px; max-width: 100%; object-fit: contain; }
+.quiz-react { display: flex; gap: 14px; align-items: flex-end; }
+.quiz-react .pose { flex: none; height: 96px; }
+.quiz-react .quiz-why { flex: 1; min-width: 0; }
+@media (max-width: 479px) { .quiz-react { flex-direction: column; align-items: flex-start; } }
+.result-card { position: relative; }
+.result-pose { float: right; margin: -6px 0 6px 12px; }
+.result-pose .pose { height: 88px; }
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.calm) .quiz-react .pose, html:not(.calm) .result-pose .pose { animation: pose-pop 0.5s cubic-bezier(.34, 1.56, .64, 1) both; transform-origin: 50% 100%; }
+}
+@keyframes pose-pop { from { opacity: 0; transform: scale(0.8) translateY(8px); } }
