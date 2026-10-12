@@ -1,0 +1,54 @@
+# Posts the Medulla fact of the day to Telegram in Uzbek, Russian and English.
+#
+# Setup (GitHub → repository → Settings → Secrets and variables → Actions):
+#   Secrets:   BOT_TOKEN       token from @BotFather
+#   Variables: CHANNEL_ID      e.g. @medulla_mind  (or CHANNEL_ID_UZ / _RU / _EN)
+#              SITE_URL        e.g. https://medulla.uz  (optional, adds a "Read the full fact" button)
+# Until BOT_TOKEN is set, the job only prints a dry run.
+# Note: GitHub pauses scheduled workflows in a public repository after 60 days
+# with no commits; re-enable it in the Actions tab if that happens.
+
+name: Daily fact to Telegram
+
+on:
+  schedule:
+    - cron: "0 3 * * *" # 03:00 UTC = 08:00 in Tashkent
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Only print the posts, do not send"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: daily-fact
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Post today's fact
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHANNEL_ID: ${{ vars.CHANNEL_ID }}
+          CHANNEL_ID_UZ: ${{ vars.CHANNEL_ID_UZ }}
+          CHANNEL_ID_RU: ${{ vars.CHANNEL_ID_RU }}
+          CHANNEL_ID_EN: ${{ vars.CHANNEL_ID_EN }}
+          SITE_URL: ${{ vars.SITE_URL }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: |
+          if [ -z "$BOT_TOKEN" ] || [ "$DRY_RUN" = "true" ]; then
+            echo "Dry run (no BOT_TOKEN secret, or dry_run was chosen)."
+            node telegram/bot.mjs --dry-run
+          else
+            node telegram/bot.mjs
+          fi

@@ -1,0 +1,42 @@
+# Publishes the site to GitHub Pages on every push to main.
+# One-time setup: repository → Settings → Pages → Source: "GitHub Actions".
+# For a custom domain, set it in the same screen and add a CNAME at your DNS
+# provider (see HANDOFF.md), then set `domain` in js/config.js.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Build (pre-render, fact pages, sitemap) and check
+        run: node tools/build.js
+      - name: Leave tooling and original art out of the published site
+        run: rm -rf tools backend telegram assets/source
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v5
