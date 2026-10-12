@@ -82,7 +82,7 @@ A laptop can't stay on all day, so for real use deploy `worker.mjs`:
 4. Run `node telegram/poll.mjs --setup` once (step 2) for the command menu.
 
 The Worker reads `data/facts.json`, `data/glossary.json` and
-`data/bot-strings.json` from the published site, so every site update also
+`data/bot-strings.json` from `DATA_URL` in `wrangler.toml` (the public GitHub repository, so it works even while the website is offline; `SITE_URL` stays empty until the site is live, then the bot also shows website buttons), so every site update also
 updates the bot. (`node tools/build.js` writes `bot-strings.json`.) The guided
 live breathing minute is only available in long-polling mode; the Worker sends
 the steps and a link to the animated version on the site.

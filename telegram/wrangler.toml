@@ -5,9 +5,12 @@ main = "worker.mjs"
 compatibility_date = "2026-09-01"
 
 [vars]
-# The public address of the website (no trailing slash). The bot reads
-# data/facts.json, data/glossary.json and data/bot-strings.json from it.
-SITE_URL = "https://isapho.github.io/Medulla-site"
+# Where the bot reads data/facts.json, data/glossary.json and data/bot-strings.json
+# (no trailing slash). The public repository works even while the website is offline.
+DATA_URL = "https://raw.githubusercontent.com/isapho/Medulla-site/main"
+# The public address of the website. Empty = no website buttons or links in the
+# bot. Set it to "https://isapho.github.io/Medulla-site" (or your domain) when the site is live.
+SITE_URL = ""
 
 # Secrets (never put them here):
 #   npx wrangler secret put BOT_TOKEN

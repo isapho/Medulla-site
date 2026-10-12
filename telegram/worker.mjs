@@ -45,8 +45,10 @@ export default {
     };
     ctx.waitUntil((async () => {
       try {
-        const c = await content(env.SITE_URL);
-        const bot = createAssistant({ facts: c.facts, glossary: c.glossary, strings: c.strings, siteUrl: env.SITE_URL, call, canWait: false });
+        // Content comes from DATA_URL (default: the site). Links and the Mini App
+        // button use SITE_URL; leave it empty while the site is offline.
+        const c = await content(env.DATA_URL || env.SITE_URL);
+        const bot = createAssistant({ facts: c.facts, glossary: c.glossary, strings: c.strings, siteUrl: env.SITE_URL || null, call, canWait: false });
         await bot.handleUpdate(update);
       } catch (e) { /* nothing is logged on purpose: no user data leaves the request */ }
     })());
