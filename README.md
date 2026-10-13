@@ -107,11 +107,15 @@ cut-outs at double resolution, and new imagery. See `CHANGELOG.md`.
     that redirect. Facts, topics and the Lab stay open to guests (they are the
     public, searchable content and the Telegram bot links to them); only the
     dashboard needs a profile.
-14. **"Sign in" without accounts.** Signing in means choosing a character and a
+14. **"Sign in" without accounts (and optional Telegram / Google, 2.7).** Signing in means choosing a character and a
     generated nickname on this device; no email, password or real name, for the
     same legal reason as decision 2. Signing out only hides the app; the
     progress stays until the visitor deletes it. On a shared device, "Start a
     new profile" asks before deleting and offers the download first.
+    Since 2.7 a visitor can instead sign in with Telegram or Google (ticked
+    consent box first); the server turns the verified id into a sync code and
+    drops everything else, so cloud sync works with no name, e-mail or password
+    stored. Guest remains the default.
 15. **The logo is the team's drawing.** It is used as drawn (only trimmed and
     resized by `tools/logo.mjs`), on a purple-to-navy tile so the white lines
     read on light pages; at icon sizes the thin network lines are made a

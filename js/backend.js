@@ -30,6 +30,7 @@
     try { forced = sessionStorage.getItem("medulla.backend"); } catch (e) { forced = null; }
     if (forced === "mock") return "mock";
     if (forced === "none") return "none";
+    if (CFG.provider === "worker" && CFG.url) return "worker";
     if (CFG.provider === "supabase" && CFG.url && CFG.anonKey) return "supabase";
     if (CFG.provider === "mock") return "mock";
     return "none";
@@ -168,7 +169,40 @@
     }
   };
 
-  var providers = { none: none, mock: mock, supabase: supabase };
+  /* ------------------------------------------------------------ worker */
+
+  // The Cloudflare Worker in telegram/ (auth.mjs): sync by hashed code, and
+  // "Sign in with Telegram / Google" that returns a sync code derived on the server.
+  function call(path, body) {
+    return fetch(CFG.url.replace(/\/$/, "") + path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body || {})
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (r.ok && j.ok !== false) return Object.assign({ ok: true }, j);
+        return { ok: false, reason: j.reason || "http-" + r.status };
+      });
+    }).catch(function () { return { ok: false, reason: "network" }; });
+  }
+
+  var worker = {
+    push: function (code, payload) {
+      return hash(code).then(function (h) { return call("/sync/save", { key: h, payload: payload }); });
+    },
+    pull: function (code) {
+      return hash(code).then(function (h) { return call("/sync/load", { key: h }); }).then(function (r) {
+        return r.ok ? { ok: true, payload: r.payload } : r;
+      });
+    },
+    remove: function (code) {
+      return hash(code).then(function (h) { return call("/sync/delete", { key: h }); });
+    },
+    // Counters stay off here: a key-value store can't add 1 safely.
+    bump: none.bump, counters: none.counters, club: none.club
+  };
+
+  var providers = { none: none, mock: mock, supabase: supabase, worker: worker };
 
   // Anonymous counters: at most one +1 per counter per browser session.
   var bumped = {};
@@ -187,6 +221,14 @@
     push: function (code, payload) { return providers[chosen()].push(code, payload); },
     pull: function (code) { return providers[chosen()].pull(code); },
     remove: function (code) { return providers[chosen()].remove(code); },
+    // Sign in: "telegram" (widget fields), "telegram-webapp" ({initData}), "google" ({credential}).
+    // Resolves { ok, code } where code is the person's sync code, made by the server.
+    login: function (kind, data) {
+      if (chosen() === "worker") return call("/auth/" + kind, data);
+      if (chosen() === "mock") return later({ ok: true, code: "SYNO-2345-6789-ABCD" });
+      return Promise.resolve({ ok: false, reason: "off" });
+    },
+    canLogin: function () { return chosen() === "worker" || chosen() === "mock"; },
     counters: function () { return providers[chosen()].counters(); },
     club: function (code) { return providers[chosen()].club(normalize(code)); },
     bump: function (name, club) {

@@ -124,6 +124,32 @@ the steps and a link to the animated version on the site.
 **Long polling and the webhook can't run together.** `poll.mjs` removes the
 webhook when it starts; run step 3 again afterwards to switch back.
 
+## Sign in on the website (Telegram and Google)
+
+The Worker also serves the website's sign-in and sync (`auth.mjs`). Setup,
+all of it already done for Telegram:
+
+1. `npx wrangler secret put AUTH_SECRET`: any long random string. Keep it: it
+   is what turns an account id into a sync code, so a new secret means new
+   codes (people can still restore with the old code shown in Me → Sync).
+2. **Telegram:** @BotFather → `/setdomain` → the site's host (`isapho.github.io`).
+   Nothing else; `telegramBot` in `js/config.js` names the bot.
+3. **Google** (needs your Google account):
+   1. console.cloud.google.com → create a project → APIs & Services → OAuth
+      consent screen (External; app name Medulla; your e-mail; scopes: only the
+      default `openid`, e-mail and profile) → Publish.
+   2. Credentials → Create credentials → OAuth client ID → *Web application* →
+      Authorized JavaScript origins: `https://isapho.github.io` (and your own
+      domain later). No redirect URI is needed.
+   3. Copy the Client ID (`…apps.googleusercontent.com`, public, not secret)
+      into `js/config.js` → `googleClientId` **and** `telegram/wrangler.toml` →
+      `GOOGLE_CLIENT_ID`, then `npx wrangler deploy`, build and push.
+
+What is stored: only the progress numbers (the same payload as code sync, under
+the SHA-256 of the code). Routes: `POST /auth/telegram`, `/auth/telegram-webapp`,
+`/auth/google`, `/sync/save`, `/sync/load`, `/sync/delete`. Only the site (and
+localhost) may call them from a browser.
+
 ## Tests
 
 ```bash
@@ -144,6 +170,7 @@ runs them on every push.
 | File | What it is |
 |---|---|
 | `assistant.mjs` | The bot itself: `handleUpdate(update)` and `sendDaily(chat, lang)`, no packages |
+| `auth.mjs` | Website sign-in (Telegram, Google) and cloud sync routes for the Worker |
 | `subscribers.mjs` | Who turned on the daily fact: Workers KV, a JSON file, or memory (tests) |
 | `poll.mjs` | Run with long polling (also sends the daily fact); `--setup`, `--demo` |
 | `worker.mjs`, `wrangler.toml` | The same bot as a Cloudflare Worker (webhook + cron for the daily fact) |

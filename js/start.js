@@ -27,6 +27,96 @@ Medulla.ready(function () {
     return t("nick.format", { adj: t("nick.adj." + n.a), noun: t("nick.noun." + n.n), num: n.num });
   }
 
+  /* ---- Sign in with Telegram / Google (2.7): optional, for syncing progress.
+     The server verifies the login and answers with a sync code made from the
+     person's id and a secret; name, username, photo and e-mail are dropped. */
+  function loginOn() { return !!(B && B.canLogin && B.canLogin()); }
+  function tgBot() { return (window.MEDULLA_CONFIG || {}).telegramBot || null; }
+  function inTelegram() { try { return !!(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData); } catch (e) { return false; } }
+
+  function loginBlock() {
+    if (!loginOn()) return "";
+    var google = !!(window.MEDULLA_CONFIG || {}).googleClientId, tg = !!tgBot() || inTelegram();
+    if (!google && !tg) return "";
+    return '<div class="start-login">' +
+      '<p class="start-or" aria-hidden="true"><span>' + esc(t("start.or")) + "</span></p>" +
+      '<label class="login-consent"><input type="checkbox" id="login-ok"><span>' + esc(t("login.consent")) + "</span></label>" +
+      '<div class="login-buttons">' +
+        (tg ? '<button type="button" class="btn btn-ghost btn-block press" data-login="telegram">' + icon("telegram") + "<span>" + esc(t("login.telegram")) + "</span></button>" : "") +
+        '<div id="tg-slot" class="login-slot"></div>' +
+        (google ? '<div id="g-slot" class="login-slot" data-google></div>' : "") +
+      "</div>" +
+      '<p class="muted start-note" id="login-msg" role="status"></p>' +
+      '<p class="muted start-note">' + esc(t("login.note")) + "</p></div>";
+  }
+
+  function loginMsg(key, vars) { var m = view.querySelector("#login-msg"); if (m) m.textContent = key ? t(key, vars) : ""; }
+  function consented() {
+    var c = view.querySelector("#login-ok");
+    if (c && c.checked) return true;
+    loginMsg("login.need");
+    if (c) c.focus();
+    return false;
+  }
+
+  // The server's answer: a sync code. Restore the progress stored under it (if any), then enter.
+  function finishLogin(r) {
+    if (!r || !r.ok || !B.validCode(r.code)) { loginMsg("login.fail"); return; }
+    var code = r.code;
+    B.pull(code).then(function (p) {
+      if (p.ok) Store.merge(p.payload);
+      Store.setSync({ enabled: true, code: code, lastSync: new Date().toISOString(), consent: { at: new Date().toISOString(), ageBand: "login", guardian: null } });
+      if (!p.ok) B.push(code, Store.syncPayload());
+      chosen = Store.get().profile.avatar || chosen;
+      enter();
+    });
+  }
+
+  function loadScript(srcUrl, attrs) {
+    return new Promise(function (resolve, reject) {
+      var el = document.createElement("script");
+      el.src = srcUrl; el.async = true;
+      Object.keys(attrs || {}).forEach(function (k) { el.setAttribute(k, attrs[k]); });
+      el.onload = resolve; el.onerror = reject;
+      (attrs && attrs.__into ? attrs.__into : document.head).appendChild(el);
+    });
+  }
+
+  function startTelegram() {
+    if (!consented()) return;
+    loginMsg("login.working");
+    if (inTelegram()) { B.login("telegram-webapp", { initData: window.Telegram.WebApp.initData }).then(finishLogin); return; }
+    // Telegram's own widget is loaded only now, when the person asks for it: the site
+    // does not contact telegram.org for anyone who stays a guest.
+    var slot = view.querySelector("#tg-slot");
+    if (!slot || slot.firstChild) return;
+    window.medullaTgAuth = function (user) { loginMsg("login.working"); B.login("telegram", user).then(finishLogin); };
+    var el = document.createElement("script");
+    el.src = "https://telegram.org/js/telegram-widget.js?22"; el.async = true;
+    el.setAttribute("data-telegram-login", tgBot());
+    el.setAttribute("data-size", "large");
+    el.setAttribute("data-userpic", "false");
+    el.setAttribute("data-radius", "14");
+    el.setAttribute("data-onauth", "medullaTgAuth(user)");
+    el.onload = function () { loginMsg("login.tgHint"); };
+    el.onerror = function () { loginMsg("login.fail"); };
+    slot.appendChild(el);
+  }
+
+  function startGoogle() {
+    var id = (window.MEDULLA_CONFIG || {}).googleClientId, slot = view.querySelector("#g-slot");
+    if (!id || !slot || slot.getAttribute("data-ready")) return;
+    // Google's script is loaded when the sign-in page is shown to someone who ticked the box.
+    loadScript("https://accounts.google.com/gsi/client").then(function () {
+      window.google.accounts.id.initialize({
+        client_id: id,
+        callback: function (resp) { if (!consented()) return; loginMsg("login.working"); B.login("google", { credential: resp.credential }).then(finishLogin); }
+      });
+      window.google.accounts.id.renderButton(slot, { theme: "outline", size: "large", shape: "pill", text: "continue_with", width: 280 });
+      slot.setAttribute("data-ready", "1");
+    }).catch(function () { loginMsg("login.fail"); });
+  }
+
   function enter() {
     Store.signIn({ avatar: chosen });
     try { sessionStorage.setItem("medulla.toast", "welcome"); } catch (e) { /* ignore */ }
@@ -53,6 +143,7 @@ Medulla.ready(function () {
         '<div class="nick-row"><span class="nick" id="start-nick">' + esc(nick()) + '</span><button type="button" class="btn btn-ghost btn-sm press" data-reroll>' + icon("refresh") + "<span>" + esc(t("me.newNick")) + "</span></button></div>" +
         '<p class="muted start-note">' + esc(t("me.profileLead")) + "</p></div>" +
       '<button type="button" class="btn btn-primary btn-block press" data-enter><span>' + esc(t("start.go")) + "</span>" + icon("arrow") + "</button>" +
+      loginBlock() +
       (B.ready() ? '<p class="start-alt">' + esc(t("start.haveCode")) + ' <button type="button" class="link-btn" data-view="code">' + esc(t("sync.restore")) + "</button></p>" : "");
   }
 
@@ -90,6 +181,11 @@ Medulla.ready(function () {
     document.title = t(mode === "back" ? "start.backTitle" : mode === "code" ? "sync.restoreTitle" : "meta.start.title").replace(/ — Medulla$/, "") + " — Medulla";
     if (focus) { var h = view.querySelector("h1"); if (h) { h.setAttribute("tabindex", "-1"); h.focus(); } }
     if (mode === "code") { var i = view.querySelector("#restore-code"); if (i) i.focus(); }
+    if (view.querySelector("[data-google]")) {
+      // Google's button needs the consent box first; render it once the box is ticked.
+      var box = view.querySelector("#login-ok");
+      if (box) box.addEventListener("change", function () { if (box.checked) startGoogle(); });
+    }
   }
 
   function pickAvatar(btn) {
@@ -113,6 +209,7 @@ Medulla.ready(function () {
     if (av) { pickAvatar(av); return; }
     if (tgt.closest("[data-reroll]")) { Store.setProfile({ nick: Store.randomNick() }); view.querySelector("#start-nick").textContent = nick(); S.tap(); return; }
     if (tgt.closest("[data-enter]")) { enter(); return; }
+    if (tgt.closest("[data-login]")) { startTelegram(); return; }
     var v = tgt.closest("[data-view]");
     if (v) { mode = v.getAttribute("data-view"); draw(true); return; }
     if (tgt.closest("[data-export]")) {

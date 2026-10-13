@@ -38,7 +38,17 @@ window.MEDULLA_CONFIG = {
   // the database only allows the functions in backend/schema.sql). Never put the
   // secret / service_role key here. Test without keys: add ?backend=mock.
   // Step by step: backend/README.md.
-  backend: { provider: null, url: null, anonKey: null },
+  //
+  // "worker" (2.7) = the Cloudflare Worker from telegram/ keeps the sync copies and
+  // verifies Sign in with Telegram / Google. url = the Worker's address. Needs no
+  // Supabase and no key in this file. See telegram/BOT.md "Sign in on the website".
+  backend: { provider: "worker", url: "https://medulla-bot.medulla-mind.workers.dev", anonKey: null },
+
+  // Sign in with Google needs a Google "OAuth client ID" (public, ends in
+  // .apps.googleusercontent.com); put the same value in telegram/wrangler.toml
+  // (GOOGLE_CLIENT_ID). null = no Google button. Telegram sign-in needs nothing
+  // here: it uses `telegramBot` above and @BotFather /setdomain.
+  googleClientId: null,
 
   // Anonymous +1 counters for the impact bar (no ids, no personal data).
   // Only used when the backend is switched on.

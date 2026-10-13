@@ -13,6 +13,11 @@
  * The Worker reads the facts, the glossary and the bot texts from DATA_URL
  * (data/…), so publishing the site also updates the bot. Nothing is logged.
  *
+ * Website sign-in and sync (telegram/auth.mjs): /auth/telegram, /auth/telegram-webapp,
+ * /auth/google and /sync/*. Needs the AUTH_SECRET secret (any long random string);
+ * Google also needs GOOGLE_CLIENT_ID in wrangler.toml. Progress is kept in the same
+ * KV namespace (SUBS) under "p:<hash of the sync code>".
+ *
  * Daily fact (optional): with a KV namespace bound as SUBS, people can turn on
  * /daily. A cron trigger runs every 5 minutes; in each delivery hour (08, 13,
  * 18 Tashkent time) each run sends today's fact to one twelfth of that hour's
@@ -20,6 +25,7 @@
  */
 import { createAssistant } from "./assistant.mjs";
 import { kvStore, clock, DAILY_HOURS, SLOTS } from "./subscribers.mjs";
+import { handleApi } from "./auth.mjs";
 
 let cache = null; // { at, facts, glossary, strings }
 
@@ -78,6 +84,9 @@ export async function deliverBatch(env, date = new Date()) {
 
 export default {
   async fetch(request, env, ctx) {
+    // Sign in with Telegram / Google and cloud sync for the website (telegram/auth.mjs).
+    const path = new URL(request.url).pathname;
+    if (path.startsWith("/auth/") || path.startsWith("/sync/")) return handleApi(request, env, path);
     if (request.method !== "POST") return new Response("Medulla bot is running.", { status: 200 });
     // Only Telegram knows the secret (set with setWebhook … &secret_token=).
     if (!env.WEBHOOK_SECRET || request.headers.get("X-Telegram-Bot-Api-Secret-Token") !== env.WEBHOOK_SECRET) {

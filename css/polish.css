@@ -1352,3 +1352,13 @@ html[data-theme="dark"] .theme-btn .icon-moon { display: none; }
     url("../assets/img/start-neurons.webp") left top / cover no-repeat;
 }
 html.a11y-nodecor .start-brand::after { background: none; }
+
+/* Sign in with Telegram / Google (2.7) */
+.start-login { margin-top: 20px; display: grid; gap: 12px; }
+.start-or { display: flex; align-items: center; gap: 12px; margin: 0; color: var(--ink-3); font-size: 0.9rem; }
+.start-or::before, .start-or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.login-consent { display: flex; gap: 10px; align-items: flex-start; font-size: 0.92rem; color: var(--ink-2); cursor: pointer; }
+.login-consent input { width: 20px; height: 20px; margin-top: 2px; flex: none; accent-color: var(--purple); }
+.login-buttons { display: grid; gap: 10px; justify-items: center; }
+.login-buttons .btn-block { width: 100%; }
+.login-slot:empty { display: none; }

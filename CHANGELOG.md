@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.7.0 (13 October 2026): sign in with Telegram and Google, cloud sync
+
+### Added
+- **Sign in with Telegram** on the sign-in page (and one tap inside the
+  Telegram Mini App) and **Sign in with Google** (button appears when
+  `googleClientId` is set). Optional: guests still just pick a character.
+  A login needs a ticked box: 18 or older, or a parent or guardian agrees.
+- **How it stays private:** the Worker verifies the login (Telegram's HMAC,
+  Google's signed token) and answers only with a *sync code* derived from the
+  account id and a server secret. The existing sync, restore-by-code and
+  delete buttons work unchanged. Name, username, photo and e-mail are never
+  stored; Telegram's and Google's scripts load only when you ask to sign in.
+- **Worker sync** (`provider: "worker"`): progress copies live in the same
+  Cloudflare KV namespace under the hash of the code; no Supabase needed.
+  Anonymous counters stay off in this mode.
+- 7 tests with real signatures (Telegram hash, Mini App data, a throwaway RSA
+  key for Google's token), CORS and sync limits.
+
 ## 2.6.0 (13 October 2026): a daily fact from the Telegram bot, and a bot that matches the app
 
 ### Added

@@ -162,6 +162,17 @@ Only with each person's permission. Names and photos of adults only.
 - [ ] When the website is live, set `SITE_URL` in `wrangler.toml` and redeploy:
       the bot then shows "Open my brain map" and website buttons.
 
+**Sign in with Telegram and Google (2.7):**
+
+- [x] Telegram: `/setdomain` done, Worker secret `AUTH_SECRET` set, sign-in page live.
+- [ ] Google (only you can do it, about 10 minutes): create the OAuth client
+      in Google Cloud and put its Client ID in `js/config.js` → `googleClientId`
+      and `telegram/wrangler.toml` → `GOOGLE_CLIENT_ID`; steps in
+      `telegram/BOT.md` → "Sign in on the website". Until then there is no Google button.
+- [ ] Update the privacy wording with a lawyer or the school: login stores
+      progress on Medulla's server, so the Art. 21 / parental-consent text
+      (Privacy page, `privacy.t7`) should be reviewed.
+
 **New fact every day, automatically (2.6):**
 
 - [ ] **First push your local work** (versions 2.2–2.6 are still only on this
