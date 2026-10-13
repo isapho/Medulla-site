@@ -29,15 +29,6 @@ team**.
   the first AI-generated poses (`assets/source/poses/`) are kept as source
   material only; the site no longer uses them.
 
-## Generated image (2.5)
-
-- `assets/img/start-neurons.webp`: the background of the sign-in page's brand
-  panel, glowing neurons on a navy night sky. Generated with **Canva's AI
-  image generator** in the team's Canva account (13 October 2026), exported
-  through a working design ("Medulla dark navy working canvas") at
-  1350 × 1800 and saved as WebP. Decorative only; it does not show real
-  anatomy.
-
 ## Generated images (2.1)
 
 Four decorative images were generated with **Canva's AI image generator** in

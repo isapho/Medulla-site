@@ -22,9 +22,12 @@ Medulla.ready(function () {
   var mode = Store.hasProfile() ? "back" : "new";
   var chosen = Store.get().profile.avatar || "dendi";
 
-  function nick() {
-    var n = Store.ensureProfile().nick;
-    return t("nick.format", { adj: t("nick.adj." + n.a), noun: t("nick.noun." + n.n), num: n.num });
+  function nick() { return M.nickName(); }
+
+  // Before signing in: say what is kept, with a link to the Privacy Policy (as on any professional site).
+  function legal() {
+    return '<p class="start-legal">' + esc(t("start.legalA")) + ' <a href="' + M.root() + 'privacy.html" target="_blank" rel="noopener noreferrer">' +
+      esc(t("start.legalLink")) + '<span class="sr-only"> ' + esc(t("a11y.external")) + "</span></a>" + esc(t("start.legalB")) + "</p>";
   }
 
   /* ---- Sign in with Telegram / Google (2.7): optional, for syncing progress.
@@ -126,6 +129,8 @@ Medulla.ready(function () {
   }
 
   function enter() {
+    var nameBox = view.querySelector("#start-name");
+    if (nameBox) Store.setProfile({ name: M.cleanName(nameBox.value) || null });
     Store.signIn({ avatar: chosen });
     try { sessionStorage.setItem("medulla.toast", "welcome"); } catch (e) { /* ignore */ }
     S.correct();
@@ -149,7 +154,11 @@ Medulla.ready(function () {
       '<div class="start-step"><p class="start-step-label" id="start-pick-label"><span class="start-num" aria-hidden="true">1</span>' + esc(t("start.pick")) + "</p>" + picker() + "</div>" +
       '<div class="start-step"><p class="start-step-label"><span class="start-num" aria-hidden="true">2</span>' + esc(t("start.nick")) + "</p>" +
         '<div class="nick-row"><span class="nick" id="start-nick">' + esc(nick()) + '</span><button type="button" class="btn btn-ghost btn-sm press" data-reroll>' + icon("refresh") + "<span>" + esc(t("me.newNick")) + "</span></button></div>" +
+        '<div class="field start-name"><label for="start-name">' + esc(t("start.nameLabel")) + ' <span class="muted">' + esc(t("start.nameOptional")) + "</span></label>" +
+          '<input id="start-name" class="input" maxlength="20" autocomplete="off" spellcheck="false" placeholder="' + esc(t("start.namePlaceholder")) + '" value="' + esc(Store.get().profile.name || "") + '" aria-describedby="start-name-hint">' +
+          '<p class="muted start-note" id="start-name-hint">' + esc(t("start.nameHint")) + "</p></div>" +
         '<p class="muted start-note">' + esc(t("me.profileLead")) + "</p></div>" +
+      legal() +
       '<button type="button" class="btn btn-primary btn-block press" data-enter><span>' + esc(t("start.go")) + "</span>" + icon("arrow") + "</button>" +
       loginBlock() +
       (B.ready() ? '<p class="start-alt">' + esc(t("start.haveCode")) + ' <button type="button" class="link-btn" data-view="code">' + esc(t("sync.restore")) + "</button></p>" : "");
@@ -161,6 +170,7 @@ Medulla.ready(function () {
       "<h1>" + esc(t("start.backTitle")) + '</h1><p class="lead">' + esc(t("start.backLead")) + "</p>" +
       '<div class="start-profile">' + M.avatarPic(Object.assign({}, s.profile, { avatar: chosen }), "me-avatar") +
         "<span><strong>" + esc(nick()) + "</strong><small>" + esc(t("start.levelLine", { n: lv.level, xp: M.fmt(s.xp) })) + "</small></span></div>" +
+      legal() +
       '<button type="button" class="btn btn-primary btn-block press" data-enter><span>' + esc(t("start.continue")) + "</span>" + icon("arrow") + "</button>" +
       '<p class="start-alt"><button type="button" class="link-btn" data-view="fresh">' + esc(t("start.newProfile")) + "</button>" +
         (B.ready() ? ' · <button type="button" class="link-btn" data-view="code">' + esc(t("sync.restore")) + "</button>" : "") + "</p>";
@@ -215,7 +225,7 @@ Medulla.ready(function () {
     var tgt = e.target;
     var av = tgt.closest("[data-avatar]");
     if (av) { pickAvatar(av); return; }
-    if (tgt.closest("[data-reroll]")) { Store.setProfile({ nick: Store.randomNick() }); view.querySelector("#start-nick").textContent = nick(); S.tap(); return; }
+    if (tgt.closest("[data-reroll]")) { Store.setProfile({ nick: Store.randomNick() }); var box = view.querySelector("#start-name"); view.querySelector("#start-nick").textContent = (box && M.cleanName(box.value)) || nickWords(); S.tap(); return; }
     if (tgt.closest("[data-enter]")) { enter(); return; }
     if (tgt.closest("[data-login]")) { startTelegram(); return; }
     if (tgt.closest("[data-login-code]")) { submitCode(); return; }
@@ -251,6 +261,17 @@ Medulla.ready(function () {
     }
   });
 
+  // The preview under step 2 follows the typed name; the name is saved when entering.
+  view.addEventListener("input", function (e) {
+    if (e.target.id !== "start-name") return;
+    var out = view.querySelector("#start-nick"), typed = M.cleanName(e.target.value);
+    if (out) out.textContent = typed || nickWords();
+  });
+  function nickWords() {
+    var n = Store.ensureProfile().nick;
+    return t("nick.format", { adj: t("nick.adj." + n.a), noun: t("nick.noun." + n.n), num: n.num });
+  }
+
   // Arrow keys move between characters (radio group).
   view.addEventListener("keydown", function (e) {
     var cur = e.target.closest("[data-avatar]");
@@ -260,6 +281,7 @@ Medulla.ready(function () {
       var nb = all[(i + step + all.length) % all.length];
       e.preventDefault(); pickAvatar(nb); nb.focus();
     }
+    if (e.key === "Enter" && e.target.id === "start-name") { e.preventDefault(); enter(); return; }
     if (e.key === "Enter" && e.target.id === "tg-code-input") { e.preventDefault(); submitCode(); }
     if (e.key === "Enter" && e.target.id === "restore-code") { var r = view.querySelector("[data-restore]"); if (r) r.click(); }
   });

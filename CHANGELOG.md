@@ -3,6 +3,9 @@
 ## 2.7.0 (13 October 2026): sign in with Telegram and Google, cloud sync
 
 ### Added
+- **Badge pop-up:** a new badge opens a dialog (queued if several) with the character, how it was earned, the date and a sound; tap any badge in Me → Badges for the same details. Sound stays off until the visitor turns it on (button in the pop-up).
+- **Profile name:** optional name (20 characters, kept on the device, travels with synced progress) on the sign-in page and in Me → Profile; it replaces the generated nickname.
+- **Privacy before sign-in:** a line with a link to the Privacy Policy above the enter button; privacy.html has a new "Your profile name" section.
 - **Sign in with Telegram** on the sign-in page (and one tap inside the
   Telegram Mini App) and **Sign in with Google** (button appears when
   `googleClientId` is set). Optional: guests still just pick a character.

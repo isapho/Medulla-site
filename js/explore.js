@@ -17,10 +17,7 @@ Medulla.ready(function () {
 
   /* -------------------------------------------------------------- helpers */
 
-  function nick() {
-    var n = Store.ensureProfile().nick;
-    return t("nick.format", { adj: t("nick.adj." + n.a), noun: t("nick.noun." + n.n), num: n.num });
-  }
+  function nick() { return M.nickName(); }
   function avatar() { return Store.get().profile.avatar || "dendi"; }
   function today() { return Store.dayKey(); }
   function dayIdx() { return M.todayIndex(1000); }
@@ -434,6 +431,10 @@ Medulla.ready(function () {
       '<div style="display:grid;gap:16px">' +
         '<section class="card app-card"><h2>' + esc(t("me.profile")) + '</h2><p class="muted">' + esc(t("me.profileLead")) + "</p>" +
           '<div class="nick-row" style="margin:10px 0 16px"><span class="nick">' + esc(nick()) + '</span><button type="button" class="btn btn-ghost btn-sm press" data-new-nick>' + icon("refresh") + "<span>" + esc(t("me.newNick")) + "</span></button></div>" +
+          '<form class="field profile-name-form" data-name-form novalidate><label for="me-name">' + esc(t("start.nameLabel")) + ' <span class="muted">' + esc(t("start.nameOptional")) + "</span></label>" +
+            '<div class="btn-row"><input id="me-name" class="input" maxlength="20" autocomplete="off" spellcheck="false" placeholder="' + esc(t("start.namePlaceholder")) + '" value="' + esc(Store.get().profile.name || "") + '" style="flex:1;min-width:160px" aria-describedby="me-name-hint">' +
+            '<button type="submit" class="btn btn-ghost press">' + icon("check") + "<span>" + esc(t("me.saveName")) + "</span></button></div>" +
+            '<p class="muted start-note" id="me-name-hint">' + esc(t("start.nameHint")) + "</p></form>" +
           avatarStudio() + "</section>" +
         '<section class="card app-card"><h2>' + esc(t("sync.title")) + "</h2>" + syncBody + "</section>" +
         '<section class="card app-card"><h2>' + esc(t("club.title")) + "</h2>" + clubBody + "</section>" +
@@ -479,8 +480,19 @@ Medulla.ready(function () {
     "</div>";
   }
 
+  function nameSubmit(e) {
+    var form = e.target.closest && e.target.closest("[data-name-form]");
+    if (!form) return;
+    e.preventDefault();
+    var name = M.cleanName(form.querySelector("input").value);
+    Store.setProfile({ name: name || null });
+    draw();
+    M.toast({ icon: "check", title: t(name ? "me.nameSaved" : "me.nameCleared"), ms: 2200 });
+  }
+
   function wireMe() {
     view.addEventListener("click", meClick);
+    view.addEventListener("submit", nameSubmit);
     var s = Store.get();
     if (s.club && B.ready()) {
       B.club(s.club).then(function (r) {
@@ -648,6 +660,7 @@ Medulla.ready(function () {
   function draw() {
     if (gameCtrl) { gameCtrl.destroy(); gameCtrl = null; }
     view.removeEventListener("click", meClick);
+    view.removeEventListener("submit", nameSubmit);
     view.removeEventListener("click", mapClick);
     var r = currentRoute();
     if (r !== "daily") dailyStep = null;

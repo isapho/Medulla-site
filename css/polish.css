@@ -1341,17 +1341,8 @@ html[data-theme="dark"] .theme-btn .icon-moon { display: none; }
   .start-picker .avatar-option { max-height: clamp(72px, 11vh, 110px); }
   .start-alt { margin-top: 12px; }
 }
-/* Sign-in brand panel backdrop: glowing neurons on navy, generated with
-   Canva (2.5, see CREDITS.md). A navy veil keeps the text readable. */
+/* Sign-in brand panel: clean navy glow only (the 2.5 neuron photo sat behind the logo and made it look blurry). */
 .start-brand > * { position: relative; z-index: 1; }
-.start-brand::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background:
-    radial-gradient(260px 90px at 120px 50px, rgba(11, 15, 36, 0.75), transparent 75%),
-    linear-gradient(180deg, rgba(11, 15, 36, 0) 30%, rgba(11, 15, 36, 0.55) 62%, rgba(11, 15, 36, 0.85) 100%),
-    url("../assets/img/start-neurons.webp") left top / cover no-repeat;
-}
-html.a11y-nodecor .start-brand::after { background: none; }
 
 /* Sign in with Telegram / Google (2.7) */
 .start-login { margin-top: 20px; display: grid; gap: 12px; }
@@ -1367,3 +1358,39 @@ html.a11y-nodecor .start-brand::after { background: none; }
 .tg-code label { font-weight: 800; font-size: 0.9rem; }
 .tg-code-row { display: flex; gap: 8px; }
 .tg-code-row .input { flex: 1; min-width: 0; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 800; }
+
+/* ---- 2.7: badge pop-up, profile name, legal line on sign-in ---- */
+.badge-btn { display: grid; justify-items: center; gap: 6px; width: calc(100% + 20px); margin: -16px -10px -14px; padding: 16px 10px 14px; border: 0; border-radius: inherit; background: none; color: inherit; font: inherit; text-align: center; cursor: pointer; }
+.badge-btn:focus-visible { outline: 3px solid var(--purple); outline-offset: 2px; }
+.badge-btn:hover .badge-art { transform: scale(1.06); }
+.badge-art { transition: transform 0.2s cubic-bezier(.3, 1.5, .5, 1); }
+dialog.badge-pop { width: min(380px, calc(100% - 24px)); text-align: center; }
+.badge-pop-body { justify-items: center; background: linear-gradient(180deg, var(--surface), var(--orange-100)); }
+.badge-pop-body:not(.is-earned) { background: var(--surface); }
+.badge-pop-art { position: relative; display: grid; place-items: center; width: 168px; height: 168px; }
+.badge-pop-disc { position: relative; z-index: 1; display: grid; place-items: end center; overflow: hidden; width: 132px; height: 132px; border-radius: 50%; background: var(--tint); box-shadow: 0 0 0 4px var(--white), 0 0 0 7px var(--orange), 0 14px 30px -8px rgba(255, 159, 67, 0.7); }
+.badge-pop-disc img { height: 86%; width: auto; max-width: 90%; object-fit: contain; }
+.badge-pop-body:not(.is-earned) .badge-pop-disc { filter: grayscale(1); opacity: 0.6; box-shadow: 0 0 0 4px var(--white), 0 0 0 7px var(--line-2); }
+.badge-pop-body:not(.is-earned) .badge-lock { right: 14px; bottom: 14px; width: 34px; height: 34px; }
+.badge-rays { position: absolute; inset: 0; border-radius: 50%; background: repeating-conic-gradient(from 0deg, rgba(255, 159, 67, 0.55) 0 10deg, transparent 10deg 30deg); -webkit-mask: radial-gradient(circle, transparent 38%, #000 40%, #000 62%, transparent 72%); mask: radial-gradient(circle, transparent 38%, #000 40%, #000 62%, transparent 72%); }
+.badge-pop-body .eyebrow { margin: 0; }
+.badge-pop-how { margin: 0; color: var(--ink-2); }
+.badge-pop-facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; color: var(--ink-3); font-size: 0.9rem; }
+.badge-pop-facts li { display: flex; gap: 8px; align-items: center; justify-content: center; }
+.badge-pop-facts .icon { width: 16px; height: 16px; color: var(--purple); }
+.badge-pop-body .btn-row { justify-content: center; }
+@media (prefers-reduced-motion: no-preference) {
+  dialog.badge-pop[open] { animation: badge-pop-in 0.45s cubic-bezier(.3, 1.6, .5, 1) both; }
+  dialog.badge-pop[open] .badge-pop-disc { animation: badge-bounce 0.7s 0.15s cubic-bezier(.3, 1.8, .5, 1) both; }
+  .badge-rays { animation: badge-spin 14s linear infinite; }
+}
+html.calm dialog.badge-pop[open], html.calm dialog.badge-pop[open] .badge-pop-disc, html.calm .badge-rays { animation: none; }
+@keyframes badge-pop-in { from { transform: scale(0.7) translateY(24px); opacity: 0; } }
+@keyframes badge-bounce { 0% { transform: scale(0.3) rotate(-14deg); } 100% { transform: none; } }
+@keyframes badge-spin { to { transform: rotate(360deg); } }
+.start-legal { margin: 0; font-size: 0.86rem; color: var(--ink-3); line-height: 1.5; }
+.start-legal a { color: var(--purple); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.start-name { margin-top: 12px; }
+.profile-name-form { margin: 0 0 16px; }
+
+.start-logo { image-rendering: auto; width: min(260px, 64%); aspect-ratio: 1; object-fit: contain; filter: drop-shadow(0 10px 28px rgba(108, 92, 231, 0.45)); }

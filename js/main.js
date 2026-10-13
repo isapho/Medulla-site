@@ -371,16 +371,95 @@
   var BADGE_INDEX = {};
   ((window.MedullaStore || {}).badges || []).forEach(function (b) { BADGE_INDEX[b.id] = b; });
 
+  /* ------------------------------------------------- badge pop-up (2.7) */
+
+  // One dialog for new badges (queued, with a sound) and for tapping any badge
+  // in the grid (details: who it belongs to, how to get it, when it was earned).
+  var badgeDlg = null, badgeQueue = [], badgeOpener = null;
+
+  function ensureBadgeDlg() {
+    if (badgeDlg) return badgeDlg;
+    badgeDlg = document.createElement("dialog");
+    badgeDlg.className = "modal badge-pop";
+    badgeDlg.setAttribute("aria-labelledby", "badge-pop-title");
+    document.body.appendChild(badgeDlg);
+    badgeDlg.addEventListener("click", function (e) {
+      if (e.target === badgeDlg || e.target.closest("[data-badge-close]")) badgeDlg.close();
+      else if (e.target.closest("[data-badge-sound]")) {
+        var S = window.MedullaSound;
+        if (!S || !S.supported()) return;
+        if (!S.isOn()) S.setEnabled(true); // a click: the browser allows audio, and the choice is remembered
+        S.badge();
+        paintSoundBtn();
+      }
+    });
+    badgeDlg.addEventListener("close", function () {
+      if (badgeQueue.length) setTimeout(nextBadge, 250);
+      else if (badgeOpener && document.contains(badgeOpener)) { try { badgeOpener.focus(); } catch (er) { /* ignore */ } }
+    });
+    return badgeDlg;
+  }
+
+  function paintSoundBtn() {
+    var b = badgeDlg && badgeDlg.querySelector("[data-badge-sound]"), S = window.MedullaSound;
+    if (!b) return;
+    if (!S || !S.supported()) { b.remove(); return; }
+    b.querySelector("span").textContent = t(S.isOn() ? "badge.playSound" : "badge.soundOn");
+  }
+
+  function nextBadge() {
+    var id = badgeQueue.shift();
+    if (id) openBadge(id, { fresh: true });
+  }
+
+  function openBadge(id, o) {
+    o = o || {};
+    var b = BADGE_INDEX[id], S = window.MedullaSound;
+    if (!b || !CHARACTERS[b.char]) return;
+    var dlg = ensureBadgeDlg();
+    if (dlg.open) { if (o.fresh) badgeQueue.unshift(id); return; }
+    if (!o.fresh) badgeOpener = document.activeElement;
+    var st = Store.get(), got = st.badges[id], ch = CHARACTERS[b.char];
+    var total = Store.badges.length, have = Object.keys(st.badges).length;
+    dlg.innerHTML =
+      '<div class="modal-body badge-pop-body' + (got ? " is-earned" : "") + '" style="--tint:' + ch.tint + '">' +
+        '<div class="badge-pop-art" aria-hidden="true">' + (got ? '<span class="badge-rays"></span>' : "") +
+          '<span class="badge-pop-disc">' + (got ? poseImg(b.char, "win", "", true) : charFace(b.char) + '<span class="badge-lock">' + icon("lock") + "</span>") + "</span></div>" +
+        '<p class="eyebrow">' + icon(got ? "trophy" : "lock") + "<span>" + esc(t(got ? (o.fresh ? "badge.unlocked" : "badge.earned") : "badge.locked")) + "</span></p>" +
+        '<h2 id="badge-pop-title">' + esc(t("badge." + id + ".name")) + "</h2>" +
+        '<p class="badge-pop-how">' + esc(t("badge." + id + ".how")) + "</p>" +
+        '<ul class="badge-pop-facts">' +
+          "<li>" + icon("user") + "<span>" + esc(t("badge.belongs", { name: ch.name })) + "</span></li>" +
+          (got ? "<li>" + icon("check") + "<span>" + esc(t("badge.on", { date: String(got).slice(0, 10) })) + "</span></li>" : "") +
+          "<li>" + icon("trophy") + "<span>" + esc(t("badges.count", { n: have, total: total })) + "</span></li>" +
+        "</ul>" +
+        '<div class="btn-row">' +
+          '<button type="button" class="btn btn-ghost btn-sm press" data-badge-sound>' + icon("sound") + "<span></span></button>" +
+          '<button type="button" class="btn btn-primary press" data-badge-close><span>' + esc(t(got ? "badge.nice" : "badge.close")) + "</span></button>" +
+        "</div></div>";
+    paintSoundBtn();
+    dlg.showModal();
+    if (S) { if (got) S.badge(); else S.tap(); } // silent unless the visitor turned sound on
+    var c = dlg.querySelector("[data-badge-close]"); if (c) c.focus();
+  }
+
+  document.addEventListener("click", function (e) {
+    var el = e.target.closest && e.target.closest("[data-badge]");
+    if (el) openBadge(el.getAttribute("data-badge"));
+  });
+
   document.addEventListener("medulla:progress", function (e) {
     var d = e.detail || {};
     var S = window.MedullaSound, Mo = window.MedullaMotion;
-    (d.badges || []).forEach(function (id, i) {
-      setTimeout(function () {
+    (d.badges || []).forEach(function (id) {
+      if (!BADGE_INDEX[id]) return;
+      if (typeof HTMLDialogElement === "undefined") {
         toast({ char: BADGE_INDEX[id].char, title: t("badge.unlocked"), text: t("badge." + id + ".name"), tone: "badge", ms: 5200 });
         if (S) S.badge();
-        if (Mo) Mo.burst();
-      }, i * 700);
+      } else badgeQueue.push(id);
+      if (Mo) Mo.burst();
     });
+    if (badgeQueue.length && !(badgeDlg && badgeDlg.open)) setTimeout(nextBadge, 650); // let the answer feedback show first
     if (d.network) {
       toast({ char: "dendi", pose: "win", title: t("map.networkToast"), text: t("map.networkToastText"), tone: "level", ms: 5200 });
       if (S) S.badge();
@@ -676,8 +755,14 @@
     }
   }
 
+  // A profile name the visitor typed (kept on the device) wins over the generated nickname.
+  function cleanName(v) {
+    return String(v || "").replace(/[\u0000-\u001F\u007F<>]/g, "").replace(/\s+/g, " ").trim().slice(0, 20);
+  }
   function nickName() {
-    var n = Store.ensureProfile().nick;
+    var p = Store.ensureProfile(), custom = cleanName(p.name);
+    if (custom) return custom;
+    var n = p.nick;
     return t("nick.format", { adj: t("nick.adj." + n.a), noun: t("nick.noun." + n.n), num: n.num });
   }
 
@@ -1103,9 +1188,10 @@
       el.innerHTML = list.map(function (b) {
         var got = !!s.badges[b.id];
         return '<li class="badge' + (got ? " is-earned" : "") + '" style="--tint:' + CHARACTERS[b.char].tint + '">' +
+          '<button type="button" class="badge-btn" data-badge="' + b.id + '" aria-haspopup="dialog">' +
           '<span class="badge-art">' + (got ? poseImg(b.char, "win", "") : charFace(b.char)) + (got ? "" : '<span class="badge-lock">' + icon("lock") + "</span>") + "</span>" +
           '<span class="badge-name">' + esc(t("badge." + b.id + ".name")) + "</span>" +
-          '<span class="badge-how">' + esc(got ? t("badge.earned") : t("badge." + b.id + ".how")) + "</span></li>";
+          '<span class="badge-how">' + esc(got ? t("badge.earned") : t("badge." + b.id + ".how")) + "</span></button></li>";
       }).join("");
     },
 
@@ -1332,6 +1418,9 @@
     avatarSrc: avatarSrc,
     avatarPic: avatarPic,
     toast: toast,
+    nickName: nickName,
+    cleanName: cleanName,
+    openBadge: openBadge,
     applyI18n: applyI18n,
     runRenderers: runRenderers,
     renderIcons: renderIcons,
