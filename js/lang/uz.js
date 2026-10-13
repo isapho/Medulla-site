@@ -1203,6 +1203,7 @@ Object.assign(window.MEDULLA_I18N.strings.uz, {
   "login.codeGo": "Kirish",
   "login.codeBad": "Bu kod ishlamadi. Muddati tugagan boʻlishi mumkin: botdan /login bilan yangisini soʻrang.",
   "login.note": "Faqat natijalaringiz saqlanadi, serverimizda yaratilgan kod ostida. Ismingiz, foydalanuvchi nomingiz, rasmingiz va e-pochtangiz hech qachon saqlanmaydi.",
+  "login.more": "Qurilmalar oʻrtasida sinxronlash (ixtiyoriy)",
   "privacy.t7": "Telegram yoki Google orqali kirish (ixtiyoriy): kirishni Medulla serveri tekshiradi va faqat natijalaringizni akkaunt identifikatoringiz hamda server siri asosida yaratilgan kod ostida saqlaydi. Ismingiz, foydalanuvchi nomingiz, rasmingiz va e-pochtangiz saqlanmaydi. Telegram va Google skriptlari faqat kirishni soʻraganingizda yuklanadi. Istalgan payt Men → Sinxronlash boʻlimida oʻchirishingiz mumkin.",
   "start.backTitle": "Qaytganingizdan xursandmiz!",
   "start.backLead": "Bu qurilmada saqlangan profilingiz:",

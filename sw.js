@@ -7,7 +7,7 @@
  *  - Other same-origin files (images): served from cache, refreshed in the background.
  *  - Google Fonts: cached after first use. Everything else: network only.
  */
-const VERSION = "medulla-4952d80757";
+const VERSION = "medulla-ef4d98b582";
 const PRECACHE = [
   "./",
   "index.html",

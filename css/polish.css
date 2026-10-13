@@ -1318,9 +1318,23 @@ html[data-theme="dark"] .theme-btn .icon-moon { display: none; }
 
 /* Sign-in page fits one screen (2.5): the character sits beside the heading,
    and on shorter laptop screens everything is scaled to the window height. */
-.start-card::after { content: ""; display: table; clear: both; }
-.start-card .start-hero-art { float: right; width: 88px; height: 88px; margin: 0 0 8px 16px; border-radius: 26px; }
-.start-card .start-step, .start-card .btn-block { clear: both; }
+/* Header row: character beside the title; the lead stays one short line. */
+.start-head { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+.start-head > div { min-width: 0; }
+.start-head .start-hero-art { flex: none; width: 84px; height: 84px; margin: 0; border-radius: 26px; }
+.start-head h1 { margin: 0 0 4px; }
+.start-head .lead { margin: 0; font-size: 0.95rem; }
+.start-card .start-step { margin-bottom: 16px; }
+.start-card .start-step-label { font-size: 0.95rem; }
+.start-card .nick-row { gap: 8px; }
+.start-card .nick { font-size: 1.05rem; }
+.start-name { margin-top: 4px; }
+.start-card .start-note { font-size: 0.8rem; line-height: 1.4; }
+.start-card .start-legal { margin-bottom: 12px; font-size: 0.8rem; }
+.start-card .start-login { margin-top: 14px; gap: 10px; }
+.start-card .login-consent { font-size: 0.82rem; }
+.start-card .login-consent input { width: 18px; height: 18px; }
+.start-card .login-buttons .btn { min-height: 44px; }
 .start-cast img { object-fit: contain; }
 @media (min-width: 960px) {
   .start { height: 100vh; height: 100dvh; min-height: 0; }
@@ -1333,11 +1347,7 @@ html[data-theme="dark"] .theme-btn .icon-moon { display: none; }
   .start-points .icon { width: clamp(30px, 4vh, 36px); height: clamp(30px, 4vh, 36px); padding: 6px; }
   .start-cast img { width: clamp(38px, 5.4vh, 50px); height: clamp(38px, 5.4vh, 50px); }
   .start-card { margin-block: 0; padding: clamp(18px, 3vh, 28px) clamp(22px, 3vw, 36px); }
-  .start-card .eyebrow { margin-bottom: 4px; }
-  .start-card h1 { font-size: clamp(1.6rem, 0.7rem + 2.6vh, 2.3rem); margin-bottom: 6px; }
-  .start-card .lead { margin-bottom: clamp(12px, 2.2vh, 22px); font-size: 0.95rem; }
-  .start-step { gap: 8px; margin-bottom: clamp(12px, 2.2vh, 22px); }
-  .start-card .start-hero-art { width: clamp(72px, 10vh, 96px); height: clamp(72px, 10vh, 96px); }
+  .start-card h1 { font-size: clamp(1.4rem, 0.6rem + 2.2vh, 1.9rem); }
   .start-picker .avatar-option { max-height: clamp(72px, 11vh, 110px); }
   .start-alt { margin-top: 12px; }
 }
@@ -1394,3 +1404,13 @@ html.calm dialog.badge-pop[open], html.calm dialog.badge-pop[open] .badge-pop-di
 .profile-name-form { margin: 0 0 16px; }
 
 .start-logo { image-rendering: auto; width: min(260px, 64%); aspect-ratio: 1; object-fit: contain; filter: drop-shadow(0 10px 28px rgba(108, 92, 231, 0.45)); }
+
+/* Optional sync sits in a fold under the main button (keeps the card short). */
+details.start-login { margin-top: 12px; padding: 0; border-top: 1px solid var(--line); }
+details.start-login > summary { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; margin-top: 4px; color: var(--ink-2); font-size: 0.88rem; font-weight: 700; cursor: pointer; list-style: none; }
+details.start-login > summary::-webkit-details-marker { display: none; }
+details.start-login > summary::after { content: ""; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform 0.2s; }
+details.start-login[open] > summary::after { transform: rotate(-135deg); }
+details.start-login > summary:focus-visible { outline: 3px solid var(--purple); outline-offset: 2px; border-radius: 12px; }
+details.start-login[open] { display: grid; gap: 10px; }
+.start-home { white-space: nowrap; }

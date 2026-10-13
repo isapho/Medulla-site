@@ -45,8 +45,8 @@ Medulla.ready(function () {
     if (!loginOn()) return "";
     var google = !!(window.MEDULLA_CONFIG || {}).googleClientId, tg = !!tgBot() || inTelegram();
     if (!google && !tg) return "";
-    return '<div class="start-login">' +
-      '<p class="start-or" aria-hidden="true"><span>' + esc(t("start.or")) + "</span></p>" +
+    // Optional sync: folded away so the sign-in card stays short.
+    return '<details class="start-login"><summary>' + esc(t("login.more")) + "</summary>" +
       '<label class="login-consent"><input type="checkbox" id="login-ok"><span>' + esc(t("login.consent")) + "</span></label>" +
       '<div class="login-buttons">' +
         (tg ? '<button type="button" class="btn btn-ghost btn-block press" data-login="telegram">' + icon("telegram") + "<span>" + esc(t("login.telegram")) + "</span></button>" : "") +
@@ -54,7 +54,7 @@ Medulla.ready(function () {
         (google ? '<div id="g-slot" class="login-slot" data-google></div>' : "") +
       "</div>" +
       '<p class="muted start-note" id="login-msg" role="status"></p>' +
-      '<p class="muted start-note">' + esc(t("login.note")) + "</p></div>";
+      '<p class="muted start-note">' + esc(t("login.note")) + "</p></details>";
   }
 
   function loginMsg(key, vars) { var m = view.querySelector("#login-msg"); if (m) m.textContent = key ? t(key, vars) : ""; }
@@ -151,17 +151,19 @@ Medulla.ready(function () {
     return '<div class="start-hero-art" style="--tint:' + M.characters[chosen].tint + '">' + M.poseImg(chosen, pose, "idle idle-" + chosen, true) + "</div>";
   }
 
+  // Character on the left, title and a one-line lead on the right: keeps the card short.
+  function head(pose, title, lead) {
+    return '<div class="start-head">' + hero(pose) + "<div><h1>" + esc(title) + '</h1><p class="lead">' + esc(lead) + "</p></div></div>";
+  }
+
   function viewNew() {
-    return hero("hello") +
-      '<p class="eyebrow">' + icon("sparkle") + "<span>" + esc(t("nav.explore")) + "</span></p>" +
-      "<h1>" + esc(t("start.title")) + '</h1><p class="lead">' + esc(t("start.lead")) + "</p>" +
+    return head("hello", t("start.title"), t("start.lead")) +
       '<div class="start-step"><p class="start-step-label" id="start-pick-label"><span class="start-num" aria-hidden="true">1</span>' + esc(t("start.pick")) + "</p>" + picker() + "</div>" +
       '<div class="start-step"><p class="start-step-label"><span class="start-num" aria-hidden="true">2</span>' + esc(t("start.nick")) + "</p>" +
         '<div class="nick-row"><span class="nick" id="start-nick">' + esc(nick()) + '</span><button type="button" class="btn btn-ghost btn-sm press" data-reroll>' + icon("refresh") + "<span>" + esc(t("me.newNick")) + "</span></button></div>" +
         '<div class="field start-name"><label for="start-name">' + esc(t("start.nameLabel")) + ' <span class="muted">' + esc(t("start.nameOptional")) + "</span></label>" +
           '<input id="start-name" class="input" maxlength="20" autocomplete="off" spellcheck="false" placeholder="' + esc(t("start.namePlaceholder")) + '" value="' + esc(Store.get().profile.name || "") + '" aria-describedby="start-name-hint">' +
-          '<p class="muted start-note" id="start-name-hint">' + esc(t("start.nameHint")) + "</p></div>" +
-        '<p class="muted start-note">' + esc(t("me.profileLead")) + "</p></div>" +
+          '<p class="muted start-note sr-only" id="start-name-hint">' + esc(t("start.nameHint")) + "</p></div></div>" +
       legal() +
       '<button type="button" class="btn btn-primary btn-block press" data-enter><span>' + esc(t("start.go")) + "</span>" + icon("arrow") + "</button>" +
       loginBlock() +
@@ -170,8 +172,7 @@ Medulla.ready(function () {
 
   function viewBack() {
     var s = Store.get(), lv = Store.level();
-    return hero("win") +
-      "<h1>" + esc(t("start.backTitle")) + '</h1><p class="lead">' + esc(t("start.backLead")) + "</p>" +
+    return head("win", t("start.backTitle"), t("start.backLead")) +
       '<div class="start-profile">' + M.avatarPic(Object.assign({}, s.profile, { avatar: chosen }), "me-avatar") +
         "<span><strong>" + esc(nick()) + "</strong><small>" + esc(t("start.levelLine", { n: lv.level, xp: M.fmt(s.xp) })) + "</small></span></div>" +
       legal() +
@@ -181,16 +182,14 @@ Medulla.ready(function () {
   }
 
   function viewFresh() {
-    return hero("tryagain") +
-      "<h1>" + esc(t("start.newTitle")) + '</h1><p class="lead">' + esc(t("start.newText")) + "</p>" +
+    return head("tryagain", t("start.newTitle"), t("start.newText")) +
       '<div class="btn-row"><button type="button" class="btn btn-danger press" data-fresh>' + icon("trash") + "<span>" + esc(t("start.newYes")) + "</span></button>" +
         '<button type="button" class="btn btn-ghost press" data-export>' + icon("download") + "<span>" + esc(t("data.download")) + "</span></button></div>" +
       '<p class="start-alt"><button type="button" class="link-btn" data-view="back">' + icon("arrowLeft", "icon-sm") + esc(t("consent.cancel")) + "</button></p>";
   }
 
   function viewCode() {
-    return hero("curious") +
-      "<h1>" + esc(t("sync.restoreTitle")) + '</h1><p class="lead">' + esc(t("sync.restoreLead")) + "</p>" +
+    return head("curious", t("sync.restoreTitle"), t("sync.restoreLead")) +
       '<div class="field"><label for="restore-code">' + esc(t("sync.yourCode")) + '</label><input id="restore-code" class="input" autocomplete="off" spellcheck="false" placeholder="OCTA-XXXX-XXXX-XXXX"></div>' +
       '<p class="muted" id="restore-msg" role="status"></p>' +
       '<div class="btn-row"><button type="button" class="btn btn-primary press" data-restore>' + icon("download") + "<span>" + esc(t("sync.restore")) + "</span></button>" +
@@ -290,6 +289,28 @@ Medulla.ready(function () {
     if (e.key === "Enter" && e.target.id === "restore-code") { var r = view.querySelector("[data-restore]"); if (r) r.click(); }
   });
 
+  // On laptop screens the whole card is zoomed out until it fits the window (never below 70%);
+  // on phones it just scrolls. Re-run whenever the content or the window changes.
+  var card = view, fitting = 0;
+  function fit() {
+    cancelAnimationFrame(fitting);
+    fitting = requestAnimationFrame(function () {
+      card.style.zoom = "";
+      var main = card.parentNode;
+      if (window.innerWidth < 960) return;
+      var cs = getComputedStyle(main), used = 0;
+      Array.prototype.forEach.call(main.children, function (c) { if (c !== card) used += c.offsetHeight; });
+      var gaps = (main.children.length - 1) * (parseFloat(cs.rowGap) || 0);
+      var room = main.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - used - gaps;
+      var need = card.offsetHeight;
+      if (need > room && room > 0) card.style.zoom = String(Math.max(0.7, Math.floor((room / need) * 100) / 100));
+    });
+  }
+  window.addEventListener("resize", fit);
+  if (window.MutationObserver) new MutationObserver(fit).observe(view, { childList: true, subtree: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+
   M.onLangChange(function () { draw(false); });
   draw(false);
+  fit();
 });

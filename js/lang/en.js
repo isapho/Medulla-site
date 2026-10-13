@@ -1203,6 +1203,7 @@ Object.assign(window.MEDULLA_I18N.strings.en, {
   "login.codeGo": "Sign in",
   "login.codeBad": "That code didn't work. It may have expired: ask the bot for a new one with /login.",
   "login.note": "Only your progress is kept, under a code made on our server. Your name, username, photo and e-mail are never saved.",
+  "login.more": "Sync across devices (optional)",
   "privacy.t7": "Signing in with Telegram or Google (optional): the login is checked by Medulla's server, which keeps only your progress under a code made from your account id and a server secret. It does not save your name, username, photo or e-mail. Telegram's and Google's own scripts are loaded only when you ask to sign in. Delete it any time in Me → Sync.",
   "start.backTitle": "Welcome back!",
   "start.backLead": "The profile saved on this device:",
