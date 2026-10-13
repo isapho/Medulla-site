@@ -7,6 +7,9 @@
   Telegram Mini App) and **Sign in with Google** (button appears when
   `googleClientId` is set). Optional: guests still just pick a character.
   A login needs a ticked box: 18 or older, or a parent or guardian agrees.
+- **Telegram sign-in with a code from the bot:** `/login` (or `t.me/<bot>?start=login`)
+  sends a one-time code, valid 5 minutes and usable once, which is typed on the
+  sign-in page. No script from telegram.org is loaded and `/setdomain` isn't needed.
 - **How it stays private:** the Worker verifies the login (Telegram's HMAC,
   Google's signed token) and answers only with a *sync code* derived from the
   account id and a server secret. The existing sync, restore-by-code and

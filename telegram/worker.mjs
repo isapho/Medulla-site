@@ -25,7 +25,7 @@
  */
 import { createAssistant } from "./assistant.mjs";
 import { kvStore, clock, DAILY_HOURS, SLOTS } from "./subscribers.mjs";
-import { handleApi } from "./auth.mjs";
+import { handleApi, issueLoginCode } from "./auth.mjs";
 
 let cache = null; // { at, facts, glossary, strings }
 
@@ -61,6 +61,7 @@ async function assistantFor(env) {
     facts: c.facts, glossary: c.glossary, strings: c.strings,
     siteUrl: env.SITE_URL || null, assetBase: env.SITE_URL || dataUrl,
     subs: env.SUBS ? kvStore(env.SUBS) : null,
+    login: env.SUBS && env.AUTH_SECRET ? { issue: (userId) => issueLoginCode(env.SUBS, userId) } : null,
     call: callFor(env), canWait: false
   });
 }

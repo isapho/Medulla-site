@@ -164,7 +164,7 @@ Only with each person's permission. Names and photos of adults only.
 
 **Sign in with Telegram and Google (2.7):**
 
-- [x] Telegram: `/setdomain` done, Worker secret `AUTH_SECRET` set, sign-in page live.
+- [x] Telegram: sign in with a code from the bot (`/login`), Worker secret `AUTH_SECRET` set, sign-in page live.
 - [ ] Google (only you can do it, about 10 minutes): create the OAuth client
       in Google Cloud and put its Client ID in `js/config.js` → `googleClientId`
       and `telegram/wrangler.toml` → `GOOGLE_CLIENT_ID`; steps in

@@ -430,3 +430,24 @@ test("Worker cron: each five-minute run sends one slot of the hour, within the r
     globalThis.fetch = realFetch;
   }
 });
+
+test("/login gives a one-time code in a private chat only, and only when sign-in is on", async () => {
+  const issued = [];
+  const login = { issue: async (id) => { issued.push(id); return "ABCD-2345"; } };
+  const on = harness({ login });
+  await on.bot.handleUpdate(msg("/login", { from: { id: 77, language_code: "en" } }));
+  assert.equal(issued[0], 77);
+  assert.match(on.calls[0].params.text, /<code>ABCD-2345<\/code>/);
+  assert.match(on.calls[0].params.text, /Don't share/);
+  await on.bot.handleUpdate(msg("/login", { chat: { id: -5, type: "group" }, from: { id: 77, language_code: "en" } }));
+  assert.equal(issued.length, 1, "no code in groups");
+  assert.match(on.calls[1].params.text, /private chat/);
+  const off = harness();
+  await off.bot.handleUpdate(msg("/login", { from: { id: 77, language_code: "en" } }));
+  assert.equal(off.calls[0].params.text, strings.en["bot.loginOff"]);
+  // the deep link from the website
+  const dl = harness({ login });
+  await dl.bot.handleUpdate(msg("/start login", { from: { id: 8, language_code: "ru" } }));
+  assert.match(dl.calls[0].params.text, /ABCD-2345/);
+  assert.ok(commandList(strings, "en").some((c) => c.command === "login"));
+});

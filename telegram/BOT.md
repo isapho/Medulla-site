@@ -132,8 +132,12 @@ all of it already done for Telegram:
 1. `npx wrangler secret put AUTH_SECRET`: any long random string. Keep it: it
    is what turns an account id into a sync code, so a new secret means new
    codes (people can still restore with the old code shown in Me → Sync).
-2. **Telegram:** @BotFather → `/setdomain` → the site's host (`isapho.github.io`).
-   Nothing else; `telegramBot` in `js/config.js` names the bot.
+2. **Telegram:** nothing to set up. The person sends `/login` to the bot (or opens
+   `t.me/<bot>?start=login`), gets a one-time code (8 symbols, valid 5 minutes,
+   usable once) and types it on the sign-in page. The Worker swaps it for the
+   same sync code Telegram's login widget would give. Inside the Mini App it is
+   one tap. (`/auth/telegram`, the widget route, is still there but unused; that
+   is the only reason `/setdomain` would matter.)
 3. **Google** (needs your Google account):
    1. console.cloud.google.com → create a project → APIs & Services → OAuth
       consent screen (External; app name Medulla; your e-mail; scopes: only the

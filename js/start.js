@@ -82,25 +82,33 @@ Medulla.ready(function () {
     });
   }
 
+  // Telegram: inside the Mini App one tap; on the website the bot gives a one-time
+  // code (/login) that is typed here. No script from telegram.org is needed.
   function startTelegram() {
     if (!consented()) return;
-    loginMsg("login.working");
-    if (inTelegram()) { B.login("telegram-webapp", { initData: window.Telegram.WebApp.initData }).then(finishLogin); return; }
-    // Telegram's own widget is loaded only now, when the person asks for it: the site
-    // does not contact telegram.org for anyone who stays a guest.
+    if (inTelegram()) { loginMsg("login.working"); B.login("telegram-webapp", { initData: window.Telegram.WebApp.initData }).then(finishLogin); return; }
     var slot = view.querySelector("#tg-slot");
-    if (!slot || slot.firstChild) return;
-    window.medullaTgAuth = function (user) { loginMsg("login.working"); B.login("telegram", user).then(finishLogin); };
-    var el = document.createElement("script");
-    el.src = "https://telegram.org/js/telegram-widget.js?22"; el.async = true;
-    el.setAttribute("data-telegram-login", tgBot());
-    el.setAttribute("data-size", "large");
-    el.setAttribute("data-userpic", "false");
-    el.setAttribute("data-radius", "14");
-    el.setAttribute("data-onauth", "medullaTgAuth(user)");
-    el.onload = function () { loginMsg("login.tgHint"); };
-    el.onerror = function () { loginMsg("login.fail"); };
-    slot.appendChild(el);
+    if (!slot) return;
+    var bot = tgBot();
+    slot.innerHTML = '<div class="tg-code">' +
+      "<p>" + esc(t("login.tgSteps")) + "</p>" +
+      (bot ? '<a class="btn btn-ghost btn-sm press" target="_blank" rel="noopener" href="https://t.me/' + esc(bot) + '?start=login">' + icon("telegram") + "<span>" + esc(t("login.openBot")) + "</span></a>" : "") +
+      '<label for="tg-code-input">' + esc(t("login.codeLabel")) + '</label>' +
+      '<div class="tg-code-row"><input id="tg-code-input" class="input" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" maxlength="9" placeholder="ABCD-2345">' +
+      '<button type="button" class="btn btn-primary press" data-login-code><span>' + esc(t("login.codeGo")) + "</span></button></div></div>";
+    var inp = slot.querySelector("input"); if (inp) inp.focus();
+  }
+
+  function submitCode() {
+    var inp = view.querySelector("#tg-code-input");
+    if (!inp || !consented()) return;
+    var code = inp.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+    if (code.length !== 8) { loginMsg("login.codeBad"); return; }
+    loginMsg("login.working");
+    B.login("telegram-code", { code: code }).then(function (r) {
+      if (!r || !r.ok) { loginMsg(r && r.reason === "invalid" ? "login.codeBad" : "login.fail"); return; }
+      finishLogin(r);
+    });
   }
 
   function startGoogle() {
@@ -210,6 +218,7 @@ Medulla.ready(function () {
     if (tgt.closest("[data-reroll]")) { Store.setProfile({ nick: Store.randomNick() }); view.querySelector("#start-nick").textContent = nick(); S.tap(); return; }
     if (tgt.closest("[data-enter]")) { enter(); return; }
     if (tgt.closest("[data-login]")) { startTelegram(); return; }
+    if (tgt.closest("[data-login-code]")) { submitCode(); return; }
     var v = tgt.closest("[data-view]");
     if (v) { mode = v.getAttribute("data-view"); draw(true); return; }
     if (tgt.closest("[data-export]")) {
@@ -251,6 +260,7 @@ Medulla.ready(function () {
       var nb = all[(i + step + all.length) % all.length];
       e.preventDefault(); pickAvatar(nb); nb.focus();
     }
+    if (e.key === "Enter" && e.target.id === "tg-code-input") { e.preventDefault(); submitCode(); }
     if (e.key === "Enter" && e.target.id === "restore-code") { var r = view.querySelector("[data-restore]"); if (r) r.click(); }
   });
 

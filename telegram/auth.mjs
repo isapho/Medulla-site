@@ -106,6 +106,25 @@ export async function verifyGoogle(credential, clientId, { fetchImpl = fetch, no
   return { id: String(claims.sub) };
 }
 
+/* One-time login codes: the bot issues one in a private chat (/login), the website
+   exchanges it for the person's sync code. 8 symbols from a 31-symbol alphabet
+   (about 40 bits), valid 5 minutes, usable once. */
+export const LOGIN_TTL = 300;
+export function newLoginCode() {
+  const r = crypto.getRandomValues(new Uint8Array(8));
+  let c = "";
+  for (let i = 0; i < 8; i++) c += ALPHABET[r[i] % ALPHABET.length];
+  return c.slice(0, 4) + "-" + c.slice(4);
+}
+const normLogin = (c) => String(c || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+export async function issueLoginCode(KV, userId) {
+  for (let i = 0; i < 3; i++) {
+    const code = newLoginCode(), k = "l:" + normLogin(code);
+    if (await KV.get(k) === null) { await KV.put(k, String(userId), { expirationTtl: LOGIN_TTL }); return code; }
+  }
+  throw new Error("could not issue a code");
+}
+
 /* ------------------------------------------------------------ the routes */
 
 const KEY = /^[0-9a-f]{64}$/;
@@ -138,6 +157,12 @@ export async function handleApi(request, env, path, { fetchImpl = fetch, now = (
     let who = null, provider = null;
     if (path === "/auth/telegram" && env.BOT_TOKEN) { provider = "telegram"; who = await verifyTelegramWidget(body, env.BOT_TOKEN, now()); }
     else if (path === "/auth/telegram-webapp" && env.BOT_TOKEN) { provider = "telegram"; who = await verifyTelegramWebApp(body.initData, env.BOT_TOKEN, now()); }
+    else if (path === "/auth/telegram-code" && env.SUBS) {
+      provider = "telegram";
+      const k = "l:" + normLogin(body.code);
+      const id = normLogin(body.code).length === 8 ? await env.SUBS.get(k) : null;
+      if (id) { await env.SUBS.delete(k); who = { id: String(id) }; } // single use
+    }
     else if (path === "/auth/google" && env.GOOGLE_CLIENT_ID) { provider = "google"; who = await verifyGoogle(body.credential, env.GOOGLE_CLIENT_ID, { fetchImpl, nowSec: now() }); }
     else return reply({ ok: false, reason: "off" }, 404);
     if (!who) return reply({ ok: false, reason: "invalid" }, 401);

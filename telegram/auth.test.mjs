@@ -125,3 +125,19 @@ test("CORS: only the site (and localhost) may call from a browser", async () => 
   const evil = await api(post("/sync/load", { key: "x" }, "https://evil.example"), e);
   assert.equal(evil.headers.get("Access-Control-Allow-Origin"), null);
 });
+
+import { issueLoginCode, newLoginCode } from "./auth.mjs";
+
+test("bot login code: issued once, exchanged once, same account as the Telegram widget", async () => {
+  const e = env();
+  const code = await issueLoginCode(e.SUBS, 42);
+  assert.match(code, /^[2-9A-HJKMNP-Z]{4}-[2-9A-HJKMNP-Z]{4}$/);
+  assert.equal(new Set(Array.from({ length: 50 }, newLoginCode)).size, 50, "codes don't repeat");
+  const r = await api(post("/auth/telegram-code", { code: code.toLowerCase().replace("-", " ") }), e);
+  const j = await r.json();
+  assert.equal(j.code, await codeFor("s3cret", "telegram", "42"), "same sync code as the widget gives");
+  assert.deepEqual(Object.keys(j).sort(), ["code", "ok"]);
+  assert.equal((await api(post("/auth/telegram-code", { code }), e)).status, 401, "single use");
+  assert.equal((await api(post("/auth/telegram-code", { code: "AAAA-AAAA" }), e)).status, 401, "unknown code");
+  assert.equal((await api(post("/auth/telegram-code", { code: "12" }), e)).status, 401);
+});

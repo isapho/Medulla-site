@@ -73,7 +73,7 @@ function norm(s) {
 /* `subs`: where daily-fact subscriptions live (null = /daily is switched off).
    `assetBase`: an https address that serves assets/characters/<name>.png (the
    site, or the public repository); fact messages then show the character. */
-export function createAssistant({ facts, glossary = [], strings, siteUrl = null, assetBase = null, subs = null, call, now = () => new Date(), random = Math.random, timeZone = "Asia/Tashkent", canWait = false, wait = (ms) => new Promise((r) => setTimeout(r, ms)) }) {
+export function createAssistant({ facts, glossary = [], strings, siteUrl = null, assetBase = null, subs = null, login = null, call, now = () => new Date(), random = Math.random, timeZone = "Asia/Tashkent", canWait = false, wait = (ms) => new Promise((r) => setTimeout(r, ms)) }) {
   if (!facts || !facts.length) throw new Error("createAssistant needs facts");
   const site = siteUrl ? String(siteUrl).replace(/\/$/, "") : null;
   const httpsSite = site && /^https:\/\//.test(site);
@@ -178,6 +178,22 @@ export function createAssistant({ facts, glossary = [], strings, siteUrl = null,
     if (app) rows.push([app]);
     rows.push([btn(t(lang, "bot.btn.backMap"), cb(lang, "a")), btn(t(lang, "bot.btn.menu"), cb(lang, "m"))]);
     return { inline_keyboard: rows };
+  }
+
+  /* ---------------------------------------------------- website sign-in */
+
+  // /login: a one-time code to type on the website. Only in a private chat (the
+  // person's own account), and only where the Worker's storage is available.
+  async function sendLogin(msg, lang) {
+    const chatId = msg.chat.id;
+    if (msg.chat.type !== "private") return send(chatId, escapeHtml(t(lang, "bot.loginPrivate")), { inline_keyboard: [backRow(lang)] });
+    if (!login || !msg.from || !msg.from.id) return send(chatId, escapeHtml(t(lang, "bot.loginOff")), menuKeyboard(lang));
+    const code = await login.issue(msg.from.id);
+    const rows = [];
+    const open = siteButton(t(lang, "bot.btn.openSignIn"), "start.html?lang=" + lang);
+    if (open) rows.push([open]);
+    rows.push(backRow(lang));
+    return send(chatId, escapeHtml(t(lang, "bot.loginCode")) + "\n\n<code>" + escapeHtml(code) + "</code>\n\n" + escapeHtml(t(lang, "bot.loginWarn")), { inline_keyboard: rows });
   }
 
   /* --------------------------------------------------------- daily fact */
@@ -325,11 +341,12 @@ export function createAssistant({ facts, glossary = [], strings, siteUrl = null,
     switch (cmd) {
       case "start": {
         // Deep links: t.me/<bot>?start=fact_<id> | word_<id> | quiz | map | daily | ru / en / uz
-        const m = /^(fact|word|quiz|map|daily)_?([a-z0-9-]*)$/.exec(arg || "");
+        const m = /^(fact|word|quiz|map|daily|login)_?([a-z0-9-]*)$/.exec(arg || "");
         if (LANGS.includes(arg)) lang = arg;
         if (m && m[1] === "fact" && factById(m[2])) return sendFact(chatId, factById(m[2]), lang, "simple");
         if (m && m[1] === "word") { const g = glossary.find((x) => x.id === m[2]); if (g) return send(chatId, termText(g, lang), termKeyboard(g, lang)); }
         if (m && m[1] === "quiz") return sendQuiz(chatId, pick(facts.filter((f) => f.quiz)), lang);
+        if (m && m[1] === "login") return sendLogin(msg, lang);
         if (m && m[1] === "map") return send(chatId, mapText(lang), mapKeyboard(lang));
         if (m && m[1] === "daily") { const s = await dailyScreen(msg.chat, lang); return send(chatId, s.text, s.markup); }
         return send(chatId, welcome(lang), menuKeyboard(lang));
@@ -339,6 +356,7 @@ export function createAssistant({ facts, glossary = [], strings, siteUrl = null,
       case "random": return sendFact(chatId, pick(facts), lang, "simple");
       case "sleep": return sendFact(chatId, pick(areaFacts("sleep")), lang, "simple");
       case "map": return send(chatId, mapText(lang), mapKeyboard(lang));
+      case "login": return sendLogin(msg, lang);
       case "daily": { const s = await dailyScreen(msg.chat, lang); return send(chatId, s.text, s.markup); }
       case "stop": case "unsubscribe": {
         const had = subs && msg.chat.type === "private" ? await subs.get(chatId) : null;
@@ -476,5 +494,5 @@ export function createAssistant({ facts, glossary = [], strings, siteUrl = null,
 /* Commands shown in Telegram's menu, per language. */
 export function commandList(strings, lang) {
   const t = (k) => ((strings[lang] || {})[k] !== undefined ? strings[lang][k] : (strings.en || {})[k] || k);
-  return ["fact", "map", "daily", "quiz", "word", "breathe", "random", "sleep", "lang", "stop", "help", "privacy"].map((c) => ({ command: c, description: t("bot.cmd." + c) }));
+  return ["fact", "map", "daily", "login", "quiz", "word", "breathe", "random", "sleep", "lang", "stop", "help", "privacy"].map((c) => ({ command: c, description: t("bot.cmd." + c) }));
 }
