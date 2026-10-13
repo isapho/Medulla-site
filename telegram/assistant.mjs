@@ -9,13 +9,30 @@
  * result. telegram/poll.mjs (long polling) and telegram/worker.js (webhook)
  * provide it; the tests use a fake one.
  *
- * Privacy: nothing is stored. The language comes from the button the person
- * pressed, or from Telegram's language_code at the moment they write. No
- * names, ids or messages are logged or kept. Quiz polls are anonymous.
+ * Privacy: by default nothing is stored. The language comes from the button
+ * the person pressed, or from Telegram's language_code at the moment they
+ * write. No names, ids or messages are logged or kept. Quiz polls are
+ * anonymous. Only someone who turns on the daily fact (/daily, private chats
+ * only) is kept in `subs` (telegram/subscribers.mjs): the chat's number, the
+ * language and the hour, until /stop.
  */
+import { DAILY_HOURS, validHour, clock, slotOf } from "./subscribers.mjs";
 
 export const LANGS = ["uz", "ru", "en"];
 const LANG_NAMES = { uz: "Oʻzbekcha", ru: "Русский", en: "English" };
+
+/* The site's brain map (js/store.js → areas, js/explore.js → AREA_FACT): five
+   areas of brain care, one character each, ring order, each with its "why"
+   fact. A fact belongs to the area of the character who presents it. */
+export const AREAS = [
+  { id: "learn", char: "memo", emoji: "📚", fact: "retrieval-practice" },
+  { id: "move", char: "octa", emoji: "⚡", fact: "exercise-learning" },
+  { id: "explore", char: "dendi", emoji: "🧭", fact: "neuroplasticity" },
+  { id: "calm", char: "syno", emoji: "💜", fact: "hindbrain-breathing" },
+  { id: "sleep", char: "lumi", emoji: "🌙", fact: "sleep-hours" }
+];
+export const areaOf = (f) => AREAS.find((a) => a.char === (f && f.character)) || AREAS[2];
+const hhmm = (h) => String(h).padStart(2, "0") + ":00";
 
 export function escapeHtml(s) {
   return String(s === undefined || s === null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -53,10 +70,14 @@ function norm(s) {
   return String(s || "").toLowerCase().replace(/[ʻʼ‘’'`]/g, "ʻ").replace(/ё/g, "е");
 }
 
-export function createAssistant({ facts, glossary = [], strings, siteUrl = null, call, now = () => new Date(), random = Math.random, timeZone = "Asia/Tashkent", canWait = false, wait = (ms) => new Promise((r) => setTimeout(r, ms)) }) {
+/* `subs`: where daily-fact subscriptions live (null = /daily is switched off).
+   `assetBase`: an https address that serves assets/characters/<name>.png (the
+   site, or the public repository); fact messages then show the character. */
+export function createAssistant({ facts, glossary = [], strings, siteUrl = null, assetBase = null, subs = null, call, now = () => new Date(), random = Math.random, timeZone = "Asia/Tashkent", canWait = false, wait = (ms) => new Promise((r) => setTimeout(r, ms)) }) {
   if (!facts || !facts.length) throw new Error("createAssistant needs facts");
   const site = siteUrl ? String(siteUrl).replace(/\/$/, "") : null;
   const httpsSite = site && /^https:\/\//.test(site);
+  const assets = assetBase && /^https:\/\//.test(assetBase) ? String(assetBase).replace(/\/$/, "") : httpsSite ? site : null;
 
   function t(lang, key, vars) {
     let s = (strings[lang] || {})[key];
@@ -73,45 +94,126 @@ export function createAssistant({ facts, glossary = [], strings, siteUrl = null,
 
   /* ---------------------------------------------------------- keyboards */
 
+  // A button that opens a page of the site: inside Telegram (Mini App) when the
+  // site is on https, otherwise as a normal link; nothing without a site.
+  const siteButton = (text, page) => (httpsSite ? { text, web_app: { url: site + "/" + page } } : site ? { text, url: site + "/" + page } : null);
+
   function menuKeyboard(lang) {
     const rows = [
       [btn(t(lang, "bot.btn.today"), cb(lang, "f", "today")), btn(t(lang, "bot.btn.random"), cb(lang, "f", "rand"))],
-      [btn(t(lang, "bot.btn.quiz"), cb(lang, "q", "rand")), btn(t(lang, "bot.btn.word"), cb(lang, "w"))],
-      [btn(t(lang, "bot.btn.breathe"), cb(lang, "b")), btn(t(lang, "bot.btn.sleep"), cb(lang, "f", "sleep"))],
-      [btn(t(lang, "bot.btn.lang"), cb(lang, "l"))]
+      [btn(t(lang, "bot.btn.map"), cb(lang, "a")), btn(t(lang, "bot.btn.quiz"), cb(lang, "q", "rand"))],
+      [btn(t(lang, "bot.btn.word"), cb(lang, "w")), btn(t(lang, "bot.btn.breathe"), cb(lang, "b"))],
+      [btn(t(lang, "bot.btn.daily"), cb(lang, "s")), btn(t(lang, "bot.btn.lang"), cb(lang, "l"))]
     ];
-    if (httpsSite) rows.push([{ text: t(lang, "bot.btn.app"), web_app: { url: site + "/index.html?lang=" + lang } }]);
-    else if (site) rows.push([{ text: t(lang, "bot.btn.app"), url: site + "/index.html?lang=" + lang }]);
+    const app = siteButton(t(lang, "bot.btn.app"), "index.html?lang=" + lang);
+    if (app) rows.push([app]);
     return { inline_keyboard: rows };
   }
   const backRow = (lang) => [btn(t(lang, "bot.btn.menu"), cb(lang, "m"))];
 
   /* ------------------------------------------------------------ content */
 
-  function factText(f, lang, level = "simple", withQuizSpoiler = false) {
-    const lines = [
-      "🧠 <b>" + escapeHtml(t(lang, "bot.title")) + "</b> · " + escapeHtml(charName(f)),
+  // The character's picture as a small link preview (Telegram fetches it).
+  const preview = (f) => (assets ? { url: assets + "/assets/characters/" + f.character + ".png", prefer_small_media: true } : { is_disabled: true });
+
+  function factText(f, lang, level = "simple", { spoiler = false } = {}) {
+    const a = areaOf(f);
+    const lines = [];
+    if (f.id === today().id) lines.push("🧠 <b>" + escapeHtml(t(lang, "bot.title")) + "</b>");
+    lines.push(
+      a.emoji + " " + escapeHtml(t(lang, "map.area." + a.id)) + " · " + escapeHtml(charName(f)),
       "",
       "<b>" + escapeHtml(loc(f.title, lang)) + "</b>",
       "",
       escapeHtml(loc(level === "detail" ? f.detail : f.simple, lang))
-    ];
-    if (withQuizSpoiler && f.quiz) {
+    );
+    if (spoiler && f.quiz) {
       lines.push("", "❓ " + escapeHtml(loc(f.quiz.q, lang)), escapeHtml(t(lang, "bot.answer")) + " <tg-spoiler>" + escapeHtml(loc(f.quiz.options[f.quiz.answer], lang)) + "</tg-spoiler>");
     }
     if (f.source && f.source.url) lines.push("", escapeHtml(t(lang, "common.source")) + ' <a href="' + escapeHtml(f.source.url) + '">' + escapeHtml(String(f.source.name).split(" — ")[0]) + "</a>");
     if (!f.reviewed) lines.push("⏳ <i>" + escapeHtml(t(lang, "common.pendingReview")) + "</i>");
     return lines.join("\n");
   }
-  function factKeyboard(f, lang, level) {
+  function factKeyboard(f, lang, level, { daily = false } = {}) {
     const rows = [
       [btn(level === "detail" ? t(lang, "bot.btn.simple") : t(lang, "bot.btn.detail"), cb(lang, "f", f.id, level === "detail" ? "s" : "d")),
         btn(t(lang, "bot.btn.quiz"), cb(lang, "q", f.id))],
       [btn(t(lang, "bot.btn.another"), cb(lang, "f", "rand"))]
     ];
     if (site) rows[1].push({ text: t(lang, "bot.btn.site"), url: site + "/facts/" + f.id + ".html?lang=" + lang });
+    const map = daily && siteButton(t(lang, "bot.btn.openMap"), "explore.html?lang=" + lang);
+    if (map) rows.push([map]);
     rows.push(backRow(lang));
     return { inline_keyboard: rows };
+  }
+
+  /* ---------------------------------------------------------- brain map */
+
+  function mapText(lang) {
+    return "🗺 <b>" + escapeHtml(t(lang, "map.title")) + "</b>\n\n" + escapeHtml(t(lang, "bot.mapIntro"));
+  }
+  function mapKeyboard(lang) {
+    const b = (a) => btn(a.emoji + " " + t(lang, "map.area." + a.id) + " · " + a.char.charAt(0).toUpperCase() + a.char.slice(1), cb(lang, "a", a.id));
+    const rows = [[b(AREAS[0]), b(AREAS[1])], [b(AREAS[2]), b(AREAS[3])], [b(AREAS[4])]];
+    const app = siteButton(t(lang, "bot.btn.openMap"), "explore.html?lang=" + lang);
+    if (app) rows.push([app]);
+    rows.push(backRow(lang));
+    return { inline_keyboard: rows };
+  }
+  const areaFacts = (id) => facts.filter((f) => areaOf(f).id === id);
+  function areaText(a, lang) {
+    const lines = [a.emoji + " <b>" + escapeHtml(t(lang, "map.title." + a.id)) + "</b>", "", escapeHtml(t(lang, "map.what." + a.id))];
+    // The two areas with checked targets show them (same texts as the site).
+    if (a.id === "sleep" || a.id === "move") lines.push("", "ℹ️ " + escapeHtml(t(lang, "map." + a.id + ".hint")));
+    return lines.join("\n");
+  }
+  function areaKeyboard(a, lang) {
+    const rows = [];
+    const why = factById(a.fact);
+    if (why) rows.push([btn("📖 " + t(lang, "map.why") + " " + clip(loc(why.title, lang), 40), cb(lang, "f", why.id, "o"))]);
+    const row = a.id === "learn" ? [btn(t(lang, "bot.btn.quiz"), cb(lang, "q", "rand"))] : a.id === "calm" ? [btn(t(lang, "bot.btn.breathe"), cb(lang, "b"))] : [];
+    if (areaFacts(a.id).length > 1) row.push(btn(t(lang, "bot.btn.another"), cb(lang, "f", "a-" + a.id)));
+    if (row.length) rows.push(row);
+    const app = siteButton(t(lang, "bot.btn.openMap"), "explore.html?lang=" + lang);
+    if (app) rows.push([app]);
+    rows.push([btn(t(lang, "bot.btn.backMap"), cb(lang, "a")), btn(t(lang, "bot.btn.menu"), cb(lang, "m"))]);
+    return { inline_keyboard: rows };
+  }
+
+  /* --------------------------------------------------------- daily fact */
+
+  function timeButtons(lang, current) {
+    return DAILY_HOURS.map((h) => btn((h === current ? "✅ " : "🕗 ") + hhmm(h), cb(lang, "s", String(h))));
+  }
+  async function dailyScreen(chat, lang) {
+    if (chat.type !== "private") return { text: escapeHtml(t(lang, "bot.dailyPrivate")), markup: { inline_keyboard: [backRow(lang)] } };
+    if (!subs) return { text: escapeHtml(t(lang, "bot.dailyUnavailable")), markup: menuKeyboard(lang) };
+    const cur = await subs.get(chat.id);
+    if (cur) {
+      return {
+        text: escapeHtml(t(lang, "bot.dailyStatus", { time: hhmm(cur.h), lang: LANG_NAMES[cur.l] || cur.l })),
+        markup: { inline_keyboard: [timeButtons(lang, cur.h), [btn(t(lang, "bot.btn.stop"), cb(lang, "s", "off"))], backRow(lang)] }
+      };
+    }
+    return { text: escapeHtml(t(lang, "bot.dailyAsk")), markup: { inline_keyboard: [timeButtons(lang, null), backRow(lang)] } };
+  }
+
+  /* Today's fact for one subscriber. Returns "sent", or "gone" when Telegram
+     says the chat no longer exists or blocked the bot (it is then removed). */
+  async function sendDaily(chatId, lang) {
+    const f = today(), a = areaOf(f);
+    let text = factText(f, lang, "simple");
+    if (site) text += "\n\n" + a.emoji + " <b>" + escapeHtml(t(lang, "map.title." + a.id)) + "</b>\n" + escapeHtml(t(lang, "map.what." + a.id));
+    text += "\n\n<i>" + escapeHtml(t(lang, "bot.dailyFooter")) + "</i>";
+    try {
+      await send(chatId, text, factKeyboard(f, lang, "simple", { daily: true }), { link_preview_options: preview(f) });
+      return "sent";
+    } catch (e) {
+      const gone = e && (e.code === 403 || (e.code === 400 && /chat not found|user is deactivated/i.test(String(e.message))));
+      if (!gone) throw e;
+      if (subs) await subs.remove(chatId).catch(() => {});
+      return "gone";
+    }
   }
   function termText(g, lang) {
     const lines = ["🔤 <b>" + escapeHtml(loc(g.term, lang)) + "</b>", "", escapeHtml(loc(g.def, lang))];
@@ -168,9 +270,9 @@ export function createAssistant({ facts, glossary = [], strings, siteUrl = null,
   /* ------------------------------------------------------------ sending */
 
   const send = (chatId, text, markup, extra) => call("sendMessage", Object.assign({ chat_id: chatId, text, parse_mode: "HTML", link_preview_options: { is_disabled: true }, reply_markup: markup }, extra || {}));
-  const edit = (msg, text, markup) => call("editMessageText", { chat_id: msg.chat.id, message_id: msg.message_id, text, parse_mode: "HTML", link_preview_options: { is_disabled: true }, reply_markup: markup });
+  const edit = (msg, text, markup, linkPreview) => call("editMessageText", { chat_id: msg.chat.id, message_id: msg.message_id, text, parse_mode: "HTML", link_preview_options: linkPreview || { is_disabled: true }, reply_markup: markup });
 
-  function sendFact(chatId, f, lang, level) { return send(chatId, factText(f, lang, level), factKeyboard(f, lang, level)); }
+  function sendFact(chatId, f, lang, level) { return send(chatId, factText(f, lang, level), factKeyboard(f, lang, level), { link_preview_options: preview(f) }); }
 
   function sendQuiz(chatId, f, lang) {
     if (!f.quiz) return sendFact(chatId, f, lang, "simple");
@@ -212,7 +314,7 @@ export function createAssistant({ facts, glossary = [], strings, siteUrl = null,
   }
 
   function langKeyboard() {
-    return { inline_keyboard: [LANGS.map((l) => btn(LANG_NAMES[l], cb(l, "m")))] };
+    return { inline_keyboard: [LANGS.map((l) => btn(LANG_NAMES[l], cb(l, "m", "l")))] };
   }
   const welcome = (lang) => escapeHtml(t(lang, "bot.hello")) + "\n\n" + escapeHtml(t(lang, "bot.menuTitle"));
 
@@ -222,18 +324,27 @@ export function createAssistant({ facts, glossary = [], strings, siteUrl = null,
     const chatId = msg.chat.id;
     switch (cmd) {
       case "start": {
-        // Deep links: t.me/<bot>?start=fact_<id> | word_<id> | quiz | ru / en / uz
-        const m = /^(fact|word|quiz)_?([a-z0-9-]*)$/.exec(arg || "");
+        // Deep links: t.me/<bot>?start=fact_<id> | word_<id> | quiz | map | daily | ru / en / uz
+        const m = /^(fact|word|quiz|map|daily)_?([a-z0-9-]*)$/.exec(arg || "");
         if (LANGS.includes(arg)) lang = arg;
         if (m && m[1] === "fact" && factById(m[2])) return sendFact(chatId, factById(m[2]), lang, "simple");
         if (m && m[1] === "word") { const g = glossary.find((x) => x.id === m[2]); if (g) return send(chatId, termText(g, lang), termKeyboard(g, lang)); }
         if (m && m[1] === "quiz") return sendQuiz(chatId, pick(facts.filter((f) => f.quiz)), lang);
+        if (m && m[1] === "map") return send(chatId, mapText(lang), mapKeyboard(lang));
+        if (m && m[1] === "daily") { const s = await dailyScreen(msg.chat, lang); return send(chatId, s.text, s.markup); }
         return send(chatId, welcome(lang), menuKeyboard(lang));
       }
       case "menu": return send(chatId, welcome(lang), menuKeyboard(lang));
       case "fact": case "today": return sendFact(chatId, today(), lang, "simple");
       case "random": return sendFact(chatId, pick(facts), lang, "simple");
-      case "sleep": return sendFact(chatId, pick(facts.filter((f) => f.topic === "sleep")), lang, "simple");
+      case "sleep": return sendFact(chatId, pick(areaFacts("sleep")), lang, "simple");
+      case "map": return send(chatId, mapText(lang), mapKeyboard(lang));
+      case "daily": { const s = await dailyScreen(msg.chat, lang); return send(chatId, s.text, s.markup); }
+      case "stop": case "unsubscribe": {
+        const had = subs && msg.chat.type === "private" ? await subs.get(chatId) : null;
+        if (had) await subs.remove(chatId);
+        return send(chatId, escapeHtml(t(lang, had ? "bot.dailyOff" : "bot.dailyNone")), { inline_keyboard: [backRow(lang)] });
+      }
       case "quiz": return sendQuiz(chatId, pick(facts.filter((f) => f.quiz)), lang);
       case "word": case "words": {
         if (arg) {
@@ -272,15 +383,44 @@ export function createAssistant({ facts, glossary = [], strings, siteUrl = null,
     if (!msg) return null;
     const chatId = msg.chat.id;
     const canEdit = msg.text !== undefined; // polls can't be edited into text
+    const show = (text, markup) => (canEdit ? edit(msg, text, markup) : send(chatId, text, markup));
+    const isPrivate = msg.chat.type === "private";
     switch (action) {
-      case "m": return canEdit ? edit(msg, welcome(lang), menuKeyboard(lang)) : send(chatId, welcome(lang), menuKeyboard(lang));
-      case "l": return canEdit ? edit(msg, escapeHtml(t(lang, "bot.langPick")), langKeyboard()) : send(chatId, escapeHtml(t(lang, "bot.langPick")), langKeyboard());
+      case "m": {
+        // Chosen from the language list: a daily subscription follows the new language.
+        if (a1 === "l" && subs && isPrivate) {
+          const cur = await subs.get(chatId);
+          if (cur && cur.l !== lang) await subs.set(chatId, { h: cur.h, l: lang });
+        }
+        return show(welcome(lang), menuKeyboard(lang));
+      }
+      case "l": return show(escapeHtml(t(lang, "bot.langPick")), langKeyboard());
+      case "a": {
+        const a = AREAS.find((x) => x.id === a1);
+        return a ? show(areaText(a, lang), areaKeyboard(a, lang)) : show(mapText(lang), mapKeyboard(lang));
+      }
+      case "s": {
+        if (!a1 || !subs || !isPrivate) { const s = await dailyScreen(msg.chat, lang); return show(s.text, s.markup); }
+        if (a1 === "off") {
+          await subs.remove(chatId);
+          return show(escapeHtml(t(lang, "bot.dailyOff")), { inline_keyboard: [backRow(lang)] });
+        }
+        if (!validHour(a1)) return null;
+        const h = Number(a1), c = clock(now(), timeZone);
+        // If today's hour has passed, today's fact comes right away; within the hour
+        // only if this chat's five-minute batch (worker.mjs) has already run.
+        const sendNow = c.hour > h || (c.hour === h && slotOf(chatId) <= Math.floor(c.minute / 5));
+        await subs.set(chatId, { h, l: lang, last: sendNow ? c.day : null });
+        await show(escapeHtml(t(lang, "bot.dailyOn", { time: hhmm(h), lang: LANG_NAMES[lang] })), { inline_keyboard: [[btn(t(lang, "bot.btn.stop"), cb(lang, "s", "off"))], backRow(lang)] });
+        return sendNow ? sendDaily(chatId, lang) : null;
+      }
       case "f": {
-        const f = a1 === "today" ? today() : a1 === "rand" ? pick(facts) : a1 === "sleep" ? pick(facts.filter((x) => x.topic === "sleep")) : factById(a1);
+        const f = a1 === "today" ? today() : a1 === "rand" ? pick(facts) : a1 === "sleep" ? pick(areaFacts("sleep"))
+          : /^a-/.test(a1 || "") ? (areaFacts(a1.slice(2)).length ? pick(areaFacts(a1.slice(2))) : null) : factById(a1);
         if (!f) return null;
         const level = a2 === "d" ? "detail" : "simple";
         // Toggling detail/simple edits the same message; anything else sends a new one.
-        if ((a2 === "d" || a2 === "s") && canEdit && factById(a1)) return edit(msg, factText(f, lang, level), factKeyboard(f, lang, level));
+        if ((a2 === "d" || a2 === "s") && canEdit && factById(a1)) return edit(msg, factText(f, lang, level), factKeyboard(f, lang, level), preview(f));
         return sendFact(chatId, f, lang, level);
       }
       case "q": return sendQuiz(chatId, a1 && a1 !== "rand" && factById(a1) ? factById(a1) : pick(facts.filter((f) => f.quiz)), lang);
@@ -307,10 +447,10 @@ export function createAssistant({ facts, glossary = [], strings, siteUrl = null,
         id: (f.id + "-" + lang).slice(0, 64),
         title: loc(f.title, lang),
         description: clip(loc(f.simple, lang), 120),
-        input_message_content: { message_text: factText(f, lang, "simple", true), parse_mode: "HTML", link_preview_options: { is_disabled: true } }
+        input_message_content: { message_text: factText(f, lang, "simple", { spoiler: true }), parse_mode: "HTML", link_preview_options: { is_disabled: true } }
       };
       if (site) r.reply_markup = { inline_keyboard: [[{ text: t(lang, "bot.more"), url: site + "/facts/" + f.id + ".html?lang=" + lang }]] };
-      if (httpsSite) r.thumbnail_url = site + "/assets/characters/" + f.character + ".png";
+      if (assets) r.thumbnail_url = assets + "/assets/characters/" + f.character + ".png";
       return r;
     });
     return call("answerInlineQuery", { inline_query_id: iq.id, results, cache_time: 300, is_personal: false });
@@ -330,11 +470,11 @@ export function createAssistant({ facts, glossary = [], strings, siteUrl = null,
     return onText(msg, lang);
   }
 
-  return { handleUpdate, factText, findTerm, searchFacts, today, menuKeyboard };
+  return { handleUpdate, sendDaily, factText, findTerm, searchFacts, today, menuKeyboard };
 }
 
 /* Commands shown in Telegram's menu, per language. */
 export function commandList(strings, lang) {
   const t = (k) => ((strings[lang] || {})[k] !== undefined ? strings[lang][k] : (strings.en || {})[k] || k);
-  return ["fact", "random", "quiz", "word", "breathe", "sleep", "lang", "help", "privacy"].map((c) => ({ command: c, description: t("bot.cmd." + c) }));
+  return ["fact", "map", "daily", "quiz", "word", "breathe", "random", "sleep", "lang", "stop", "help", "privacy"].map((c) => ({ command: c, description: t("bot.cmd." + c) }));
 }

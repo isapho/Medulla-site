@@ -1,15 +1,17 @@
 /*
  * Explorer: the visitor's own space. Hash routes:
- *   #/ dashboard · #/daily challenge · #/badges · #/saved · #/history · #/me
+ *   #/ brain map (dashboard) · #/daily challenge · and under "Me":
+ *   #/me profile · #/badges · #/saved · #/history
  * Everything lives on this device (js/store.js). Optional sync goes through
- * js/backend.js and only after the consent screen.
+ * js/backend.js and only after the consent screen. Only signed-in visitors get
+ * here (js/prefs.js sends others to start.html, where the profile is made).
  */
 Medulla.ready(function () {
   "use strict";
 
   var M = window.Medulla, Store = window.MedullaStore, B = window.MedullaBackend, G = window.MedullaGames, S = window.MedullaSound;
   var t = M.t, esc = M.esc, icon = M.icon;
-  var view = document.getElementById("view"), greet = document.getElementById("greet"), tabs = document.getElementById("app-tabs");
+  var view = document.getElementById("view"), greet = document.getElementById("greet");
   var facts = [], gameCtrl = null;
   var ROUTES = ["", "daily", "badges", "saved", "history", "me"];
 
@@ -33,83 +35,240 @@ Medulla.ready(function () {
   function when(iso) { var d = new Date(iso); return isNaN(d) ? "" : two(d.getDate()) + "." + two(d.getMonth() + 1) + " · " + two(d.getHours()) + ":" + two(d.getMinutes()); }
 
   function renderGreet() {
-    var c = M.characters[avatar()], lv = Store.level();
-    greet.innerHTML = '<span class="greet-avatar" style="--tint:' + c.tint + '">' + M.charImg(avatar(), "idle idle-" + avatar(), "", true) + "</span>" +
+    var pr = Store.get().profile, lv = Store.level(), pose = M.avatarMoods.indexOf(pr.mood) > 0 ? pr.mood : "hello";
+    greet.innerHTML = '<span class="greet-avatar"' + M.avatarStyle(avatar(), pr.bg) + '>' + M.poseImg(avatar(), pose, "idle idle-" + avatar(), true) + "</span>" +
       "<div><p class=\"eyebrow\" style=\"margin:0 0 4px\">" + icon("compass") + "<span>" + esc(t("explore.eyebrow")) + "</span></p>" +
       "<h1>" + esc(t("explore.hello", { name: nick() })) + "</h1><p>" + esc(t("explore.levelLine", { n: lv.level, xp: M.fmt(Store.get().xp) })) + "</p></div>";
   }
 
-  function setTabs(route) {
-    tabs.querySelectorAll("a").forEach(function (a) {
-      var r = a.getAttribute("href").replace("#/", "");
-      if (r === route) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
-    });
+  /* ------------------------------------------------------------ brain map */
+
+  // The dashboard (2.4): five areas of brain care around the visitor's own
+  // character, one habit and one character each. Doing something in an area
+  // lights it for the day; lighting all five links the whole network.
+  var AREA_IDS = Store.areas.map(function (a) { return a.id; }); // ring order
+  var AREA_CHAR = {};
+  Store.areas.forEach(function (a) { AREA_CHAR[a.id] = a.char; });
+  var AREA_ICON = { learn: "book", move: "bolt", explore: "compass", calm: "heart", sleep: "moon" };
+  // Each area's "why": a checked fact (its page shows the source and review status).
+  var AREA_FACT = { learn: "retrieval-practice", move: "exercise-learning", explore: "neuroplasticity", calm: "hindbrain-breathing", sleep: "sleep-hours" };
+  // Positions on the map (percent of a square), clockwise from the top.
+  var POS = { learn: [50, 12], move: [87, 39], explore: [73, 83], calm: [27, 83], sleep: [13, 39] };
+  var WHO_PA = "https://iris.who.int/bitstream/handle/10665/337001/9789240014886-eng.pdf";
+  var focusArea = null;
+
+  function litSet() { var o = {}; Store.litToday().forEach(function (id) { o[id] = true; }); return o; }
+  function pctOf(inf) { return Math.round(((inf.days - inf.from) / Math.max(1, inf.to - inf.from)) * 100); }
+  function factById(id) { return facts.filter(function (f) { return f.id === id; })[0]; }
+
+  function mapStage(lit, info) {
+    var n = AREA_IDS.filter(function (id) { return lit[id]; }).length, full = n === AREA_IDS.length;
+    var lines = AREA_IDS.map(function (id) {
+      var p = POS[id];
+      return '<line class="map-spoke' + (lit[id] ? " is-on" : "") + '" x1="50" y1="50" x2="' + p[0] + '" y2="' + p[1] + '"/>';
+    }).join("") + AREA_IDS.map(function (id, i) {
+      var nx = AREA_IDS[(i + 1) % AREA_IDS.length], a = POS[id], b = POS[nx];
+      return '<line class="map-edge' + (lit[id] && lit[nx] ? " is-on" : "") + '" x1="' + a[0] + '" y1="' + a[1] + '" x2="' + b[0] + '" y2="' + b[1] + '"/>';
+    }).join("");
+    var nodes = AREA_IDS.map(function (id) {
+      var c = M.characters[AREA_CHAR[id]], inf = info[id], p = POS[id];
+      return '<button type="button" class="map-node' + (lit[id] ? " is-lit" : "") + '" style="left:' + p[0] + "%;top:" + p[1] + "%;--tint:" + c.tint + ";--pct:" + pctOf(inf) + '%" data-area="' + id + '" aria-pressed="' + (focusArea === id) + '"' +
+        ' aria-label="' + esc(t("map.nodeAria", { area: t("map.area." + id), name: c.name, state: t(lit[id] ? "map.litYes" : "map.litNo"), n: inf.level })) + '">' +
+        '<span class="map-orb">' + M.charFace(AREA_CHAR[id], "", true) + '<span class="map-lv" aria-hidden="true">' + inf.level + "</span></span>" +
+        '<span class="map-name" aria-hidden="true">' + icon(AREA_ICON[id]) + "<span>" + esc(t("map.area." + id)) + "</span></span></button>";
+    }).join("");
+    return '<div class="map-stage' + (full ? " is-full" : "") + '">' +
+      '<svg class="map-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' + lines + "</svg>" +
+      '<div class="map-core" aria-hidden="true"><span class="map-core-art">' + M.poseImg(avatar(), full ? "win" : n ? "hello" : "curious", "idle idle-" + avatar(), true) + "</span>" +
+        '<span class="map-count">' + n + "/5</span></div>" + nodes + "</div>";
   }
 
-  /* -------------------------------------------------------- neuron streak */
+  // A row of answer chips for one check-in question.
+  function chips(field, label, values, show, current, unit) {
+    return '<fieldset class="ci-row"><legend>' + esc(label) + '</legend><div class="ci-chips">' + values.map(function (v) {
+      return '<button type="button" class="ci-chip press" data-ci="' + field + '" data-v="' + String(v) + '" aria-pressed="' + (current === v) + '">' +
+        "<strong>" + esc(show(v)) + "</strong>" + (unit ? "<small>" + esc(unit) + "</small>" : "") + "</button>";
+    }).join("") + "</div></fieldset>";
+  }
 
-  function streakNeuron(n) {
-    var branches = 7, lit = Math.min(n, branches), parts = "";
-    for (var i = 0; i < branches; i++) {
-      var a = (-90 + i * (360 / branches)) * Math.PI / 180;
-      var x2 = 42 + Math.cos(a) * 36, y2 = 42 + Math.sin(a) * 36, xm = 42 + Math.cos(a + 0.3) * 20, ym = 42 + Math.sin(a + 0.3) * 20;
-      parts += '<path class="sn-branch' + (i < lit ? " is-on" : "") + '" d="M42 42 Q' + xm.toFixed(1) + " " + ym.toFixed(1) + " " + x2.toFixed(1) + " " + y2.toFixed(1) + '"/>';
-      if (i < lit) parts += '<circle cx="' + x2.toFixed(1) + '" cy="' + y2.toFixed(1) + '" r="3.4" fill="#FF9F43"/>';
+  // 1 = low … 5 = great, drawn as small faces (no emoji: they differ per device).
+  function moodFace(v) {
+    var mouth = ["", "M8 16.6c2.4-2.6 5.6-2.6 8 0", "M8.6 15.8h6.8", "M8.6 15.2h6.8", "M8 14.4c2.4 2.8 5.6 2.8 8 0", "M7.4 13.8c2.6 4 6.6 4 9.2 0"][v];
+    var eyes = v === 2 ? '<path d="M7.8 10.4h2.6M13.6 10.4h2.6"/>' : '<circle class="d" cx="9.1" cy="10" r="1.25"/><circle class="d" cx="14.9" cy="10" r="1.25"/>';
+    return '<svg class="icon mood-face" viewBox="0 0 24 24" aria-hidden="true"><circle class="f" cx="12" cy="12" r="9"/>' + eyes + '<path d="' + mouth + '"/></svg>';
+  }
+  function moodRow(current) {
+    return '<fieldset class="ci-row"><legend>' + esc(t("map.mood.q")) + '</legend><div class="ci-chips is-mood">' + [1, 2, 3, 4, 5].map(function (v) {
+      return '<button type="button" class="ci-chip ci-mood press" data-ci="mood" data-v="' + v + '" aria-pressed="' + (current === v) + '">' + moodFace(v) + "<small>" + esc(t("map.mood." + v)) + "</small></button>";
+    }).join("") + "</div></fieldset>" +
+      (current && current <= 2 ? '<p class="ci-support">' + icon("heart") + "<span>" + esc(t("map.mood.support")) + "</span></p>" : "");
+  }
+
+  function quest(href, key, done) {
+    return '<a class="quest' + (done ? " is-done" : "") + '" href="' + href + '"><span class="quest-box">' + icon(done ? "check" : "play") + "</span><span>" + esc(t(key)) + "</span>" + icon("arrow", "icon-sm") + "</a>";
+  }
+
+  function panel(id, lit, info) {
+    var ch = AREA_CHAR[id], c = M.characters[ch], inf = info[id], on = !!lit[id], d = Store.today(), R = M.root();
+    var body = "";
+    if (id === "sleep") {
+      body = chips("sleepH", t("map.sleep.q"), Store.checkinOptions.sleepH, function (v) { return v === 6 ? "≤6" : v === 10 ? "10+" : String(v); }, d.sleepH, t("map.unit.h")) +
+        '<p class="ci-hint">' + esc(t("map.sleep.hint")) + "</p>" +
+        chips("screens", t("map.screens.q"), [true, false], function (v) { return t(v ? "map.yes" : "map.no"); }, d.screens) +
+        '<div class="quests">' + quest(R + "lab.html#sleep", "map.sleep.quest", d.sleep > 0) + "</div>";
+    } else if (id === "move") {
+      body = chips("move", t("map.move.q"), Store.checkinOptions.move, function (v) { return v === 60 ? "60+" : String(v); }, d.move, t("map.unit.min")) +
+        '<p class="ci-hint">' + esc(t("map.move.hint")) + ' <a href="' + WHO_PA + '"' + M.externalAttrs() + ">" + esc(t("map.move.source")) + M.srExternal() + "</a></p>" +
+        '<p class="ci-hint">' + esc(t("map.move.ideas")) + "</p>";
+    } else if (id === "learn") {
+      body = '<div class="quests">' + quest(R + "learn.html", "map.learn.fact", d.facts > 0) + quest("#/daily", "map.learn.quiz", d.quiz > 0) +
+        quest("#/saved", "map.learn.review", false) + "</div>";
+    } else if (id === "calm") {
+      var kinds = ["share", "thank", "breathe", "help", "listen"], doneK = Store.get().kindness[today()] || [];
+      body = moodRow(d.mood) +
+        '<div class="quests">' + quest(R + "lab.html#breathing", "map.calm.breathe", (d.breaths || 0) > 0 || d.breath > 0) + "</div>" +
+        '<p class="ci-legend">' + esc(t("kind.title")) + '</p><ul class="kind-tasks">' + kinds.map(function (k) {
+          var done = doneK.indexOf(k) !== -1;
+          return '<li><button type="button" class="kind-task press" data-kind="' + k + '" aria-pressed="' + done + '"><span class="kt-box">' + icon("check") + "</span><span>" + esc(t("kind.task." + k)) + "</span></button></li>";
+        }).join("") + "</ul>";
+    } else if (id === "explore") {
+      body = '<div class="quests">' + quest("#/daily", "map.explore.daily", dailyState().done) + quest(R + "lab.html", "map.explore.lab", d.games > 0) + "</div>";
     }
-    return '<div class="streak-neuron' + (n > 0 ? " is-lit" : "") + '" aria-hidden="true"><svg viewBox="0 0 84 84">' + parts + '<circle class="sn-core" cx="42" cy="42" r="11"/></svg></div>';
+    var f = factById(AREA_FACT[id]);
+    var why = f ? '<a class="area-why" href="' + M.factUrl(f) + '"><span class="tile">' + icon("book") + "</span><span><small>" + esc(t("map.why")) + "</small><strong>" + esc(M.localized(f.title)) + "</strong></span>" + icon("arrow", "icon-sm") + "</a>" : "";
+    return '<div class="area-head"><span class="area-art" style="--tint:' + c.tint + '">' + M.poseImg(ch, on ? "correct" : "curious", "", true) + "</span>" +
+        '<div><p class="eyebrow">' + icon(AREA_ICON[id]) + "<span>" + esc(c.name + " · " + t("map.area." + id)) + "</span></p>" +
+        '<h2 id="area-title">' + esc(t("map.title." + id)) + '</h2><p class="area-state' + (on ? " is-on" : "") + '">' + icon(on ? "check" : "sparkle") + "<span>" + esc(t(on ? "map.litToday" : "map.notYet")) + "</span></p></div></div>" +
+      '<div class="area-level"><strong>' + esc(t("me.level", { n: inf.level })) + '</strong><span class="meter"><span style="width:' + pctOf(inf) + '%"></span></span><small>' + esc(t("map.daysLit", { n: inf.days, next: inf.to })) + "</small></div>" +
+      '<p class="area-what">' + esc(t("map.what." + id)) + "</p>" + body + why;
   }
 
-  /* ----------------------------------------------------------- dashboard */
+  function weekGrid() {
+    var wk = Store.weekAreas(), names = t("week.days").split(","), total = 0;
+    wk.forEach(function (d) { total += d.lit.length; });
+    var head = wk.map(function (d, i) {
+      var dt = new Date(d.key + "T12:00:00");
+      return '<th scope="col"' + (i === 6 ? ' class="is-today"' : "") + ">" + esc(names[(dt.getDay() + 6) % 7] || "") + "</th>";
+    }).join("");
+    var rows = AREA_IDS.map(function (id) {
+      return '<tr><th scope="row"><span class="wm-face" style="--tint:' + M.characters[AREA_CHAR[id]].tint + '">' + M.charFace(AREA_CHAR[id], "", true) + "</span><span>" + esc(t("map.area." + id)) + "</span></th>" +
+        wk.map(function (d, i) {
+          var on = d.lit.indexOf(id) !== -1;
+          return '<td class="' + (on ? "is-on" : "") + (i === 6 ? " is-today" : "") + '"><span class="wm-dot">' + (on ? icon("check") : "") + '</span><span class="sr-only">' + esc(t(on ? "map.litYes" : "map.litNo")) + "</span></td>";
+        }).join("") + "</tr>";
+    }).join("");
+    return '<section class="card app-card week-map" aria-labelledby="wm-title"><div class="card-head"><h2 id="wm-title">' + esc(t("map.weekTitle")) + '</h2><span class="chip">' + esc(t("map.weekCount", { n: total })) + "</span></div>" +
+      '<div class="wm-scroll"><table class="wm-table"><thead><tr><td></td>' + head + "</tr></thead><tbody>" + rows + "</tbody></table></div>" +
+      '<p class="muted wm-note">' + esc(t("map.weekNote")) + "</p></section>";
+  }
 
-  function viewDashboard() {
-    var s = Store.get(), lv = Store.level(), wk = Store.weekSummary(), st = Store.streakNow(), d = dailyState();
-    var dayNames = t("week.days").split(",");
-    var week = wk.days.map(function (day, i) {
-      var dt = new Date(day.key + "T12:00:00"), name = dayNames[(dt.getDay() + 6) % 7] || "";
-      return '<div class="week-day"><span class="week-dot' + (day.active ? " is-on" : "") + (i === 6 ? " is-today" : "") + '">' + (day.active ? icon("check") : "") + "</span><span>" + esc(name) + "</span></div>";
-    }).join("");
-    var stepsMini = [["fact", d.fact], ["quiz", d.quiz.length >= 3], ["game", d.game]].map(function (p) {
-      return '<span class="' + (p[1] ? "is-done" : "") + '">' + icon(p[1] ? "check" : "plus") + esc(t("daily.step." + p[0])) + "</span>";
-    }).join("");
-    var tasks = ["share", "thank", "breathe", "help", "listen"];
-    var doneToday = (s.kindness[today()] || []);
-    return '<div class="daily-cta" data-reveal>' +
-        "<h2>" + esc(d.done ? t("daily.doneTitle") : t("daily.title")) + "</h2>" +
-        "<p>" + esc(d.done ? t("daily.doneText") : t("daily.lead")) + "</p>" +
-        '<div class="steps-mini">' + stepsMini + "</div>" +
-        '<a class="btn btn-light press" href="#/daily">' + icon(d.done ? "refresh" : "play") + "<span>" + esc(t(d.done ? "daily.review" : "daily.start")) + "</span></a>" +
-        M.charImg("dendi", "idle idle-dendi", "") +
+  // My experiment: the visitor's own Reaction test against their own sleep log.
+  function experiment() {
+    var e = Store.sleepExperiment(), ready = e.enough.n >= 2 && e.less.n >= 2;
+    var body;
+    if (ready) {
+      var max = Math.max(e.enough.avg, e.less.avg);
+      var bar = function (key, g) {
+        return '<div class="exp-row"><span>' + esc(t(key)) + '</span><span class="exp-bar"><span style="width:' + Math.round((g.avg / max) * 100) + '%"></span></span><strong>' + esc(M.msText(g.avg)) + "</strong><small>" + esc(t("map.exp.times", { n: g.n })) + "</small></div>";
+      };
+      body = bar("map.exp.enough", e.enough) + bar("map.exp.less", e.less) +
+        '<p class="exp-diff">' + esc(t(e.enough.avg < e.less.avg ? "map.exp.faster" : e.enough.avg > e.less.avg ? "map.exp.slower" : "map.exp.same", { ms: Math.abs(e.less.avg - e.enough.avg) })) + "</p>";
+    } else {
+      body = '<p class="muted">' + esc(t("map.exp.how")) + "</p>" +
+        '<ul class="exp-need"><li><strong>' + Math.min(e.enough.n, 2) + "/2</strong>" + esc(t("map.exp.enough")) + "</li><li><strong>" + Math.min(e.less.n, 2) + "/2</strong>" + esc(t("map.exp.less")) + "</li></ul>";
+    }
+    return '<section class="card app-card experiment" aria-labelledby="exp-title"><div class="card-head"><h2 id="exp-title">' + esc(t("map.exp.title")) + "</h2>" +
+        '<span class="exp-faces" aria-hidden="true">' + M.charFace("lumi", "", true) + M.charFace("octa", "", true) + "</span></div>" +
+      body + '<p class="exp-honest">' + icon("info") + "<span>" + esc(t("map.exp.honest")) + "</span></p>" +
+      '<a class="btn btn-ghost btn-sm press" href="' + M.root() + 'lab.html#reaction">' + icon("bolt") + "<span>" + esc(t("map.exp.play")) + "</span></a></section>";
+  }
+
+  // The project beyond the screen: events, volunteering, the families we support.
+  function community() {
+    var R = M.root();
+    return '<section class="card app-card community" aria-labelledby="world-title">' +
+      '<span class="community-art">' + M.poseImg("syno", "correct", "", false) + "</span>" +
+      '<div><p class="eyebrow">' + icon("users") + "<span>" + esc(t("map.world.eyebrow")) + '</span></p><h2 id="world-title">' + esc(t("map.world.title")) + "</h2>" +
+        "<p>" + esc(t("story.syno.text")) + "</p>" +
+        '<div class="btn-row"><a class="btn btn-primary btn-sm press" href="' + R + 'events.html">' + icon("calendar") + "<span>" + esc(t("nav.events")) + "</span></a>" +
+          '<a class="btn btn-ghost btn-sm press" href="' + R + 'join.html">' + icon("users") + "<span>" + esc(t("map.world.join")) + "</span></a>" +
+          '<a class="btn btn-ghost btn-sm press" href="' + R + 'parents.html">' + icon("heart") + "<span>" + esc(t("nav.parents")) + "</span></a></div></div></section>";
+  }
+
+  function viewMap() {
+    var lit = litSet(), info = Store.areaInfo(), n = Object.keys(lit).length;
+    if (!focusArea) focusArea = AREA_IDS.filter(function (id) { return !lit[id]; })[0] || AREA_IDS[0];
+    return '<div class="map-grid">' +
+        '<section class="card app-card map-card" aria-labelledby="map-title"><div class="card-head"><div><h2 id="map-title">' + esc(t("map.title")) + "</h2>" +
+          '<p class="muted" style="margin:4px 0 0">' + esc(n === 5 ? t("map.full") : t("map.today", { n: n })) + "</p></div>" +
+          "</div>" +
+          '<div id="map-stage-slot">' + mapStage(lit, info) + "</div>" +
+          '<p class="muted map-hint">' + esc(t("map.hint")) + "</p></section>" +
+        '<section class="card app-card area-panel" id="area-panel" aria-labelledby="area-title">' + panel(focusArea, lit, info) + "</section>" +
       "</div>" +
-      '<div class="app-grid" style="margin-top:16px">' +
-        '<div style="display:grid;gap:16px">' +
-          '<section class="card app-card" data-reveal><div class="level-row"><span class="level-badge"><span><small>' + esc(t("me.levelShort")) + "</small><strong>" + lv.level + "</strong></span></span>" +
-            '<div class="xp-meter"><div class="card-head" style="margin:0 0 6px"><h2>' + esc(t("explore.growth")) + '</h2><strong style="color:var(--purple)">' + M.fmt(s.xp) + " XP</strong></div>" +
-            '<div class="meter"><span style="width:' + lv.pct + '%"></span></div><p>' + esc(t("explore.toNext", { n: M.fmt(lv.span - lv.into), level: lv.level + 1 })) + "</p></div></div></section>" +
-          '<section class="card app-card" data-reveal><div class="streak-box">' + streakNeuron(st) +
-            '<div><p class="streak-num">' + esc(t("streak.days", { n: st })) + '</p><p class="muted" style="margin:4px 0 0">' + esc(t("streak.gentle")) + "</p></div></div>" +
-            '<h3 style="margin:16px 0 0;font-size:1rem">' + esc(t("week.title", { n: wk.activeDays })) + '</h3><div class="week">' + week + "</div></section>" +
-          '<section class="card app-card" data-reveal><div class="card-head"><h2>' + esc(t("week.summary")) + '</h2><a class="text-link" href="#/history">' + esc(t("explore.allResults")) + icon("arrow", "icon-sm") + "</a></div>" +
-            '<ul class="summary-grid">' +
-              "<li><strong>" + wk.facts + "</strong><span>" + esc(t("week.facts")) + "</span></li>" +
-              "<li><strong>" + wk.quiz + "</strong><span>" + esc(t("week.quiz")) + "</span></li>" +
-              "<li><strong>" + wk.games + "</strong><span>" + esc(t("week.games")) + "</span></li>" +
-              "<li><strong>" + wk.breathMin + "</strong><span>" + esc(t("week.breath")) + "</span></li>" +
-              "<li><strong>" + wk.sleep + "</strong><span>" + esc(t("week.sleep")) + "</span></li>" +
-              "<li><strong>" + wk.kind + "</strong><span>" + esc(t("week.kind")) + "</span></li>" +
-            "</ul></section>" +
-        "</div>" +
-        '<div style="display:grid;gap:16px">' +
-          '<section class="card app-card" data-reveal><div class="card-head"><h2>' + esc(t("badges.title")) + '</h2><a class="text-link" href="#/badges">' + esc(t("badges.all", { n: Object.keys(s.badges).length, total: Store.badges.length })) + icon("arrow", "icon-sm") + "</a></div>" +
-            '<ul class="mini-badges" data-render="badgesPreview" data-limit="6"></ul></section>' +
-          '<section class="card app-card" data-reveal><div class="card-head"><h2>' + esc(t("kind.title")) + '</h2><span class="tile" style="width:40px;height:40px">' + icon("heart") + "</span></div>" +
-            '<p class="muted">' + esc(t("kind.lead")) + '</p><ul class="kind-tasks">' + tasks.map(function (k) {
-              var on = doneToday.indexOf(k) !== -1;
-              return '<li><button type="button" class="kind-task press" data-kind="' + k + '" aria-pressed="' + on + '"><span class="kt-box">' + icon("check") + "</span><span>" + esc(t("kind.task." + k)) + "</span></button></li>";
-            }).join("") + '</ul><p class="muted" style="font-size:.82rem;margin:10px 0 0">' + esc(t("kind.private")) + "</p></section>" +
-          '<section class="card app-card" data-reveal><div class="card-head"><h2>' + esc(t("saved.title")) + '</h2><span class="tile is-orange" style="width:40px;height:40px">' + icon("bookmark") + "</span></div>" +
-            '<p class="muted">' + esc(t("saved.count", { n: s.saved.length })) + '</p><a class="btn btn-ghost btn-sm press" href="#/saved">' + icon("book") + "<span>" + esc(t("saved.open")) + "</span></a></section>" +
-        "</div>" +
-      "</div>";
+      '<div class="app-grid map-more">' + weekGrid() + experiment() + "</div>" +
+      community();
+  }
+
+  // Redraw after a tap without losing the visitor's place (focus and scroll stay).
+  function refreshMap(keepFocus) {
+    var a = document.activeElement, sel = null;
+    if (keepFocus && a && view.contains(a)) {
+      if (a.hasAttribute("data-ci")) sel = '[data-ci="' + a.getAttribute("data-ci") + '"][data-v="' + a.getAttribute("data-v") + '"]';
+      else if (a.hasAttribute("data-kind")) sel = '[data-kind="' + a.getAttribute("data-kind") + '"]';
+      else if (a.hasAttribute("data-area")) sel = '[data-area="' + a.getAttribute("data-area") + '"]';
+    }
+    view.innerHTML = viewMap();
+    M.runRenderers(view);
+    if (sel) { var n = view.querySelector(sel); if (n) n.focus({ preventScroll: true }); }
+  }
+
+  function mapClick(e) {
+    var tgt = e.target;
+    var node = tgt.closest("[data-area]");
+    if (node) {
+      focusArea = node.getAttribute("data-area");
+      S.tap();
+      refreshMap(true);
+      // phones: the panel is below the map
+      var p = document.getElementById("area-panel");
+      if (p && window.matchMedia("(max-width: 959px)").matches) p.scrollIntoView({ behavior: M.reducedMotion() ? "auto" : "smooth", block: "start" });
+      return;
+    }
+    var ci = tgt.closest("[data-ci]");
+    if (ci) {
+      var raw = ci.getAttribute("data-v"), v = raw === "true" ? true : raw === "false" ? false : Number(raw);
+      Store.record("checkin", { field: ci.getAttribute("data-ci"), value: v });
+      S.tap();
+      return; // the progress event redraws
+    }
+    var k = tgt.closest("[data-kind]");
+    if (k && k.getAttribute("aria-pressed") !== "true") {
+      if (Store.record("kind", { task: k.getAttribute("data-kind") })) S.correct();
+    }
+  }
+
+  /* -------------------------------------------------------------- "Me" */
+
+  // Profile, badges, saved facts and results share one tab with sub-tabs.
+  var ME_ROUTES = [["me", "me.profile", "user"], ["badges", "explore.tab.badges", "trophy"], ["saved", "explore.tab.saved", "bookmark"], ["history", "explore.tab.history", "chart"]];
+  function meNav(r) {
+    return '<nav class="seg" data-i18n-attr="aria-label:app.me" aria-label="' + esc(t("app.me")) + '">' + ME_ROUTES.map(function (x) {
+      return '<a href="#/' + x[0] + '"' + (r === x[0] ? ' aria-current="page"' : "") + ">" + icon(x[2]) + "<span>" + esc(t(x[1])) + "</span></a>";
+    }).join("") + "</nav>";
+  }
+
+  // The five areas as skills, plus overall level.
+  function skills() {
+    var info = Store.areaInfo(), s = Store.get(), lv = Store.level();
+    return '<section class="card app-card skills"><div class="card-head"><h2>' + esc(t("map.skills")) + '</h2><strong class="xp-num">' + M.fmt(s.xp) + " XP</strong></div>" +
+      '<div class="skill-total"><span class="level-badge"><span><small>' + esc(t("me.levelShort")) + "</small><strong>" + lv.level + '</strong></span></span><div><span class="meter"><span style="width:' + lv.pct + '%"></span></span>' +
+        "<p>" + esc(t("explore.toNext", { n: M.fmt(lv.span - lv.into), level: lv.level + 1 })) + "</p></div></div>" +
+      '<ul class="skill-list">' + AREA_IDS.map(function (id) {
+        var inf = info[id], ch = AREA_CHAR[id];
+        return '<li><span class="wm-face" style="--tint:' + M.characters[ch].tint + '">' + M.charFace(ch, "", true) + "</span><span class=\"skill-name\"><strong>" + esc(t("map.area." + id)) + "</strong><small>" + esc(t("map.daysLit", { n: inf.days, next: inf.to })) + "</small></span>" +
+          '<span class="meter"><span style="width:' + pctOf(inf) + '%"></span></span><span class="skill-lv">' + esc(t("me.level", { n: inf.level })) + "</span></li>";
+      }).join("") + "</ul></section>";
   }
 
   /* --------------------------------------------------------------- daily */
@@ -131,7 +290,7 @@ Medulla.ready(function () {
       body = '<p class="muted">' + esc(t("daily.factLead", { name: M.characters[who].name })) + "</p>" +
         '<div class="flip" id="flip"><div class="flip-inner">' +
           '<button type="button" class="flip-face flip-front press" data-flip aria-expanded="false"><span class="chip">' + esc(M.topicName(f)) + "</span>" +
-            "<h3>" + esc(M.localized(f.title)) + '</h3><span class="flip-hint">' + icon("refresh") + esc(t("daily.flip")) + "</span>" + M.charImg(who, "idle idle-" + who, "") + "</button>" +
+            "<h3>" + esc(M.localized(f.title)) + '</h3><span class="flip-hint">' + icon("refresh") + esc(t("daily.flip")) + "</span>" + M.poseImg(who, "curious", "idle idle-" + who) + "</button>" +
           '<div class="flip-face flip-back" inert><span class="chip">' + esc(M.topicName(f)) + "</span><h3>" + esc(M.localized(f.title)) + "</h3>" +
             '<p class="fact-text">' + esc(M.localized(f.simple)) + "</p>" + M.sourceLine(f) +
             '<div class="btn-row"><a class="text-link" href="' + M.factUrl(f) + '">' + esc(t("daily.readMore")) + icon("arrow", "icon-sm") + "</a></div></div>" +
@@ -275,10 +434,7 @@ Medulla.ready(function () {
       '<div style="display:grid;gap:16px">' +
         '<section class="card app-card"><h2>' + esc(t("me.profile")) + '</h2><p class="muted">' + esc(t("me.profileLead")) + "</p>" +
           '<div class="nick-row" style="margin:10px 0 16px"><span class="nick">' + esc(nick()) + '</span><button type="button" class="btn btn-ghost btn-sm press" data-new-nick>' + icon("refresh") + "<span>" + esc(t("me.newNick")) + "</span></button></div>" +
-          '<p class="field" style="margin:0 0 8px"><strong id="avatar-label">' + esc(t("me.avatar")) + "</strong></p>" +
-          '<div class="avatar-picker" role="radiogroup" aria-labelledby="avatar-label">' + M.characterOrder.map(function (id) {
-            return '<button type="button" class="avatar-option press" role="radio" aria-checked="' + (avatar() === id) + '" data-avatar="' + id + '" style="--tint:' + M.characters[id].tint + '" aria-label="' + esc(M.characters[id].name) + '">' + M.charImg(id, "", "") + "</button>";
-          }).join("") + "</div></section>" +
+          avatarStudio() + "</section>" +
         '<section class="card app-card"><h2>' + esc(t("sync.title")) + "</h2>" + syncBody + "</section>" +
         '<section class="card app-card"><h2>' + esc(t("club.title")) + "</h2>" + clubBody + "</section>" +
       "</div>" +
@@ -288,8 +444,39 @@ Medulla.ready(function () {
           '<div class="btn-row"><button type="button" class="btn btn-ghost btn-sm press" data-export>' + icon("download") + "<span>" + esc(t("data.download")) + '</span></button><a class="btn btn-ghost btn-sm press" href="' + M.root() + 'privacy.html">' + icon("shield") + "<span>" + esc(t("nav.privacy")) + "</span></a></div></section>" +
         '<section class="card app-card danger-zone"><h2>' + esc(t("data.deleteTitle")) + '</h2><p class="muted">' + esc(t("data.deleteLead")) + "</p>" +
           '<button type="button" class="btn btn-danger press" data-delete-all>' + icon("trash") + "<span>" + esc(t("data.delete")) + "</span></button></section>" +
-        '<section class="card app-card tip-card">' + M.charImg("syno", "", "") + "<p>" + esc(t("me.settingsTip")) + "</p></section>" +
+        '<section class="card app-card tip-card">' + M.poseImg("syno", "aha", "") + "<p>" + esc(t("me.settingsTip")) + "</p></section>" +
       "</div></div>";
+  }
+
+  // Avatar studio (2.5): character, expression and background, with a live
+  // preview. Some backgrounds open at a level (a small reward, as in Finch).
+  function avatarStudio() {
+    var p = Store.get().profile, id = avatar(), mood = M.avatarMoods.indexOf(p.mood) > 0 ? p.mood : "face";
+    var bg = M.avatarBgs[p.bg] && M.avatarBgOpen(p.bg) ? p.bg : "tint", lv = Store.level().level;
+    function group(key, label, items) {
+      return '<p class="studio-label" id="studio-' + key + '">' + esc(label) + "</p>" +
+        '<div class="avatar-picker studio-' + key + '" role="radiogroup" aria-labelledby="studio-' + key + '">' + items.join("") + "</div>";
+    }
+    return '<div class="avatar-studio">' +
+      '<div class="studio-preview">' + M.avatarPic({ avatar: id, mood: mood, bg: bg }, "studio-avatar") +
+        "<p><strong>" + esc(M.characters[id].name) + "</strong><span>" + esc(t("me.mood." + mood)) + " · " + esc(t("me.bg." + bg)) + "</span></p></div>" +
+      group("char", t("me.avatar"), M.characterOrder.map(function (c) {
+        return '<button type="button" class="avatar-option is-mood press" role="radio" aria-checked="' + (id === c) + '" data-avatar="' + c + '"' + M.avatarStyle(c, bg) + ' aria-label="' + esc(M.characters[c].name) + '">' +
+          '<img src="' + M.avatarSrc(c, mood) + '" width="64" height="64" alt="" loading="lazy" decoding="async"></button>';
+      })) +
+      group("mood", t("me.moodTitle"), M.avatarMoods.map(function (m) {
+        return '<button type="button" class="avatar-option is-mood press" role="radio" aria-checked="' + (mood === m) + '" data-mood="' + m + '"' + M.avatarStyle(id, bg) + ' aria-label="' + esc(t("me.mood." + m)) + '" title="' + esc(t("me.mood." + m)) + '">' +
+          '<img src="' + M.avatarSrc(id, m) + '" width="64" height="64" alt="" loading="lazy" decoding="async"></button>';
+      })) +
+      group("bg", t("me.bgTitle"), M.avatarBgOrder.map(function (b) {
+        var open = M.avatarBgOpen(b), need = M.avatarBgs[b].level;
+        var label = t("me.bg." + b) + (open ? "" : " · " + t("me.bgLocked", { n: need }));
+        return '<button type="button" class="bg-option press' + (open ? "" : " is-locked") + '" role="radio" aria-checked="' + (bg === b) + '"' + (open ? "" : ' aria-disabled="true"') +
+          ' data-bg="' + b + '"' + (M.avatarBgs[b].bg ? ' style="--avbg:' + M.avatarBgs[b].bg + '" data-avbg' : ' style="--tint:' + M.characters[id].tint + '"') + ' aria-label="' + esc(label) + '" title="' + esc(label) + '">' +
+          (open ? "" : icon("lock") + '<span class="bg-lv">' + need + "</span>") + "</button>";
+      })) +
+      (lv < 5 ? '<p class="muted studio-note">' + esc(t("me.bgNote")) + "</p>" : "") +
+    "</div>";
   }
 
   function wireMe() {
@@ -310,6 +497,14 @@ Medulla.ready(function () {
     if (tgt.closest("[data-new-nick]")) { Store.setProfile({ nick: Store.randomNick() }); draw(); return; }
     var av = tgt.closest("[data-avatar]");
     if (av) { Store.setProfile({ avatar: av.getAttribute("data-avatar") }); S.tap(); draw(); view.querySelector('[data-avatar="' + av.getAttribute("data-avatar") + '"]').focus(); return; }
+    var md = tgt.closest("[data-mood]");
+    if (md) { Store.setProfile({ mood: md.getAttribute("data-mood") }); S.tap(); draw(); view.querySelector('[data-mood="' + md.getAttribute("data-mood") + '"]').focus(); return; }
+    var bgb = tgt.closest("[data-bg]");
+    if (bgb) {
+      var key = bgb.getAttribute("data-bg");
+      if (!M.avatarBgOpen(key)) { M.toast({ icon: "lock", title: t("me.bgLocked", { n: M.avatarBgs[key].level }), ms: 2200 }); return; }
+      Store.setProfile({ bg: key }); S.tap(); draw(); view.querySelector('[data-bg="' + key + '"]').focus(); return;
+    }
     if (tgt.closest("[data-export]")) {
       var blob = new Blob([Store.exportJSON()], { type: "application/json" });
       var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "medulla-my-data.json";
@@ -367,7 +562,7 @@ Medulla.ready(function () {
 
   function openConsent() {
     modal("consent",
-      '<div class="modal-art">' + M.charImg("syno", "", "", true) + "</div>" +
+      '<div class="modal-art">' + M.poseImg("syno", "hello", "", true) + "</div>" +
       "<h2>" + esc(t("consent.title")) + "</h2><p>" + esc(t("consent.lead")) + '</p><ul class="plain-list">' +
         ["consent.p1", "consent.p2", "consent.p3", "consent.p4"].map(function (k) { return "<li>" + esc(t(k)) + "</li>"; }).join("") + "</ul>" +
       '<fieldset class="choice-row" style="border:0;padding:0;margin:0"><legend style="font-weight:700;color:var(--ink);margin-bottom:6px">' + esc(t("consent.age")) + "</legend>" +
@@ -400,7 +595,7 @@ Medulla.ready(function () {
   }
 
   function showCode(code) {
-    modal("consent", '<div class="modal-art">' + M.charImg("dendi", "", "", true) + "</div><h2>" + esc(t("sync.codeTitle")) + "</h2><p>" + esc(t("sync.codeLead")) + "</p>" +
+    modal("consent", '<div class="modal-art">' + M.poseImg("dendi", "focus", "", true) + "</div><h2>" + esc(t("sync.codeTitle")) + "</h2><p>" + esc(t("sync.codeLead")) + "</p>" +
       '<div class="code-box">' + esc(code) + '</div><p class="muted" style="font-size:.88rem">' + esc(t("sync.codeWarn")) + "</p>" +
       '<div class="btn-row"><button type="button" class="btn btn-primary press" id="code-done">' + esc(t("sync.codeDone")) + "</button></div>",
       function (d) { d.querySelector("#code-done").addEventListener("click", function () { d.close(); draw(); }); });
@@ -427,47 +622,19 @@ Medulla.ready(function () {
   }
 
   function confirmDelete() {
-    modal("consent", '<div class="modal-art">' + M.charImg("syno", "", "", true) + "</div><h2>" + esc(t("data.deleteTitle")) + "</h2><p>" + esc(t("data.deleteConfirm")) + "</p>" +
+    modal("consent", '<div class="modal-art">' + M.poseImg("syno", "tryagain", "", true) + "</div><h2>" + esc(t("data.deleteTitle")) + "</h2><p>" + esc(t("data.deleteConfirm")) + "</p>" +
       '<div class="btn-row"><button type="button" class="btn btn-danger press" id="del-go">' + icon("trash") + "<span>" + esc(t("data.deleteYes")) + '</span></button><button type="button" class="btn btn-ghost press" id="del-cancel">' + esc(t("consent.cancel")) + "</button></div>",
       function (d) {
         d.querySelector("#del-cancel").addEventListener("click", function () { d.close(); });
         d.querySelector("#del-go").addEventListener("click", function () {
-          var s = Store.get(), done = function () { Store.wipe(); d.close(); M.toast({ icon: "trash", title: t("data.deleted") }); location.hash = "#/"; draw(); onboard(); };
+          // Deleting everything also signs out: back to the public site.
+          var s = Store.get(), done = function () {
+            Store.wipe();
+            try { sessionStorage.setItem("medulla.toast", "deleted"); } catch (e) { /* ignore */ }
+            location.replace(M.root() + "index.html");
+          };
           if (s.sync && s.sync.enabled && s.sync.code && B.ready()) B.remove(s.sync.code).then(done, done); else done();
         });
-      });
-  }
-
-  /* --------------------------------------------------------- onboarding */
-
-  function onboard() {
-    var p = Store.ensureProfile();
-    if (p.onboarded) return;
-    var chosen = p.avatar || "dendi";
-    modal("onboard",
-      '<div class="modal-art">' + M.poseImg("dendi", "hello", "idle idle-dendi", true) + "</div>" +
-      "<h2>" + esc(t("onboard.title")) + "</h2><p>" + esc(t("onboard.lead")) + '</p><ul class="plain-list">' +
-        ["onboard.p1", "onboard.p2", "onboard.p3"].map(function (k) { return "<li>" + esc(t(k)) + "</li>"; }).join("") + "</ul>" +
-      '<p style="margin:0"><strong>' + esc(t("onboard.yourName")) + '</strong> <span class="nick" style="font-size:1.1rem" id="ob-nick">' + esc(nick()) + '</span> <button type="button" class="link-btn" id="ob-nick-btn">' + esc(t("me.newNick")) + "</button></p>" +
-      '<p style="margin:0;font-weight:700;color:var(--ink)" id="ob-av-label">' + esc(t("me.avatar")) + "</p>" +
-      '<div class="avatar-picker" role="radiogroup" aria-labelledby="ob-av-label">' + M.characterOrder.map(function (id) {
-        return '<button type="button" class="avatar-option press" role="radio" aria-checked="' + (chosen === id) + '" data-ob-avatar="' + id + '" style="--tint:' + M.characters[id].tint + '" aria-label="' + esc(M.characters[id].name) + '">' + M.charImg(id, "", "", true) + "</button>";
-      }).join("") + "</div>" +
-      '<div class="btn-row"><button type="button" class="btn btn-primary press" id="ob-go">' + esc(t("onboard.guest")) + "</button>" +
-        '<a class="text-link" href="' + M.root() + 'privacy.html">' + esc(t("onboard.privacy")) + "</a></div>" +
-      '<p class="muted" style="font-size:.85rem;margin:0">' + esc(B.ready() ? t("onboard.syncLater") : t("onboard.noSync")) + "</p>",
-      function (d) {
-        d.addEventListener("click", function (e) {
-          var a = e.target.closest("[data-ob-avatar]");
-          if (a) {
-            chosen = a.getAttribute("data-ob-avatar");
-            d.querySelectorAll("[data-ob-avatar]").forEach(function (b) { b.setAttribute("aria-checked", String(b === a)); });
-            S.tap();
-          }
-          if (e.target.closest("#ob-nick-btn")) { Store.setProfile({ nick: Store.randomNick() }); d.querySelector("#ob-nick").textContent = nick(); }
-          if (e.target.closest("#ob-go")) { Store.setProfile({ avatar: chosen, onboarded: true }); d.close(); draw(); }
-        });
-        d.addEventListener("cancel", function () { Store.setProfile({ avatar: chosen, onboarded: true }); });
       });
   }
 
@@ -481,31 +648,24 @@ Medulla.ready(function () {
   function draw() {
     if (gameCtrl) { gameCtrl.destroy(); gameCtrl = null; }
     view.removeEventListener("click", meClick);
-    view.removeEventListener("click", kindClick);
+    view.removeEventListener("click", mapClick);
     var r = currentRoute();
     if (r !== "daily") dailyStep = null;
-    setTabs(r);
     renderGreet();
-    var html = r === "daily" ? viewDaily() : r === "badges" ? viewBadges() : r === "saved" ? viewSaved() : r === "history" ? viewHistory() : r === "me" ? viewMe() : viewDashboard();
+    var html = r === "daily" ? viewDaily() : r === "badges" ? viewBadges() : r === "saved" ? viewSaved() : r === "history" ? viewHistory() : r === "me" ? skills() + viewMe() : viewMap();
+    if (r === "me" || r === "badges" || r === "saved" || r === "history") html = meNav(r) + html;
     view.innerHTML = html;
     view.classList.remove("view-enter"); void view.offsetWidth; view.classList.add("view-enter");
     M.runRenderers(view);
     if (window.MedullaMotion) { window.MedullaMotion.initReveals(view); window.MedullaMotion.initTilt(view); }
     if (r === "daily") wireDaily();
     if (r === "me") wireMe();
-    if (r === "") view.addEventListener("click", kindClick);
+    if (r === "") view.addEventListener("click", mapClick);
     if (r === "history") {
       var c = view.querySelector("[data-clear-results]");
       if (c) c.addEventListener("click", function () { if (window.confirm(t("lab.clearConfirm"))) { Store.clearResults(); draw(); } });
     }
-    document.title = t("explore.tab." + (r || "home")) + " — Medulla";
-  }
-
-  function kindClick(e) {
-    var b = e.target.closest("[data-kind]");
-    if (!b || b.getAttribute("aria-pressed") === "true") return;
-    var d = Store.record("kind", { task: b.getAttribute("data-kind") });
-    if (d) { b.setAttribute("aria-pressed", "true"); S.correct(); }
+    document.title = (r ? t(r === "me" ? "me.profile" : "explore.tab." + r) : t("map.title")) + " — Medulla";
   }
 
   var syncTimer = null;
@@ -514,12 +674,7 @@ Medulla.ready(function () {
     var type = (e.detail || {}).type;
     renderGreet();
     if (["profile", "merge", "wipe", "clear"].indexOf(type) !== -1) return;
-    if (currentRoute() === "") {
-      // refresh numbers on the dashboard without losing focus
-      var focusKind = document.activeElement && document.activeElement.getAttribute("data-kind");
-      draw();
-      if (focusKind) { var b = view.querySelector('[data-kind="' + focusKind + '"]'); if (b) b.focus(); }
-    }
+    if (currentRoute() === "") refreshMap(true); // new numbers, same place
     // Progress events come in bursts (quiz answer + XP + badge); push once they settle.
     clearTimeout(syncTimer);
     syncTimer = setTimeout(function () { syncTimer = null; syncNow(false); }, 4000);
@@ -530,7 +685,6 @@ Medulla.ready(function () {
   M.loadFacts().then(function (f) {
     facts = f;
     draw();
-    onboard();
   }).catch(function () {
     view.innerHTML = '<p class="muted">' + esc(t("learn.error")) + "</p>";
   });

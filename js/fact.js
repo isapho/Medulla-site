@@ -87,7 +87,7 @@ Medulla.ready(function () {
     g.fillStyle = grd; g.fillRect(0, 0, 1200, 630);
     g.fillStyle = "#6C5CE7"; g.fillRect(0, 590, 1200, 40);
     var who = M.factChar(fact);
-    return Promise.all([loadImg(M.root() + "assets/characters/" + who + ".webp"), loadImg(M.root() + "assets/brand/logo-96.webp")]).then(function (imgs) {
+    return Promise.all([loadImg(M.root() + "assets/characters/poses/" + who + "-hello.webp"), loadImg(M.root() + "assets/brand/icon-192.png")]).then(function (imgs) {
       var ch = imgs[0], logo = imgs[1];
       g.fillStyle = "rgba(108,92,231,0.12)"; g.beginPath(); g.arc(1000, 330, 210, 0, Math.PI * 2); g.fill();
       var h = 330, w = h * ch.width / ch.height; g.drawImage(ch, 1000 - w / 2, 520 - h, w, h);

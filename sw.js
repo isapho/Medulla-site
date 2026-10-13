@@ -7,10 +7,11 @@
  *  - Other same-origin files (images): served from cache, refreshed in the background.
  *  - Google Fonts: cached after first use. Everything else: network only.
  */
-const VERSION = "medulla-29682c118d";
+const VERSION = "medulla-7f0ec839b1";
 const PRECACHE = [
   "./",
   "index.html",
+  "start.html",
   "learn.html",
   "lab.html",
   "explore.html",
@@ -29,6 +30,7 @@ const PRECACHE = [
   "js/main.js",
   "js/access.js",
   "js/home.js",
+  "js/start.js",
   "js/learn.js",
   "js/lab.js",
   "js/games.js",
@@ -44,16 +46,22 @@ const PRECACHE = [
   "data/glossary.json",
   "glossary.html",
   "accessibility.html",
-  "assets/brand/logo-96.webp",
-  "assets/brand/logo-192.webp",
-  "assets/brand/logo-white-96.webp",
+  "assets/brand/logo-mark-96.webp",
+  "assets/brand/logo-mark.webp",
+  "assets/brand/logo-tile.svg",
   "assets/brand/favicon-64.png",
+  "assets/brand/icon-192.png",
   "assets/img/brain-glass.webp",
   "assets/characters/dendi.webp",
   "assets/characters/memo.webp",
   "assets/characters/octa.webp",
   "assets/characters/syno.webp",
   "assets/characters/lumi.webp",
+  "assets/characters/faces/dendi.webp",
+  "assets/characters/faces/memo.webp",
+  "assets/characters/faces/octa.webp",
+  "assets/characters/faces/syno.webp",
+  "assets/characters/faces/lumi.webp",
   "assets/characters/poses/dendi-correct.webp",
   "assets/characters/poses/dendi-tryagain.webp",
   "assets/characters/poses/dendi-win.webp",

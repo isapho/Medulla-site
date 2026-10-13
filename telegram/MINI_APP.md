@@ -7,9 +7,12 @@ is a third, separate part: see [`BOT.md`](BOT.md). It can use the same bot token
 ## 1. Daily-fact channel bot (ready)
 
 `telegram/bot.mjs` posts the website's fact of the day to a channel in Uzbek,
-Russian and English. Each post has the fact, a quiz question with the answer
-behind a spoiler, the source link, the "Pending expert review" label and,
-when `SITE_URL` is set, a "Read the full fact" button.
+Russian and English. Each post has the fact with its brain-map area and
+character (and that character's picture as a small preview), a quiz question
+with the answer behind a spoiler, the source link, the "Pending expert review"
+label, a "Get it every day in a private chat" button that opens the bot's
+`/daily` (from `telegramBot` in `js/config.js`) and, when `SITE_URL` is set, a
+"Read the full fact" button.
 
 **Set it up (about 10 minutes):**
 
@@ -42,7 +45,8 @@ A Mini App opens the website inside Telegram with a button in the bot or channel
 
 **Already done in the site:** `js/main.js` notices the Telegram launch
 parameters and loads `js/telegram.js`. That loads Telegram's script, expands
-to full height, matches the header colour and shows Telegram's own Back
+to full height, matches the header colour (the app's navy top bar, or the
+light/dark theme on public pages, following the dark/light switch) and shows Telegram's own Back
 button on inner pages. Everything else (facts, Lab, daily challenge, progress
 on the device) works as on the web.
 

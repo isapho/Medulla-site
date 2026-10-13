@@ -11,6 +11,8 @@ Medulla.ready(function () {
   var hub = document.getElementById("lab-hub"), view = document.getElementById("lab-activity");
   var grid = document.getElementById("activity-grid"), mount = document.getElementById("activity-mount");
   var ctrl = null, current = null;
+  // Each activity card shows its host in the mood of the activity.
+  var ACT_POSE = { stroop: "focus", reaction: "aha", digits: "curious", sequence: "focus", breathing: "inhale", sleep: "asleep" };
 
   function best(id) {
     var rs = Store.get().results.filter(function (r) { return r.type === id; });
@@ -27,7 +29,7 @@ Medulla.ready(function () {
       var c = M.characters[g.char], b = g.id === "sleep" ? (Store.get().sleepDays.length ? t("game.sleep.nights", { n: Store.get().sleepDays.length }) : null) : best(g.id);
       return '<li><a class="activity-card tilt press" data-tilt href="#' + g.id + '">' +
         '<span class="act-meta"><span class="chip">' + esc(t(g.kind === "test" ? "game.kind.test" : "game.kind.exercise")) + '</span><span class="chip" style="background:var(--bg-soft);color:var(--ink-3)">' + M.icon("clock") + " " + esc(t("game.minutes", { n: g.minutes })) + "</span></span>" +
-        '<span class="act-art" style="--tint:' + c.tint + '">' + M.charImg(g.char, "idle idle-" + g.char, "") + "</span>" +
+        '<span class="act-art" style="--tint:' + c.tint + '">' + M.poseImg(g.char, ACT_POSE[g.id] || "focus", "idle idle-" + g.char) + "</span>" +
         "<h3>" + esc(t("game." + g.id + ".title")) + "</h3>" +
         "<p>" + esc(t("game." + g.id + ".short")) + "</p>" +
         (b ? '<span class="act-best">' + M.icon("star") + " " + esc(t("game.yourBest")) + ": " + esc(b) + "</span>" : "") +
@@ -74,7 +76,7 @@ Medulla.ready(function () {
         }).join("") + "</ul>" : '<p class="empty-line"><strong style="color:var(--ink)">' + esc(t("lab.noData")) + "</strong><br>" + esc(t("lab.noDataHint")) + "</p>") +
         (Store.available() ? "" : '<p class="empty-line">' + esc(t("lab.storageOff")) + "</p>") +
       "</div>" +
-      '<div class="card tip-card">' + M.charImg("lumi", "", "") + "<p>" + esc(t("lab.tip")) + "</p></div>";
+      '<div class="card tip-card">' + M.poseImg("lumi", "aha", "") + "<p>" + esc(t("lab.tip")) + "</p></div>";
     var clear = document.getElementById("clear-history");
     if (clear) clear.addEventListener("click", function () {
       if (!window.confirm(t("lab.clearConfirm"))) return;

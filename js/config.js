@@ -75,7 +75,7 @@ window.MEDULLA_CONFIG = {
   // `live` = filled automatically from the anonymous backend counter of that name.
   // Labels come from js/lang/*.js (keys "impact.<key>").
   impact: [
-    { key: "followers",   value: 150,  suffix: "+", icon: "instagram" }, // real (2026)
+    { key: "followers",   value: 150,  suffix: "+", icon: "social" }, // real (2026), Instagram + Telegram
     { key: "visits",      value: null, suffix: "",  icon: "heart" },
     { key: "factsShared", value: null, suffix: "",  icon: "book" },
     { key: "volunteers",  value: null, suffix: "",  icon: "users" },

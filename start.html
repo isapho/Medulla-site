@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="uz" data-gate="start">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- meta:start (filled by node tools/build.js from js/lang/uz.js) -->
+  <title>Kirish — Medulla</title>
+  <meta name="description" content="“Mening Medullam”ga kiring: akkaunt va haqiqiy ism kerak emas, natijalar shu qurilmada saqlanadi.">
+  <!-- canonical/og:url: set `domain` in js/config.js, then run node tools/build.js -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Medulla">
+  <meta property="og:title" content="Kirish — Medulla">
+  <meta property="og:description" content="“Mening Medullam”ga kiring: akkaunt va haqiqiy ism kerak emas, natijalar shu qurilmada saqlanadi.">
+  <meta property="og:image" content="assets/brand/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Medulla — Mind • Learn • Grow">
+  <meta property="og:locale" content="uz_UZ">
+  <meta property="og:locale:alternate" content="ru_RU">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- meta:end -->
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="assets/brand/logo-tile.svg">
+  <link rel="icon" type="image/png" href="assets/brand/favicon-64.png">
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&amp;family=Manrope:wght@700;800&amp;display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/polish.css">
+  <link rel="preload" as="image" href="assets/brand/logo-mark.webp" type="image/webp">
+  <script src="js/prefs.js"></script>
+</head>
+<body data-page="start">
+  <a class="skip-link" href="#main" data-i18n="a11y.skip">Asosiy matnga oʻtish</a>
+  <noscript><p class="noscript">JavaScript yoqilmagan. Включите JavaScript. Please turn on JavaScript.</p></noscript>
+
+  <div class="start">
+    <!-- Brand side: always dark, the logo large -->
+    <section class="start-brand" aria-labelledby="start-panel-title">
+      <a class="brand" href="index.html" data-i18n-attr="aria-label:a11y.homeLink" aria-label="Medulla — bosh sahifa">
+        <span class="brand-mark"><img src="assets/brand/logo-mark-96.webp" width="40" height="40" alt=""></span>
+        <span class="brand-text"><span class="brand-name">Medulla</span><span class="brand-tag" data-i18n="brand.tagline">Mind • Learn • Grow</span></span>
+      </a>
+      <div class="start-brand-body">
+        <img class="start-logo" src="assets/brand/logo-mark.webp" width="384" height="384" data-i18n-attr="alt:brand.logoAlt" alt="Medulla logotipi: oq chiziqlardan toʻqilgan miya va uni oʻrab olgan neyron tarmogʻi">
+        <h2 id="start-panel-title" data-i18n="start.panelTitle">Miyangizni har kuni biroz yaxshiroq tanib oling</h2>
+        <ul class="start-points">
+          <li><span data-icon="lock"></span><span data-i18n="start.p1">Akkaunt, email yoki haqiqiy ism kerak emas</span></li>
+          <li><span data-icon="shield"></span><span data-i18n="start.p2">Natijalar shu qurilmada saqlanadi</span></li>
+          <li><span data-icon="download"></span><span data-i18n="start.p3">Istalgan vaqtda yuklab oling yoki oʻchiring</span></li>
+        </ul>
+      </div>
+      <div class="start-cast" aria-hidden="true">
+        <img src="assets/characters/avatars/memo-classic.webp" data-char="memo" data-pose="avatar" alt="" width="64" height="64">
+        <img src="assets/characters/avatars/octa-classic.webp" data-char="octa" data-pose="avatar" alt="" width="64" height="64">
+        <img src="assets/characters/avatars/dendi-classic.webp" data-char="dendi" data-pose="avatar" alt="" width="64" height="64">
+        <img src="assets/characters/avatars/syno-classic.webp" data-char="syno" data-pose="avatar" alt="" width="64" height="64">
+        <img src="assets/characters/avatars/lumi-classic.webp" data-char="lumi" data-pose="avatar" alt="" width="64" height="64">
+      </div>
+    </section>
+
+    <!-- Sign-in side -->
+    <main id="main" class="start-main" tabindex="-1">
+      <div class="start-top">
+        <a class="text-link start-home" href="index.html"><span data-icon="arrowLeft"></span><span data-i18n="nav.home">Bosh sahifa</span></a>
+        <div class="header-tools">
+          <div class="lang-switch" role="group" data-i18n-attr="aria-label:lang.label" aria-label="Til">
+            <button type="button" class="lang-btn" data-lang="uz" lang="uz" aria-label="Oʻzbekcha">UZ</button>
+            <button type="button" class="lang-btn" data-lang="ru" lang="ru" aria-label="Русский">RU</button>
+            <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English">EN</button>
+          </div>
+          <button type="button" class="icon-btn ax-toggle" id="display-toggle" aria-expanded="false" aria-controls="a11y-drawer" data-i18n-attr="aria-label:ax.buttonAria;title:ax.buttonAria" aria-label="Maxsus imkoniyatlar va qulaylik (Alt + A)" title="Maxsus imkoniyatlar va qulaylik (Alt + A)"><span data-icon="access"></span></button>
+        </div>
+      </div>
+      <div class="start-card card" id="start-view" aria-live="polite"></div>
+      <p class="start-foot"><a href="privacy.html" data-i18n="onboard.privacy">Maxfiylik — oddiy tilda</a> · <a href="accessibility.html" data-i18n="nav.accessibility">Maxsus imkoniyatlar</a></p>
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/backend.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/motion.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/access.js"></script>
+  <script src="js/start.js"></script>
+</body>
+</html>

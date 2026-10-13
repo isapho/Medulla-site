@@ -37,12 +37,20 @@
 
   /* --------------------------------------------------- shared building */
 
+  // Tests get a small host (Octa) who looks curious before a run and
+  // concentrates while it runs: see host().
   function head(g, h) {
     return '<div class="experiment-head">' +
+      (g.kind === "test" ? '<span class="game-host" aria-hidden="true">' + M.poseImg(g.char, "curious", "", true) + "</span>" : "") +
       '<span class="tile' + (g.char === "syno" ? "" : g.char === "lumi" ? " is-night" : " is-orange") + '">' + M.icon(g.icon) + "</span>" +
       "<" + h + ">" + esc(t("game." + g.id + ".title")) + "</" + h + ">" +
       '<span class="chip">' + esc(t(g.kind === "test" ? "game.kind.test" : "game.kind.exercise")) + "</span></div>" +
       '<p class="game-how">' + esc(t("game." + g.id + ".how")) + "</p>";
+  }
+
+  function host(el, pose) {
+    var img = el.querySelector(".game-host img"), g = el.__game;
+    if (img && g) img.src = M.poseSrc(g.char, pose);
   }
 
   function statItem(value, label) { return "<li><strong>" + esc(value) + "</strong><span>" + esc(label) + "</span></li>"; }
@@ -146,14 +154,14 @@
         }
       });
       st = { running: true, trials: shuffle(trials), i: 0, out: [], t0: 0, accepting: false, timer: 0 };
-      res.hidden = true; start.hidden = true;
+      res.hidden = true; start.hidden = true; host(el, "focus");
       buttons();
       var first = answers.querySelector("button"); if (first) first.focus({ preventScroll: true });
       next();
     }
     function done() {
       clearTimeout(st.timer);
-      st.running = false; start.hidden = false; fixation(); buttons(); progress();
+      st.running = false; start.hidden = false; fixation(); buttons(); progress(); host(el, "correct");
       start.querySelector("span").textContent = t("lab.again");
       var ok = st.out.filter(function (x) { return x.correct; });
       var con = mean(ok.filter(function (x) { return x.congruent; }).map(function (x) { return x.rt; }));
@@ -212,6 +220,7 @@
     }
     function wait() {
       clearTimeout(r.timer); set("waiting");
+      host(el, "focus");
       r.timer = setTimeout(function () { set("go"); r.t0 = performance.now(); }, 1500 + Math.random() * 2500);
     }
     function press() {
@@ -227,7 +236,7 @@
       }
     }
     function end() {
-      r.done = r.times.slice(); set("idle");
+      r.done = r.times.slice(); set("idle"); host(el, "correct");
       var avg = mean(r.done), best = Math.min.apply(null, r.done);
       var result = { type: "reaction", times: r.done.map(Math.round), avg: Math.round(avg), best: Math.round(best) };
       S.correct();
@@ -326,9 +335,9 @@
       else if (input.length < 14) { input.push(+k); S.tap(); }
       showTyped();
     }
-    function begin() { sc = staircase({ startLen: 3, maxLen: 12 }); running = true; res.hidden = true; start.hidden = true; round(); }
+    function begin() { sc = staircase({ startLen: 3, maxLen: 12 }); running = true; res.hidden = true; start.hidden = true; host(el, "focus"); round(); }
     function end() {
-      running = false; entry.hidden = true; start.hidden = false;
+      running = false; entry.hidden = true; start.hidden = false; host(el, "correct");
       start.querySelector("span").textContent = t("lab.again");
       big.textContent = sc.best() || "—"; hint.textContent = ""; lenEl.textContent = ""; prog.textContent = "";
       var result = { type: "digits", span: sc.best(), rounds: sc.rounds() };
@@ -402,9 +411,9 @@
       var step = sc.answer(ok);
       setTimeout(function () { if (!running) return; if (step === "end") end(); else round(); }, 1200 * M.pace());
     }
-    function begin() { sc = staircase({ startLen: 3, maxLen: 9 }); running = true; res.hidden = true; start.hidden = true; round(); }
+    function begin() { sc = staircase({ startLen: 3, maxLen: 9 }); running = true; res.hidden = true; start.hidden = true; host(el, "focus"); round(); }
     function end() {
-      running = false; start.hidden = false; lock(true);
+      running = false; start.hidden = false; lock(true); host(el, "correct");
       start.querySelector("span").textContent = t("lab.again");
       hint.textContent = ""; lenEl.textContent = ""; prog.textContent = "";
       var result = { type: "sequence", span: sc.best(), rounds: sc.rounds() };
@@ -422,7 +431,7 @@
     var choices = opts.short ? [1] : [1, 3, 5];
     el.innerHTML = head(g, opts.heading) +
       '<div class="stage breath-stage">' +
-        '<div class="breath-visual" aria-hidden="true"><div class="breath-blob"></div><img src="' + M.root() + 'assets/characters/syno.png" width="166" height="244" alt="" class="breath-syno"></div>' +
+        '<div class="breath-visual" aria-hidden="true"><div class="breath-blob"></div><img src="' + M.poseSrc("syno", "hello") + '" width="240" height="240" alt="" class="breath-syno"></div>' +
         '<p class="breath-phase" aria-live="polite">' + esc(t("game.breathing.ready")) + '</p><p class="breath-count" aria-hidden="true"></p>' +
         '<div class="meter" aria-hidden="true"><span class="g-bar"></span></div>' +
         '<div class="btn-row breath-choices" role="group" aria-label="' + esc(t("game.breathing.length")) + '">' +
@@ -431,7 +440,7 @@
       '</div><div class="result-card" hidden></div>';
     var stage = el.querySelector(".breath-stage"), phase = el.querySelector(".breath-phase"), count = el.querySelector(".breath-count");
     var bar = el.querySelector(".g-bar"), stop = el.querySelector(".g-stop"), res = el.querySelector(".result-card"), choicesEl = el.querySelector(".breath-choices");
-    var running = false, started = 0, total = 0;
+    var running = false, started = 0, total = 0, syno = el.querySelector(".breath-syno");
 
     async function run(minutes) {
       running = true; total = minutes * 60; started = performance.now();
@@ -440,6 +449,7 @@
         while (running) {
           for (var dir of ["in", "out"]) {
             stage.setAttribute("data-phase", dir);
+            syno.src = M.poseSrc("syno", dir === "in" ? "inhale" : "exhale");
             phase.textContent = t(dir === "in" ? "game.breathing.in" : "game.breathing.out");
             S.breath(dir, 5);
             for (var c = 1; c <= 5; c++) {
@@ -459,6 +469,7 @@
       running = false;
       var seconds = Math.round((performance.now() - started) / 1000);
       stage.classList.remove("is-running"); stage.removeAttribute("data-phase");
+      syno.src = M.poseSrc("syno", "love");
       phase.textContent = t("game.breathing.done"); count.textContent = "";
       choicesEl.hidden = false; stop.hidden = true;
       if (seconds >= 20) {
@@ -476,7 +487,7 @@
   // ends by asking the visitor to put the phone away.
   function sleepMode(g, el, opts, signal) {
     el.innerHTML = head(g, opts.heading) +
-      '<div class="stage night-preview"><img src="' + M.root() + 'assets/characters/lumi.png" width="160" height="161" alt="" class="night-lumi-small">' +
+      '<div class="stage night-preview"><img src="' + M.poseSrc("lumi", "hello") + '" width="240" height="240" alt="" class="night-lumi-small">' +
       '<ul class="small-notes">' + ["game.sleep.note1", "game.sleep.note2"].map(function (k) { return "<li>" + M.icon("moon") + "<span>" + esc(t(k)) + "</span></li>"; }).join("") + "</ul>" +
       '<div class="btn-row"><button type="button" class="btn btn-night g-start">' + M.icon("moon") + "<span>" + esc(t("game.sleep.start")) + "</span></button></div></div>" +
       '<div class="result-card" hidden></div>';
@@ -497,7 +508,7 @@
       }
       overlay.innerHTML = '<div class="night-sky" aria-hidden="true">' + stars + "</div>" +
         '<div class="night-inner"><div class="night-moon" aria-hidden="true"></div>' +
-        '<img class="night-lumi" src="' + M.root() + 'assets/characters/lumi.png" width="160" height="161" alt="">' +
+        '<img class="night-lumi" src="' + M.poseSrc("lumi", "exhale") + '" width="240" height="240" alt="">' +
         '<p class="night-step" aria-live="polite"></p>' +
         '<div class="night-ring" aria-hidden="true"><span></span></div>' +
         '<div class="btn-row"><button type="button" class="btn btn-night-ghost night-end">' + esc(t("game.sleep.end")) + "</button></div></div>";
@@ -521,6 +532,9 @@
       var stepEl = overlay.querySelector(".night-step");
       var txt = t(steps[idx]);
       if (stepEl.textContent !== txt) stepEl.textContent = txt;
+      // Lumi winds down with you and falls asleep for the last steps.
+      var lumi = overlay.querySelector(".night-lumi"), want = M.poseSrc("lumi", idx >= 2 ? "asleep" : "exhale");
+      if (lumi.getAttribute("src") !== want) lumi.setAttribute("src", want);
       overlay.querySelector(".night-ring span").style.setProperty("--p", Math.min(1, el2 / TOTAL));
       if (el2 >= TOTAL) return close(true);
       timer = setTimeout(tick, 500);
@@ -558,6 +572,7 @@
       opts = Object.assign({ heading: "h2" }, opts || {});
       var ac = new AbortController();
       container.classList.add("game", "game-" + id);
+      container.__game = g;
       IMPL[id](g, container, opts, ac.signal);
       if (window.MedullaMotion) window.MedullaMotion.initTilt(container);
       return { destroy: function () { ac.abort(); container.innerHTML = ""; container.classList.remove("game", "game-" + id); } };

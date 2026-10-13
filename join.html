@@ -22,6 +22,7 @@
   <!-- meta:end -->
   <meta name="theme-color" content="#FFFFFF">
   <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="assets/brand/logo-tile.svg">
   <link rel="icon" type="image/png" href="assets/brand/favicon-64.png">
   <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,7 +48,7 @@
         </div>
         <div class="page-hero-art">
           <p class="bubble" data-i18n="join.synoSays">Har bir yordam muhim!</p>
-          <img src="assets/characters/syno.webp" class="idle idle-syno" data-char="syno" alt="" width="168" height="248">
+          <img src="assets/characters/poses/syno-correct.webp" class="idle idle-syno" data-char="syno" data-pose="correct" alt="" width="240" height="240">
         </div>
       </div>
     </section>
@@ -56,37 +57,37 @@
       <div class="container">
         <ul class="ways">
           <li class="card way tilt" data-tilt id="follow" data-reveal>
-            <div class="pillar-art" style="--tint:#FFF3E6"><img src="assets/characters/lumi.webp" data-char="lumi" alt="" width="160" height="161" loading="lazy"></div>
+            <div class="pillar-art" style="--tint:#E9E6FF"><img src="assets/characters/poses/lumi-aha.webp" data-char="lumi" data-pose="aha" alt="" width="240" height="240" loading="lazy"></div>
             <h2 data-i18n="join.follow.title">Kuzatib boring</h2>
             <p data-i18n="join.follow.text">Har kungi faktlar Instagram va Telegramda.</p>
             <div class="btn-row light-social" data-render="follow"></div>
           </li>
           <li class="card way tilt" data-tilt id="share" data-reveal>
-            <div class="pillar-art" style="--tint:#EFEDFF"><img src="assets/characters/dendi.webp" data-char="dendi" alt="" width="194" height="280" loading="lazy"></div>
+            <div class="pillar-art" style="--tint:#FFF1E4"><img src="assets/characters/poses/dendi-hello.webp" data-char="dendi" data-pose="hello" alt="" width="240" height="240" loading="lazy"></div>
             <h2 data-i18n="join.share.title">Ulashing</h2>
             <p data-i18n="join.share.text">Biror faktni doʻstingiz yoki yaqiningizga yuboring.</p>
             <div data-render="share"></div>
           </li>
           <li class="card way tilt" data-tilt id="volunteer" data-reveal>
-            <div class="pillar-art" style="--tint:#ECE9FF"><img src="assets/characters/syno.webp" data-char="syno" alt="" width="168" height="248" loading="lazy"></div>
+            <div class="pillar-art" style="--tint:#FFF0E6"><img src="assets/characters/poses/syno-correct.webp" data-char="syno" data-pose="correct" alt="" width="240" height="240" loading="lazy"></div>
             <h2 data-i18n="join.volunteer.title">Koʻngilli boʻling</h2>
             <p data-i18n="join.volunteer.text">Kontent, tarjima, dizayn yoki tashriflarda yordam bering.</p>
             <div class="btn-row" data-render="mailto" data-subject="join.subject.volunteer"></div>
           </li>
           <li class="card way tilt" data-tilt id="club" data-reveal>
-            <div class="pillar-art" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="198" height="233" loading="lazy"></div>
+            <div class="pillar-art" style="--tint:#FFF2E9"><img src="assets/characters/poses/octa-focus.webp" data-char="octa" data-pose="focus" alt="" width="240" height="240" loading="lazy"></div>
             <h2 data-i18n="join.club.title">Maktabingizda toʻgarak oching</h2>
             <p data-i18n="join.club.text">Sinfdoshlaringiz bilan miya haqidagi faktlar va laboratoriya tajribalarini oʻrganing.</p>
             <div class="btn-row" data-render="mailto" data-subject="join.subject.club"></div>
           </li>
           <li class="card way tilt" data-tilt id="partner" data-reveal>
-            <div class="pillar-art" style="--tint:#E8E5FF"><img src="assets/characters/memo.webp" data-char="memo" alt="" width="276" height="229" loading="lazy"></div>
+            <div class="pillar-art" style="--tint:#FFF5EC"><img src="assets/characters/poses/memo-correct.webp" data-char="memo" data-pose="correct" alt="" width="240" height="240" loading="lazy"></div>
             <h2 data-i18n="join.partner.title">Hamkor boʻling</h2>
             <p data-i18n="join.partner.text">Tashkilotlar: keling, birgalikda foydali ish qilaylik.</p>
             <div class="btn-row" data-render="mailto" data-subject="join.subject.partner"></div>
           </li>
           <li class="card way tilt" data-tilt id="workshop" data-reveal>
-            <div class="pillar-art" style="--tint:#FFF3E6"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="198" height="233" loading="lazy"></div>
+            <div class="pillar-art" style="--tint:#FFF2E9"><img src="assets/characters/poses/octa-win.webp" data-char="octa" data-pose="win" alt="" width="240" height="240" loading="lazy"></div>
             <h2 data-i18n="visit.title">Tashrif yoki mashgʻulot soʻrash</h2>
             <p data-i18n="visit.short">Maktablar, toʻgaraklar, tashkilotlar va oilalar uchun.</p>
             <div class="btn-row" data-render="mailto" data-subject="visit.subject" data-body="visit.body" data-label="visit.button"></div>
@@ -124,7 +125,7 @@
             <p data-i18n="join.noForms">Saytda hech qanday shakl yoʻq va bu yerda maʼlumotlaringiz yigʻilmaydi. Xabar yozish uchun email yoki Telegramdan foydalaning.</p>
             <div class="btn-row" data-render="contact"></div>
           </div>
-          <div class="cta-art"><img src="assets/characters/dendi.webp" class="idle idle-dendi" data-char="dendi" alt="" width="194" height="280" loading="lazy"></div>
+          <div class="cta-art"><img src="assets/characters/poses/dendi-win.webp" class="idle idle-dendi" data-char="dendi" data-pose="win" alt="" width="240" height="240" loading="lazy"></div>
         </div>
       </div>
     </section>

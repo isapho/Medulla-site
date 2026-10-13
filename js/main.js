@@ -114,72 +114,83 @@
     return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
   }
 
+  // Medulla icon set: rounded 2 px strokes, a soft tinted body (.f), solid
+  // accents (.d) and a small shine (.s). Colours follow currentColor, so the
+  // same icon works on white, on purple buttons and in the dark theme.
   var ICONS = {
-    book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/><path d="M8 7h8M8 11h5"/>',
-    heart: '<path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>',
-    target: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/>',
-    bolt: '<path d="M13 2.5 4.5 13.5h6.5l-1 8 8.5-11h-6.5z"/>',
-    swatch: '<rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/>',
-    instagram: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/>',
-    telegram: '<path d="M21.5 4.5 2.8 11.6l6.1 2.1 2.3 6.3 3.4-4.2 5 3.7z"/><path d="m8.9 13.7 12.6-9.2"/>',
-    mail: '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/>',
-    share: '<circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="m8.3 10.9 7.4-3.7M8.3 13.1l7.4 3.7"/>',
-    users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.2a6.5 6.5 0 0 1 3.5 5.8"/>',
-    user: '<circle cx="12" cy="8.5" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    book: '<path class="f" d="M12 6.6C10.2 5 7.9 4.4 4.6 4.7c-.6.1-1.1.6-1.1 1.2v11.4c0 .7.6 1.2 1.3 1.2 3-.2 5.2.4 7.2 2 2-1.6 4.2-2.2 7.2-2 .7 0 1.3-.5 1.3-1.2V5.9c0-.6-.5-1.1-1.1-1.2-3.3-.3-5.6.3-7.4 1.9z"/><path d="M12 6.6v13.6"/><path class="s" d="M6.4 8.2c1.2-.1 2.3 0 3.2.4"/>',
+    heart: '<path class="f" d="M12 20.3c-.3 0-.6-.1-.9-.3C7.4 17 3.4 13.8 3.4 9.4 3.4 6.6 5.5 4.5 8.1 4.5c1.6 0 3 .8 3.9 2.1.9-1.3 2.3-2.1 3.9-2.1 2.6 0 4.7 2.1 4.7 4.9 0 4.4-4 7.6-7.7 10.6-.3.2-.6.3-.9.3z"/><path class="s" d="M6.3 8.6c.2-1 .9-1.7 1.9-1.9"/>',
+    target: '<circle class="f" cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="4.6"/><circle class="d" cx="12" cy="12" r="1.7"/>',
+    bolt: '<path class="f" d="M13.2 2.9 5.4 12.6c-.5.6-.1 1.6.7 1.6h4.6l-.9 6.2c-.1.9 1 1.4 1.6.7l7.6-9.7c.5-.6.1-1.6-.7-1.6h-4.6l.9-6.2c.1-.9-1-1.4-1.6-.7z"/>',
+    swatch: '<rect class="f" x="3.5" y="3.5" width="7.4" height="7.4" rx="2.6"/><rect x="13.1" y="3.5" width="7.4" height="7.4" rx="2.6"/><rect x="3.5" y="13.1" width="7.4" height="7.4" rx="2.6"/><rect class="f" x="13.1" y="13.1" width="7.4" height="7.4" rx="2.6"/>',
+    instagram: '<rect class="f" x="3" y="3" width="18" height="18" rx="5.6"/><circle cx="12" cy="12" r="4"/><circle class="d" cx="17.2" cy="6.8" r="1.25"/>',
+    telegram: '<path class="f" d="M20.4 4.3 3.6 10.9c-.9.4-.9 1.6 0 1.9l4.2 1.4 1.6 5c.3.8 1.3 1 1.8.4l2.3-2.5 4.3 3.1c.7.5 1.6.1 1.8-.7l2.5-12.9c.2-.9-.7-1.6-1.6-1.3z"/><path d="m7.9 14.2 9.2-6.4-6.1 7.4"/>',
+    mail: '<rect class="f" x="3" y="5" width="18" height="14" rx="3.6"/><path d="m4.2 7.6 6.6 5c.7.5 1.7.5 2.4 0l6.6-5"/>',
+    share: '<circle class="f" cx="6" cy="12" r="2.9"/><circle class="f" cx="18" cy="5.9" r="2.9"/><circle class="f" cx="18" cy="18.1" r="2.9"/><path d="m8.6 10.6 6.8-3.3M8.6 13.4l6.8 3.3"/>',
+    users: '<circle class="f" cx="9" cy="8" r="3.6"/><path class="f" d="M2.8 19.4c0-3.4 2.8-6 6.2-6s6.2 2.6 6.2 6c0 .6-.5 1.1-1.1 1.1H3.9c-.6 0-1.1-.5-1.1-1.1z"/><path d="M15.8 4.6a3.4 3.4 0 0 1 0 6.8M17.8 13.8c2 .7 3.4 2.5 3.4 4.7"/>',
+    user: '<circle class="f" cx="12" cy="8.3" r="4.1"/><path class="f" d="M4.5 19.8c0-3.9 3.4-6.7 7.5-6.7s7.5 2.8 7.5 6.7c0 .7-.5 1.2-1.2 1.2H5.7c-.7 0-1.2-.5-1.2-1.2z"/>',
     link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
-    school: '<path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M22 9v6"/>',
-    shield: '<path d="M12 3 4.5 6v6c0 4.4 3.2 7.9 7.5 9 4.3-1.1 7.5-4.6 7.5-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
-    info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.5h.01"/>',
-    lock: '<rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
-    access: '<circle cx="12" cy="4.5" r="1.6"/><path d="M5 8.5 12 10l7-1.5M12 10v4l-3 6.5M12 14l3 6.5"/>',
-    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
-    menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
-    close: '<path d="M6 6l12 12M18 6 6 18"/>',
-    arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
-    arrowLeft: '<path d="M19 12H5M11 6l-6 6 6 6"/>',
-    external: '<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
-    sparkle: '<path d="M12 3c.6 4.6 2.4 6.4 7 7-4.6.6-6.4 2.4-7 7-.6-4.6-2.4-6.4-7-7 4.6-.6 6.4-2.4 7-7z"/><path d="M19 15.5c.3 1.8 1 2.5 2.5 2.8-1.5.3-2.2 1-2.5 2.7-.3-1.7-1-2.4-2.5-2.7 1.5-.3 2.2-1 2.5-2.8z"/>',
-    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
-    message: '<path d="M4 5h16v11H9.5L4 20z"/><path d="M8 9.5h8M8 12.5h5"/>',
+    school: '<path class="f" d="m2.6 9.1 8.5-4.3c.6-.3 1.3-.3 1.8 0l8.5 4.3-8.5 4.3c-.6.3-1.3.3-1.8 0z"/><path d="M6 11.4V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.6M21.4 9.4v5.1"/>',
+    shield: '<path class="f" d="M11.3 3.3 5.4 5.6c-.6.2-.9.7-.9 1.3V12c0 4.3 3.1 7.7 7.5 9 4.4-1.3 7.5-4.7 7.5-9V6.9c0-.6-.4-1.1-.9-1.3l-5.9-2.3c-.5-.2-1-.2-1.4 0z"/><path d="m8.8 12.1 2.3 2.3 4.2-4.6"/>',
+    info: '<circle class="f" cx="12" cy="12" r="9"/><path d="M12 11v5.4"/><circle class="d" cx="12" cy="7.6" r="1.3"/>',
+    lock: '<rect class="f" x="4.5" y="10.4" width="15" height="10.6" rx="3.3"/><path d="M8 10.4V8a4 4 0 0 1 8 0v2.4"/><circle class="d" cx="12" cy="15.7" r="1.5"/>',
+    access: '<circle class="f" cx="12" cy="12" r="9.4"/><circle class="d" cx="12" cy="7.2" r="1.6"/><path d="M7.4 10.1 12 11l4.6-.9M12 11v3.1l-2.3 3.9M12 14.1l2.3 3.9"/>',
+    search: '<circle class="f" cx="11" cy="11" r="7"/><path d="m20 20-3.9-3.9"/><path class="s" d="M7.9 9.4a3.6 3.6 0 0 1 2.4-2.2"/>',
+    menu: '<path d="M4.5 7h15M4.5 12h15M4.5 17h15"/>',
+    close: '<path d="m6.5 6.5 11 11M17.5 6.5l-11 11"/>',
+    arrow: '<path d="M5 12h14M13.5 6.5 19 12l-5.5 5.5"/>',
+    arrowLeft: '<path d="M19 12H5M10.5 6.5 5 12l5.5 5.5"/>',
+    external: '<path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 14v4.5c0 .8-.7 1.5-1.5 1.5h-11c-.8 0-1.5-.7-1.5-1.5v-11C4 6.7 4.7 6 5.5 6H10"/>',
+    sparkle: '<path class="f" d="M12 3c.6 4.6 2.4 6.4 7 7-4.6.6-6.4 2.4-7 7-.6-4.6-2.4-6.4-7-7 4.6-.6 6.4-2.4 7-7z"/><path class="f" d="M19 15.5c.3 1.8 1 2.5 2.5 2.8-1.5.3-2.2 1-2.5 2.7-.3-1.7-1-2.4-2.5-2.7 1.5-.3 2.2-1 2.5-2.8z"/>',
+    clock: '<circle class="f" cx="12" cy="12" r="9"/><path d="M12 7.4V12l3.1 2"/>',
+    message: '<path class="f" d="M5.6 4.5h12.8c1.2 0 2.1.9 2.1 2.1v7.8c0 1.2-.9 2.1-2.1 2.1h-7.9l-4.3 3.4c-.6.4-1.4 0-1.4-.7v-2.9c-.9-.3-1.4-1.1-1.4-1.9V6.6c0-1.2.9-2.1 2.2-2.1z"/><path d="M8.5 9.4h7M8.5 12.4H13"/>',
     check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
-    globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
-    eye: '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
-    type: '<path d="M4 7V5h16v2M12 5v14M9 19h6"/>',
+    globe: '<circle class="f" cx="12" cy="12" r="9"/><path d="M3.4 12h17.2M12 3a13.5 13.5 0 0 1 0 18M12 3a13.5 13.5 0 0 0 0 18"/>',
+    eye: '<path class="f" d="M2.6 12.6c-.3-.4-.3-.9 0-1.3C4.3 8.7 7.6 5.5 12 5.5s7.7 3.2 9.4 5.8c.3.4.3.9 0 1.3-1.7 2.6-5 5.9-9.4 5.9s-7.7-3.3-9.4-5.9z"/><circle cx="12" cy="12" r="3.3"/><circle class="d" cx="12" cy="12" r="1.3"/>',
+    type: '<path d="M4.5 7V5.5h15V7M12 5.5v13M9 18.5h6"/>',
     plus: '<path d="M12 5v14M5 12h14"/>',
-    play: '<path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/>',
-    pause: '<path d="M8 5v14M16 5v14"/>',
-    chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
-    trash: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+    play: '<path class="d" d="M8 6.3v11.4c0 .9 1 1.4 1.7 1l9-5.7c.7-.4.7-1.5 0-1.9l-9-5.7C9 4.9 8 5.4 8 6.3z"/>',
+    pause: '<rect class="d" x="6.4" y="5" width="4.2" height="14" rx="1.7"/><rect class="d" x="13.4" y="5" width="4.2" height="14" rx="1.7"/>',
+    chart: '<rect class="f" x="3.5" y="11" width="4.2" height="9" rx="1.6"/><rect class="f" x="9.9" y="4" width="4.2" height="16" rx="1.6"/><rect class="f" x="16.3" y="13" width="4.2" height="7" rx="1.6"/>',
+    trash: '<path class="f" d="M6 7.5h12l-.9 11.5c-.1 1.1-1 2-2.1 2H9c-1.1 0-2-.9-2.1-2z"/><path d="M4 7.5h16M10 11v6M14 11v6M9 7.5V5.4C9 4.6 9.6 4 10.4 4h3.2c.8 0 1.4.6 1.4 1.4v2.1"/>',
     hash: '<path d="M5 9h14M5 15h14M10 4 8 20M16 4l-2 16"/>',
-    grid: '<rect x="3.5" y="3.5" width="5" height="5" rx="1.2"/><rect x="9.5" y="3.5" width="5" height="5" rx="1.2"/><rect x="15.5" y="3.5" width="5" height="5" rx="1.2"/><rect x="3.5" y="9.5" width="5" height="5" rx="1.2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1.2" fill="currentColor"/><rect x="15.5" y="9.5" width="5" height="5" rx="1.2"/><rect x="3.5" y="15.5" width="5" height="5" rx="1.2"/><rect x="9.5" y="15.5" width="5" height="5" rx="1.2"/><rect x="15.5" y="15.5" width="5" height="5" rx="1.2"/>',
-    wind: '<path d="M3 8h11a3 3 0 1 0-3-3M3 12h16a3 3 0 1 1-3 3M3 16h8"/>',
-    moon: '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/>',
-    sound: '<path d="M4 9.5v5h4l5 4v-13l-5 4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>',
-    mute: '<path d="M4 9.5v5h4l5 4v-13l-5 4z"/><path d="m17 9.5 5 5M22 9.5l-5 5"/>',
-    star: '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
-    trophy: '<path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4M12 14v3M8 21h8M9 21v-4h6v4"/>',
-    neuron: '<circle cx="12" cy="12" r="3.2"/><path d="M12 8.8V3M9.5 10 5 6M14.5 10 19 6M9.4 13.6 4.5 17M14.6 13.6 19.5 17M12 15.2V21"/>',
-    calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
-    printer: '<path d="M7 9V3.5h10V9"/><rect x="3.5" y="9" width="17" height="8" rx="2"/><path d="M7 14h10v6.5H7z"/>',
+    grid: '<rect x="3.5" y="3.5" width="5" height="5" rx="1.7"/><rect x="9.5" y="3.5" width="5" height="5" rx="1.7"/><rect x="15.5" y="3.5" width="5" height="5" rx="1.7"/><rect x="3.5" y="9.5" width="5" height="5" rx="1.7"/><rect class="d" x="9.5" y="9.5" width="5" height="5" rx="1.7"/><rect x="15.5" y="9.5" width="5" height="5" rx="1.7"/><rect x="3.5" y="15.5" width="5" height="5" rx="1.7"/><rect x="9.5" y="15.5" width="5" height="5" rx="1.7"/><rect class="f" x="15.5" y="15.5" width="5" height="5" rx="1.7"/>',
+    wind: '<path d="M3 8.5h10.5a3 3 0 1 0-3-3M3 12.5h15.5a3 3 0 1 1-3 3M3 16.5h7"/>',
+    moon: '<path class="f" d="M19.6 14.9c.4-.8-.4-1.6-1.2-1.3-.8.3-1.7.4-2.6.4a6.6 6.6 0 0 1-6.6-6.6c0-.9.2-1.8.5-2.6.3-.8-.5-1.6-1.3-1.2A8.4 8.4 0 1 0 19.6 14.9z"/><path class="s" d="M6.8 10.2c.2-1.2.8-2.2 1.6-3"/>',
+    sound: '<path class="f" d="M4 10.1v3.8c0 .6.5 1.1 1.1 1.1H8l4.3 3.6c.7.6 1.7.1 1.7-.8V6.2c0-.9-1-1.4-1.7-.8L8 9H5.1c-.6 0-1.1.5-1.1 1.1z"/><path d="M17 9a4.6 4.6 0 0 1 0 6M19.4 6.6a8 8 0 0 1 0 10.8"/>',
+    mute: '<path class="f" d="M4 10.1v3.8c0 .6.5 1.1 1.1 1.1H8l4.3 3.6c.7.6 1.7.1 1.7-.8V6.2c0-.9-1-1.4-1.7-.8L8 9H5.1c-.6 0-1.1.5-1.1 1.1z"/><path d="m17 9.5 5 5M22 9.5l-5 5"/>',
+    star: '<path class="f" d="m12.9 3.6 2.1 4.4 4.8.7c.9.1 1.2 1.2.6 1.8l-3.5 3.4.8 4.8c.2.9-.8 1.5-1.5 1.1L12 17.5l-4.3 2.3c-.7.4-1.7-.2-1.5-1.1l.8-4.8-3.5-3.4c-.6-.6-.3-1.7.6-1.8l4.8-.7 2.1-4.4c.4-.8 1.6-.8 1.9 0z"/>',
+    trophy: '<path class="f" d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4.5a3 3 0 0 0 2.8 4M17 6h2.5a3 3 0 0 1-2.8 4M12 14v3M8.5 20.5h7M9.5 20.5v-3.5h5v3.5"/><path class="s" d="M9.5 6.5v2"/>',
+    neuron: '<circle class="f" cx="12" cy="12" r="3.6"/><path d="M12 8.4V4.6M9.5 10 6 6.5M14.5 10 18 6.5M9.4 13.8 5.6 16.8M14.6 13.8l3.8 3M12 15.6v3.6"/><circle class="d" cx="12" cy="3.6" r="1.5"/><circle class="d" cx="5.4" cy="5.9" r="1.5"/><circle class="d" cx="18.6" cy="5.9" r="1.5"/><circle class="d" cx="4.9" cy="17.4" r="1.5"/><circle class="d" cx="19.1" cy="17.4" r="1.5"/><circle class="d" cx="12" cy="20.3" r="1.5"/>',
+    calendar: '<rect class="f" x="3.5" y="5" width="17" height="15.5" rx="3.4"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle class="d" cx="8.5" cy="14.5" r="1.2"/><circle class="d" cx="12" cy="14.5" r="1.2"/>',
+    printer: '<path d="M7 9V4.5c0-.6.4-1 1-1h8c.6 0 1 .4 1 1V9"/><rect class="f" x="3.5" y="9" width="17" height="8" rx="2.6"/><rect x="7" y="14" width="10" height="6.5" rx="1.2"/>',
     download: '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
-    bookmark: '<path d="M6 3.5h12v17l-6-4-6 4z"/>',
-    bookmarkOn: '<path d="M6 3.5h12v17l-6-4-6 4z" fill="currentColor"/>',
-    flag: '<path d="M5 21V4h11.5l-2 4 2 4H5"/>',
-    bulb: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',
-    home: '<path d="m3 11 9-7.5 9 7.5"/><path d="M5.5 9.5V20h13V9.5"/>',
-    compass: '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',
-    refresh: '<path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/>',
-    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>',
-    headphones: '<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3.5" y="14" width="4.5" height="6.5" rx="1.5"/><rect x="16" y="14" width="4.5" height="6.5" rx="1.5"/>',
-    copy: '<rect x="8.5" y="8.5" width="12" height="12" rx="2"/><path d="M15.5 8.5V5a1.5 1.5 0 0 0-1.5-1.5H5A1.5 1.5 0 0 0 3.5 5v9A1.5 1.5 0 0 0 5 15.5h3.5"/>',
-    bot: '<rect x="4" y="8" width="16" height="12" rx="4"/><path d="M12 8V4.5M9 13.5h.01M15 13.5h.01M9.5 17h5"/><circle cx="12" cy="3.5" r="1"/>',
+    bookmark: '<path class="f" d="M7.5 3.5h9c.8 0 1.5.7 1.5 1.5v14.6c0 .8-.9 1.3-1.6.8L12 17.3l-4.4 3.1c-.7.5-1.6 0-1.6-.8V5c0-.8.7-1.5 1.5-1.5z"/>',
+    bookmarkOn: '<path class="d" d="M7.5 3.5h9c.8 0 1.5.7 1.5 1.5v14.6c0 .8-.9 1.3-1.6.8L12 17.3l-4.4 3.1c-.7.5-1.6 0-1.6-.8V5c0-.8.7-1.5 1.5-1.5z"/>',
+    flag: '<path d="M5 21V4.5"/><path class="f" d="M5 4.5h11.3c.8 0 1.3.9.9 1.5L15.5 8.5l1.7 2.5c.4.7-.1 1.5-.9 1.5H5"/>',
+    bulb: '<path class="f" d="M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z"/><path d="M9.5 18.5h5M10.5 21h3"/><path class="s" d="M9.6 7.6c.4-.8 1.1-1.4 1.9-1.7"/>',
+    home: '<path class="f" d="M4.5 10.2 11 4.6c.6-.5 1.4-.5 2 0l6.5 5.6c.3.3.5.7.5 1.1v7.9c0 .8-.7 1.4-1.4 1.4H15v-5.2c0-.6-.4-1-1-1h-4c-.6 0-1 .4-1 1v5.2H5.4c-.8 0-1.4-.6-1.4-1.4v-7.9c0-.4.2-.8.5-1.1z"/>',
+    compass: '<circle class="f" cx="12" cy="12" r="9"/><path class="d" d="m15.7 8.3-2 5.1c-.1.2-.2.3-.4.4l-5.1 2 2-5.1c.1-.2.2-.3.4-.4z"/>',
+    refresh: '<path d="M20 11a8 8 0 1 0-2.3 5.7M20 4.5V11h-6.5"/>',
+    sun: '<circle class="f" cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>',
+    headphones: '<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect class="f" x="3.5" y="14" width="4.6" height="6.6" rx="2"/><rect class="f" x="15.9" y="14" width="4.6" height="6.6" rx="2"/>',
+    copy: '<rect class="f" x="8.5" y="8.5" width="12" height="12" rx="2.6"/><path d="M15.5 8.5V5.6c0-1.2-.9-2.1-2.1-2.1H5.6c-1.2 0-2.1.9-2.1 2.1v7.8c0 1.2.9 2.1 2.1 2.1h2.9"/>',
+    bot: '<rect class="f" x="4" y="8" width="16" height="12" rx="4.2"/><path d="M12 8V4.6M9.5 17h5"/><circle class="d" cx="12" cy="3.6" r="1.3"/><circle class="d" cx="9" cy="13.2" r="1.4"/><circle class="d" cx="15" cy="13.2" r="1.4"/>',
     textSize: '<path d="M3 19 8 5l5 14M4.8 14h6.4M14 19l3.5-9 3.5 9M15.2 16h4.6"/>',
-    contrast: '<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>',
-    sliders: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>'
+    contrast: '<circle class="f" cx="12" cy="12" r="9"/><path class="d" d="M12 3a9 9 0 0 1 0 18z"/>',
+    sliders: '<path d="M4 6h9.5M18.5 6H20M4 12h3.5M12.5 12H20M4 18h11.5"/><circle class="f" cx="16" cy="6" r="2.4"/><circle class="f" cx="10" cy="12" r="2.4"/><circle class="f" cx="18" cy="18" r="2.4"/>',
+    logout: '<path class="f" d="M5.6 3.5h6.2c1.2 0 2.1.9 2.1 2.1v12.8c0 1.2-.9 2.1-2.1 2.1H5.6c-1.2 0-2.1-.9-2.1-2.1V5.6c0-1.2.9-2.1 2.1-2.1z"/><path d="M10 12h10.5M17 8.5l3.5 3.5-3.5 3.5"/>',
+    // App top bar (2.5): the brain map, today's quests, the Lab flask, the streak flame.
+    brain: '<path class="f" d="M12 5.2c-.8-1.3-2.4-1.9-3.9-1.4-1.3.4-2.2 1.5-2.4 2.8-1.6.4-2.7 1.9-2.6 3.6-1.1.8-1.6 2.3-1.1 3.7.3.8.8 1.4 1.5 1.8-.1 1.9 1.3 3.6 3.2 3.8.9 1.2 2.5 1.7 3.9 1.2.5-.2 1-.5 1.4-.9.4.4.9.7 1.4.9 1.4.5 3 0 3.9-1.2 1.9-.2 3.3-1.9 3.2-3.8.7-.4 1.2-1 1.5-1.8.5-1.4 0-2.9-1.1-3.7.1-1.7-1-3.2-2.6-3.6-.2-1.3-1.1-2.4-2.4-2.8-1.5-.5-3.1.1-3.9 1.4z"/><path d="M12 5.2v14.6"/><path stroke-width="1.6" d="M8.4 8.6c1 .1 1.8.8 2 1.8M6.4 13.4c.9-.6 2.2-.5 3 .3M15.6 8.6c-1 .1-1.8.8-2 1.8M17.6 13.4c-.9-.6-2.2-.5-3 .3"/>',
+    quest: '<rect class="f" x="3.5" y="5" width="17" height="15.5" rx="3.6"/><path d="M8 3v4M16 3v4"/><path d="m8.4 13.4 2.5 2.5 4.8-4.9"/>',
+    flask: '<path class="f" d="M9.6 3.6v5.5l-4.8 8.3c-.9 1.6.2 3.6 2 3.6h10.4c1.8 0 2.9-2 2-3.6l-4.8-8.3V3.6"/><path d="M8.2 3.6h7.6M7.3 14.6h9.4"/><circle class="d" cx="10.7" cy="17.6" r="1.15"/><circle class="d" cx="14" cy="16.9" r=".85"/>',
+    flame: '<path class="f" d="M12 21.2c-4 0-6.9-2.8-6.9-6.5 0-2.6 1.4-4.6 3-6.2.5-.5 1.3-.1 1.3.6 0 1.2.6 2.2 1.5 2.6.2-2.6 1.3-5.4 3.6-7.4.5-.4 1.2-.1 1.3.5.4 2.4 1.6 3.9 2.6 5.3 1 1.4 1.5 2.9 1.5 4.6 0 3.8-3 6.5-7.9 6.5z"/><path class="d" d="M12 21.2c-1.8 0-3.1-1.2-3.1-2.9 0-1.5 1-2.6 2.2-3.6.4-.3.9-.1 1 .3.2.8.7 1.3 1.3 1.6.3-.6.5-1.3.5-2 0-.4.5-.7.8-.4 1.1 1 1.8 2.3 1.8 3.7 0 1.9-1.9 3.3-4.5 3.3z"/>',
+    // Instagram and Telegram together (the follower count covers both).
+    social: '<rect class="f" x="2.6" y="2.6" width="12.2" height="12.2" rx="3.9"/><circle cx="8.7" cy="8.7" r="2.7"/><circle class="d" cx="11.9" cy="5.5" r=".9"/><circle class="f" cx="16.3" cy="16.3" r="5.6"/><path d="m13.4 16.2 5.6-2.3-1 5.1-2.1-1.5-1 1.2-.2-1.9z"/>'
   };
 
   function icon(name, cls) {
-    return '<svg class="icon ' + (cls || "") + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" ' +
+    return '<svg class="icon ' + (cls || "") + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
       'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + (ICONS[name] || "") + "</svg>";
   }
 
@@ -205,20 +216,64 @@
 
   /* ---------------------------------------------------------- characters */
 
-  // The Medulla character system: transparent cut-outs of the original sheet.
+  // The Medulla character system: the team's art, cut out of green-screen
+  // sheets by tools/cutout.mjs (512 × 512 WebP, same body size in every pose).
+  // Warm tints contrast with the purple characters.
   var CHARACTERS = {
-    dendi: { name: "Dendi", w: 194, h: 280, tint: "#EFEDFF", guide: true },
-    memo:  { name: "Memo",  w: 276, h: 229, tint: "#E8E5FF" },
-    octa:  { name: "Octa",  w: 198, h: 233, tint: "#F3F1FF" },
-    syno:  { name: "Syno",  w: 168, h: 248, tint: "#ECE9FF" },
-    lumi:  { name: "Lumi",  w: 160, h: 161, tint: "#FFF3E6" }
+    dendi: { name: "Dendi", w: 240, h: 240, tint: "#FFF1E4", guide: true },
+    memo:  { name: "Memo",  w: 240, h: 240, tint: "#FFF5EC" },
+    octa:  { name: "Octa",  w: 240, h: 240, tint: "#FFF2E9" },
+    syno:  { name: "Syno",  w: 240, h: 240, tint: "#FFF0E6" },
+    lumi:  { name: "Lumi",  w: 240, h: 240, tint: "#E9E6FF" }
   };
   var CHARACTER_ORDER = ["dendi", "memo", "octa", "syno", "lumi"];
+  // The expression each character shows when you point at its card.
+  var CHAR_HOVER = { dendi: "aha", memo: "hello", octa: "curious", syno: "correct", lumi: "hello" };
 
   function charImg(id, cls, alt, eager) {
     var c = CHARACTERS[id] || CHARACTERS.memo;
     return '<img src="' + ROOT + "assets/characters/" + id + '.webp" width="' + c.w + '" height="' + c.h + '" alt="' + esc(alt || "") + '"' +
       (cls ? ' class="' + cls + '"' : "") + (eager ? "" : ' loading="lazy"') + ' decoding="async">';
+  }
+  // Head-and-shoulders crop for avatars and small circles.
+  function charFace(id, cls, eager) {
+    if (!CHARACTERS[id]) id = "memo";
+    return '<img src="' + ROOT + "assets/characters/faces/" + id + '.webp" width="64" height="64" alt=""' +
+      (cls ? ' class="' + cls + '"' : "") + (eager ? "" : ' loading="lazy"') + ' decoding="async">';
+  }
+
+  // Avatars (2.5): a character, an expression and a background, picked in "Men".
+  // Every picture shows the whole character (assets/characters/avatars/, made
+  // by tools/avatars.mjs); "face" is the normal ("classic") image. Two backgrounds
+  // are rewards that open at a level, as in Finch.
+  var AVATAR_MOODS = ["face", "hello", "correct", "win", "aha", "curious", "focus", "inhale", "asleep"];
+  var AVATAR_BGS = {
+    tint: { bg: null },
+    lav: { bg: "#E9E6FF" },
+    peach: { bg: "#FFE0C2" },
+    purple: { bg: "linear-gradient(150deg, #9C90FA, #6C5CE7 55%, #4B3BC4)" },
+    night: { bg: "radial-gradient(circle at 30% 25%, #3A4290, #0D1128 75%)" },
+    sunset: { bg: "linear-gradient(160deg, #A29BFE, #6C5CE7 45%, #FF9F43)", level: 3 },
+    galaxy: { bg: "radial-gradient(circle at 70% 20%, #FFF 0 1.2%, transparent 2%), radial-gradient(circle at 22% 70%, #FFC28C 0 1.5%, transparent 2.4%), radial-gradient(circle at 30% 30%, #6C5CE7, #1B1F4F 60%, #0D1128)", level: 5 }
+  };
+  var AVATAR_BG_ORDER = ["tint", "lav", "peach", "purple", "night", "sunset", "galaxy"];
+  function avatarSrc(id, mood) {
+    if (!CHARACTERS[id]) id = "dendi";
+    return ROOT + "assets/characters/avatars/" + id + "-" + (mood && mood !== "face" && AVATAR_MOODS.indexOf(mood) !== -1 ? mood : "classic") + ".webp";
+  }
+  function avatarBgOpen(key) { var b = AVATAR_BGS[key]; return !!b && (!b.level || Store.level().level >= b.level); }
+  function avatarBg(id, key) { var b = AVATAR_BGS[key]; return (b && b.bg && avatarBgOpen(key)) ? b.bg : (CHARACTERS[id] || CHARACTERS.dendi).tint; }
+  // Inline style for an avatar holder. A chosen background goes in --avbg
+  // (data-avbg), so the dark theme, which darkens every --tint, keeps it.
+  function avatarStyle(id, key) {
+    var tint = (CHARACTERS[id] || CHARACTERS.dendi).tint, bg = avatarBg(id, key);
+    return bg === tint ? ' style="--tint:' + tint + '"' : ' style="--tint:' + tint + ";--avbg:" + bg + '" data-avbg';
+  }
+  // <span class="cls"> with the picture; p = { avatar, mood, bg } (a profile).
+  function avatarPic(p, cls) {
+    var id = CHARACTERS[p.avatar] ? p.avatar : "dendi", mood = AVATAR_MOODS.indexOf(p.mood) > 0 ? p.mood : "face";
+    return '<span class="' + cls + ' is-mood"' + avatarStyle(id, p.bg) + '><img src="' + avatarSrc(id, mood) +
+      '" width="64" height="64" alt="" decoding="async"></span>';
   }
 
   /* -------------------------------------------------------- facts loader */
@@ -254,18 +309,20 @@
     var day = Math.floor((Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) - Date.UTC(now.getFullYear(), 0, 0)) / 86400000);
     return n ? day % n : 0;
   }
-  // Reaction poses (assets/characters/poses/<character>-<pose>.webp). Only poses that exist are listed;
-  // anything else falls back to the normal character image.
-  var POSES = {
-    dendi: ["hello", "curious", "aha", "correct", "tryagain", "win", "inhale", "exhale", "asleep"],
-    lumi:  ["hello", "curious", "aha", "correct", "tryagain", "win", "inhale", "exhale", "asleep"],
-    memo:  ["hello", "curious", "aha", "correct", "tryagain", "win", "inhale", "exhale", "asleep"],
-    octa:  ["hello", "curious", "aha", "correct", "tryagain", "win", "inhale", "exhale", "asleep"],
-    syno:  ["hello", "curious", "correct", "tryagain", "win"]
-  };
+  // Expressions (assets/characters/poses/<character>-<pose>.webp). Every character
+  // has every pose; "love" uses the happy "correct" face; anything unknown falls
+  // back to the normal character image.
+  var POSES = ["hello", "curious", "aha", "correct", "tryagain", "focus", "win", "inhale", "exhale", "asleep", "love"];
+  var POSE_ALIAS = { love: "correct" };
+  function poseSrc(id, pose) {
+    if (pose === "face") return ROOT + "assets/characters/faces/" + id + ".webp";
+    if (pose === "avatar") return ROOT + "assets/characters/avatars/" + id + "-classic.webp";
+    pose = POSE_ALIAS[pose] || pose;
+    return ROOT + "assets/characters/" + (POSES.indexOf(pose) === -1 ? id : "poses/" + id + "-" + pose) + ".webp";
+  }
   function poseImg(id, pose, cls, eager) {
-    if (!CHARACTERS[id] || (POSES[id] || []).indexOf(pose) === -1) return charImg(id, cls, "", eager);
-    return '<img src="' + ROOT + "assets/characters/poses/" + id + "-" + pose + '.webp" alt=""' +
+    if (!CHARACTERS[id] || POSES.indexOf(pose) === -1) return charImg(id, cls, "", eager);
+    return '<img src="' + poseSrc(id, pose) + '" width="240" height="240" alt=""' +
       (cls ? ' class="' + cls + '"' : "") + (eager ? "" : ' loading="lazy"') + ' decoding="async">';
   }
   function factChar(f) { return CHARACTERS[f.character] ? f.character : "memo"; }
@@ -302,7 +359,7 @@
     }
     var el = document.createElement("div");
     el.className = "toast" + (o.tone ? " is-" + o.tone : "");
-    el.innerHTML = (o.char ? '<span class="toast-art" style="--tint:' + CHARACTERS[o.char].tint + '">' + charImg(o.char, "", "", true) + "</span>"
+    el.innerHTML = (o.char ? '<span class="toast-art" style="--tint:' + CHARACTERS[o.char].tint + '">' + poseImg(o.char, o.pose || "win", "", true) + "</span>"
       : '<span class="toast-icon">' + icon(o.icon || "sparkle") + "</span>") +
       '<span class="toast-text"><strong>' + esc(o.title || "") + "</strong>" + (o.text ? "<span>" + esc(o.text) + "</span>" : "") + "</span>";
     toastBox.appendChild(el);
@@ -324,7 +381,11 @@
         if (Mo) Mo.burst();
       }, i * 700);
     });
-    if (d.levelUp) {
+    if (d.network) {
+      toast({ char: "dendi", pose: "win", title: t("map.networkToast"), text: t("map.networkToastText"), tone: "level", ms: 5200 });
+      if (S) S.badge();
+      if (Mo) Mo.burst();
+    } else if (d.levelUp) {
       toast({ icon: "neuron", title: t("level.up", { n: Store.level().level }), text: t("level.upText"), tone: "level" });
       if (S) S.streak();
     } else if (d.streak > 1) {
@@ -430,81 +491,220 @@
 
   /* -------------------------------------------------------- header/footer */
 
-  var NAV = [
-    { page: "home", href: "index.html", key: "nav.home" },
-    { page: "explore", href: "explore.html", key: "nav.explore", primary: true },
-    { page: "learn", href: "learn.html", key: "nav.learn", primary: true },
-    { page: "lab", href: "lab.html", key: "nav.lab", primary: true },
-    { page: "parents", href: "parents.html", key: "nav.parents", primary: true },
+  // Two interfaces (2.3).
+  //  - The public site (landing, about, parents, events, partners, join …):
+  //    site header with "Sign in" / "Get started", full footer.
+  //  - The app (<html data-shell="app">: Mening Medullam, facts, Lab,
+  //    printables, hard words): sidebar on wide screens; top bar, slide-in
+  //    menu and bottom tab bar on phones; a small footer.
+  // "Signing in" (start.html) only creates or reopens the profile kept on this
+  // device. js/prefs.js sends signed-in visitors from the landing to the app
+  // and guests from the dashboard to start.html.
+  var isApp = root.getAttribute("data-shell") === "app";
+
+  var SITE_NAV = [
+    { page: "about", href: "about.html", key: "nav.about" },
+    { page: "parents", href: "parents.html", key: "nav.parents" },
     { page: "events", href: "events.html", key: "nav.events" },
-    { page: "activities", href: "activities.html", key: "nav.activities" },
-    { page: "about", href: "about.html", key: "nav.about", primary: true },
     { page: "partners", href: "partners.html", key: "nav.partners" },
-    { page: "join", href: "join.html", key: "nav.join" },
-    { page: "glossary", href: "glossary.html", key: "nav.glossary" },
-    { page: "accessibility", href: "accessibility.html", key: "nav.accessibility" },
-    { page: "privacy", href: "privacy.html", key: "nav.privacy" }
+    { page: "join", href: "join.html", key: "nav.join" }
+  ];
+  var FOOTER_GROUPS = [
+    { key: "footer.site", links: [["home", "index.html", "nav.home"]].concat(SITE_NAV.map(function (n) { return [n.page, n.href, n.key]; })) },
+    { key: "footer.app", links: [["explore", "explore.html", "nav.explore"], ["learn", "learn.html", "nav.learn"], ["lab", "lab.html", "nav.lab"],
+      ["activities", "activities.html", "nav.activities"], ["glossary", "glossary.html", "nav.glossary"]] }
   ];
 
-  function navLinks(header) {
-    return NAV.map(function (n) {
-      var current = n.page === page || (page === "fact" && n.page === "learn") || (page === "topic" && n.page === "learn");
-      return "<li" + (header && !n.primary ? ' class="nav-more"' : "") + '><a href="' + ROOT + n.href + '"' +
-        (current ? ' aria-current="page"' : "") + ' data-i18n="' + n.key + '"></a></li>';
-    }).join("");
+  // App navigation (2.4): a game-style top bar, a menu behind the avatar and,
+  // on phones, a bottom tab bar. member: needs a profile. routes: the hash
+  // routes of explore.html that belong to an item; pages: the data-page values.
+  var APP_ITEMS = {
+    map: { href: "explore.html#/", key: "app.map", icon: "brain", routes: [""], member: true },
+    daily: { href: "explore.html#/daily", key: "explore.tab.daily", icon: "quest", routes: ["daily"], member: true },
+    learn: { href: "learn.html", key: "nav.learn", icon: "book", pages: ["learn", "fact", "topic"] },
+    lab: { href: "lab.html", key: "nav.lab", tabKey: "app.tab.lab", icon: "flask", pages: ["lab"] },
+    me: { href: "explore.html#/me", key: "app.me", icon: "user", routes: ["me", "badges", "saved", "history"], member: true },
+    badges: { href: "explore.html#/badges", key: "explore.tab.badges", icon: "trophy", routes: ["badges"], member: true },
+    saved: { href: "explore.html#/saved", key: "explore.tab.saved", icon: "bookmark", routes: ["saved"], member: true },
+    history: { href: "explore.html#/history", key: "explore.tab.history", icon: "chart", routes: ["history"], member: true },
+    activities: { href: "activities.html", key: "nav.activities", tabKey: "app.tab.activities", icon: "printer", pages: ["activities"] },
+    glossary: { href: "glossary.html", key: "nav.glossary", tabKey: "app.tab.glossary", icon: "bulb", pages: ["glossary"] }
+  };
+  var TABS = { member: ["map", "daily", "learn", "lab", "me"], guest: ["learn", "lab", "activities", "glossary"] };
+
+  function member() { return Store.isSignedIn(); }
+  // The landing for guests; for signed-in visitors ?site=1 (else it sends them to the app).
+  function homeHref() { return ROOT + (member() ? "index.html?site=1" : "index.html"); }
+  function startHref() {
+    var here = page === "fact" || page === "topic" ? location.pathname.split("/").slice(-2).join("/") : location.pathname.split("/").pop();
+    return ROOT + "start.html" + (isApp && here && /\.html$/.test(here) ? "?next=" + encodeURIComponent(here) : "");
+  }
+  function appItem(id) {
+    if (id === "signin") return { id: "signin", href: startHref(), key: "nav.signIn", icon: "user", raw: true };
+    return APP_ITEMS[id] ? Object.assign({ id: id }, APP_ITEMS[id]) : null;
+  }
+  function route() { return page === "explore" ? location.hash.replace(/^#\/?/, "") : null; }
+  // The tab that is "here" (the Me tab covers badges, saved and results too).
+  function appCurrent() {
+    var ids = Object.keys(APP_ITEMS), r = route();
+    if (r !== null) return ids.filter(function (id) { return (APP_ITEMS[id].routes || []).indexOf(r) !== -1; })[0] || "map";
+    return ids.filter(function (id) { return (APP_ITEMS[id].pages || []).indexOf(page) !== -1; })[0] || null;
   }
 
-  function brandHtml() {
-    return '<a class="brand" href="' + ROOT + 'index.html" data-i18n-attr="aria-label:a11y.homeLink">' +
-      '<span class="brand-mark"><img src="' + ROOT + 'assets/brand/logo-96.webp" width="40" height="40" alt=""></span>' +
+  function brandHtml(href, labelKey) {
+    return '<a class="brand" href="' + (href || homeHref()) + '" data-i18n-attr="aria-label:' + (labelKey || "a11y.homeLink") + '">' +
+      '<span class="brand-mark"><img src="' + ROOT + 'assets/brand/logo-mark-96.webp" width="40" height="40" alt=""></span>' +
       '<span class="brand-text"><span class="brand-name">Medulla</span><span class="brand-tag" data-i18n="brand.tagline"></span></span></a>';
   }
-
-  function renderHeader() {
-    var header = document.getElementById("site-header");
-    if (!header) return;
-    var langButtons = I18N.languages.map(function (l) {
+  function langButtons(always) {
+    return '<div class="lang-switch' + (always ? "" : " wide-only") + '" role="group" data-i18n-attr="aria-label:lang.label">' + I18N.languages.map(function (l) {
       return '<button type="button" class="lang-btn" data-lang="' + l.code + '" lang="' + l.code + '" aria-label="' + esc(l.name) + '">' + esc(l.label) + "</button>";
-    }).join("");
+    }).join("") + "</div>";
+  }
+  function axButton() {
+    return '<button type="button" class="icon-btn ax-toggle" id="display-toggle" aria-expanded="false" aria-controls="a11y-drawer" data-i18n-attr="aria-label:ax.buttonAria;title:ax.buttonAria">' + icon("access") + '<span class="ax-toggle-text" data-i18n="ax.button"></span></button>';
+  }
+  function soundButton(always) {
+    return '<button type="button" class="icon-btn sound-btn' + (always ? "" : " mid-only") + '" data-sound-toggle aria-pressed="false" data-i18n-attr="aria-label:sound.toggle;title:sound.toggle">' + icon("mute", "icon-off") + icon("sound", "icon-on") + "</button>";
+  }
+  function avatarHtml() { return avatarPic(Store.get().profile || {}, "me-avatar"); }
+
+  /* public site */
+
+  // Guests: "Sign in" + "Get started". Signed in: "Mening Medullam" with their avatar.
+  function authHtml() {
+    if (member()) return '<a class="btn btn-primary btn-sm press app-pill" href="' + ROOT + 'explore.html">' + avatarHtml() + '<span data-i18n="nav.openApp"></span></a>';
+    return '<a class="btn btn-ghost btn-sm press auth-in' + "" + '" href="' + ROOT + 'start.html"><span data-i18n="nav.signIn"></span></a>' +
+      '<a class="btn btn-primary btn-sm press auth-start" href="' + ROOT + 'start.html"><span data-i18n="nav.start"></span></a>';
+  }
+
+  function renderSiteHeader(header) {
     header.innerHTML =
       '<div class="container header-inner">' + brandHtml() +
-        '<nav class="site-nav" id="site-nav" data-i18n-attr="aria-label:a11y.mainNav"><ul>' + navLinks(true) + "</ul></nav>" +
-        '<div class="header-tools">' +
-          '<div class="lang-switch wide-only" role="group" data-i18n-attr="aria-label:lang.label">' + langButtons + "</div>" +
-          '<button type="button" class="icon-btn sound-btn mid-only" data-sound-toggle aria-pressed="false" data-i18n-attr="aria-label:sound.toggle;title:sound.toggle">' + icon("mute", "icon-off") + icon("sound", "icon-on") + "</button>" +
-          '<button type="button" class="icon-btn ax-toggle" id="display-toggle" aria-expanded="false" aria-controls="a11y-drawer" data-i18n-attr="aria-label:ax.buttonAria;title:ax.buttonAria">' + icon("access") + '<span class="ax-toggle-text" data-i18n="ax.button"></span></button>' +
-          '<a class="me-pill" href="' + ROOT + 'explore.html" data-me-pill></a>' +
-          '<a class="btn btn-primary btn-sm header-cta press" href="' + ROOT + 'join.html"><span data-i18n="nav.cta"></span></a>' +
+        '<nav class="site-nav" id="site-nav" data-i18n-attr="aria-label:a11y.mainNav"><ul>' + SITE_NAV.map(function (n) {
+          return '<li><a href="' + ROOT + n.href + '"' + (n.page === page ? ' aria-current="page"' : "") + ' data-i18n="' + n.key + '"></a></li>';
+        }).join("") + '</ul><div class="nav-auth">' + authHtml() + "</div></nav>" +
+        '<div class="header-tools">' + langButtons() + axButton() +
+          '<span class="header-auth">' + authHtml() + "</span>" +
           '<button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-expanded="false" aria-controls="site-nav" data-i18n-attr="aria-label:nav.menu">' + icon("menu", "icon-open") + icon("close", "icon-close") + "</button>" +
         "</div>" +
       "</div>";
-    updateMePill();
   }
 
-  function updateMePill() {
-    var el = document.querySelector("[data-me-pill]");
-    if (!el) return;
-    var s = Store.get(), lv = Store.level(), av = (s.profile && s.profile.avatar) || "dendi";
-    el.innerHTML = '<span class="me-avatar" style="--tint:' + CHARACTERS[av].tint + '">' + charImg(av, "", "", true) + "</span>" +
-      '<span class="me-text">' + esc(s.xp > 0 ? t("me.level", { n: lv.level }) : t("me.start")) + "</span>";
-    el.setAttribute("aria-label", s.xp > 0 ? t("me.aria", { n: lv.level, xp: s.xp }) : t("me.start"));
-    if (page === "explore") el.setAttribute("aria-current", "page");
-  }
-
-  function renderFooter() {
-    var footer = document.getElementById("site-footer");
-    if (!footer) return;
+  function renderSiteFooter(footer) {
     footer.innerHTML =
-      '<div class="container footer-grid">' +
+      '<div class="container footer-grid footer-grid--site">' +
         "<div>" + brandHtml() + '<p class="closing-line" data-i18n="brand.closing"></p></div>' +
-        '<nav data-i18n-attr="aria-label:footer.pages"><p class="footer-heading" data-i18n="footer.pages"></p><ul class="footer-links">' + navLinks(false) + "</ul></nav>" +
+        FOOTER_GROUPS.map(function (g) {
+          return '<nav data-i18n-attr="aria-label:' + g.key + '"><p class="footer-heading" data-i18n="' + g.key + '"></p><ul class="footer-links">' + g.links.map(function (l) {
+            var href = l[0] === "home" ? homeHref() : ROOT + l[1];
+            return '<li><a href="' + href + '"' + (l[0] === page ? ' aria-current="page"' : "") + ' data-i18n="' + l[2] + '"></a></li>';
+          }).join("") + "</ul></nav>";
+        }).join("") +
         '<div><p class="footer-heading" data-i18n="footer.follow"></p><div class="follow-row" data-render="follow"></div>' +
           '<a class="footer-access" href="' + ROOT + 'accessibility.html">' + icon("access") + '<span><strong data-i18n="footer.accessTitle"></strong><small data-i18n="footer.accessText"></small></span></a></div>' +
       "</div>" +
       '<div class="container footer-bottom">' +
         '<p class="demo-note">' + icon("info") + '<span data-i18n="footer.demo"></span></p>' +
-        '<p data-i18n="footer.medical"></p><p><span data-i18n="footer.copy"></span> · <a href="' + ROOT + 'privacy.html" data-i18n="nav.privacy"></a></p>' +
+        '<p data-i18n="footer.medical"></p><p><span data-i18n="footer.copy"></span> · <a href="' + ROOT + 'privacy.html" data-i18n="nav.privacy"></a> · <a href="' + ROOT + 'accessibility.html" data-i18n="nav.accessibility"></a></p>' +
       "</div>";
+  }
+
+  /* app shell: top bar (HUD) */
+
+  // The bottom tab bar uses short labels where the full one would not fit.
+  function hudLink(id, cls) {
+    var n = appItem(id), key = cls === "app-tab" && n.tabKey ? n.tabKey : n.key;
+    return '<a class="' + cls + '" href="' + (n.raw ? n.href : ROOT + n.href) + '" data-app-item="' + id + '"><span class="hud-ico">' + icon(n.icon) + '</span><span class="hud-label" data-i18n="' + key + '"></span></a>';
+  }
+
+  // Behind the avatar (signed in) or the menu button (guests).
+  function menuHtml(on) {
+    return (on
+      ? '<div class="hud-menu-me" data-app-me></div><div class="hud-menu-grid">' + ["me", "badges", "saved", "history"].map(function (id) { return hudLink(id, "hud-menu-tile"); }).join("") + "</div>"
+      : '<div class="hud-menu-guest">' + poseImg("dendi", "curious", "", true) + '<p><strong data-i18n="app.guest.title"></strong><span data-i18n="app.guest.text"></span></p>' +
+        '<a class="btn btn-primary btn-sm press" href="' + startHref() + '"><span data-i18n="nav.signIn"></span></a></div>') +
+      '<ul class="hud-menu-list">' + (on ? "<li>" + hudLink("activities", "hud-menu-link") + "</li><li>" + hudLink("glossary", "hud-menu-link") + "</li>" : "") +
+        '<li><a class="hud-menu-link" href="' + homeHref() + '"><span class="hud-ico">' + icon("globe") + '</span><span data-i18n="app.site"></span></a></li></ul>' +
+      '<div class="hud-menu-row">' + langButtons(true) + soundButton(true) + "</div>" +
+      (on ? '<button type="button" class="hud-menu-link is-out" data-sign-out><span class="hud-ico">' + icon("logout") + '</span><span data-i18n="app.signOut"></span></button>' : "");
+  }
+
+  function renderAppShell(header) {
+    var on = member(), tabs = TABS[on ? "member" : "guest"];
+    header.classList.add("app-hud");
+    header.innerHTML =
+      '<div class="hud">' +
+        brandHtml(on ? ROOT + "explore.html" : homeHref(), on ? "app.homeLink" : "a11y.homeLink") +
+        '<nav class="hud-tabs" data-i18n-attr="aria-label:a11y.mainNav">' + tabs.map(function (id) { return hudLink(id, "hud-tab"); }).join("") + "</nav>" +
+        '<div class="hud-right">' +
+          (on ? '<a class="hud-chip" href="' + ROOT + 'explore.html#/history" data-app-streak></a>' : '<a class="btn btn-primary btn-sm press hud-signin" href="' + startHref() + '"><span data-i18n="nav.signIn"></span></a>') +
+          axButton() +
+          (on ? '<button type="button" class="hud-me" id="hud-me" aria-expanded="false" aria-controls="hud-menu" data-me-pill></button>'
+            : '<button type="button" class="icon-btn hud-more" id="hud-me" aria-expanded="false" aria-controls="hud-menu" data-i18n-attr="aria-label:nav.menu">' + icon("menu") + "</button>") +
+        "</div>" +
+      "</div>" +
+      '<div class="hud-menu" id="hud-menu" hidden>' + menuHtml(on) + "</div>";
+    document.body.insertAdjacentHTML("beforeend",
+      '<nav class="app-tabbar" data-i18n-attr="aria-label:app.tabs">' + tabs.concat(on ? [] : ["signin"]).map(function (id) { return hudLink(id, "app-tab"); }).join("") + "</nav>");
+    updateAppShell();
+  }
+
+  // Current tab, streak, level ring and the menu's profile card.
+  function updateAppShell() {
+    if (!isApp) return;
+    var cur = appCurrent(), r = route();
+    document.querySelectorAll("[data-app-item]").forEach(function (a) {
+      var id = a.getAttribute("data-app-item"), n = APP_ITEMS[id] || {};
+      var here = a.closest(".hud-menu") ? (n.routes ? n.routes[0] === r : (n.pages || []).indexOf(page) !== -1) : id === cur;
+      if (here) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    updateMePill();
+    var chip = document.querySelector("[data-app-streak]");
+    if (chip) {
+      var n = Store.streakNow();
+      chip.innerHTML = '<span class="hud-ico">' + icon("flame") + "</span><span>" + fmt(n) + "</span>";
+      chip.classList.toggle("is-lit", n > 0);
+      chip.setAttribute("aria-label", t("streak.days", { n: n }));
+      chip.setAttribute("title", t("streak.days", { n: n }));
+    }
+    var me = document.querySelector("[data-app-me]");
+    if (me) {
+      var s = Store.get(), lv = Store.level();
+      me.innerHTML = avatarHtml() + "<span><strong>" + esc(nickName()) + "</strong><small>" + esc(t("me.level", { n: lv.level })) + " · " + fmt(s.xp) + " XP</small></span>" +
+        '<span class="hud-bar" aria-hidden="true"><span style="width:' + lv.pct + '%"></span></span>';
+    }
+  }
+
+  function nickName() {
+    var n = Store.ensureProfile().nick;
+    return t("nick.format", { adj: t("nick.adj." + n.a), noun: t("nick.noun." + n.n), num: n.num });
+  }
+
+  // The avatar button: a ring that fills towards the next level, the level number.
+  function updateMePill() {
+    var el = document.querySelector("[data-me-pill]");
+    if (!el) return;
+    var s = Store.get(), lv = Store.level();
+    el.style.setProperty("--pct", lv.pct + "%");
+    el.innerHTML = avatarHtml() + '<span class="hud-lv" aria-hidden="true">' + lv.level + "</span>";
+    el.setAttribute("aria-label", t("me.aria", { n: lv.level, xp: s.xp }));
+  }
+
+  function renderHeader() {
+    var header = document.getElementById("site-header");
+    if (!header) return;
+    if (isApp) renderAppShell(header); else renderSiteHeader(header);
+  }
+
+  function renderFooter() {
+    var footer = document.getElementById("site-footer");
+    if (!footer) return;
+    if (!isApp) { renderSiteFooter(footer); return; }
+    footer.className = "app-foot";
+    footer.innerHTML = '<div class="container"><p data-i18n="footer.medical"></p><p><span data-i18n="footer.copy"></span> · ' +
+      '<a href="' + homeHref() + '" data-i18n="app.site"></a> · <a href="' + ROOT + 'about.html" data-i18n="nav.about"></a> · ' +
+      '<a href="' + ROOT + 'privacy.html" data-i18n="nav.privacy"></a> · <a href="' + ROOT + 'accessibility.html" data-i18n="nav.accessibility"></a></p></div>';
   }
 
   function updateLangButtons() {
@@ -517,20 +717,36 @@
     document.querySelectorAll('[data-switch="sound"]').forEach(function (b) { b.setAttribute("aria-checked", String(!!on)); });
   }
 
-  function setupHeader() {
-    var menuBtn = document.getElementById("menu-toggle");
-    var nav = document.getElementById("site-nav");
-    var displayBtn = document.getElementById("display-toggle");
-    if (!menuBtn) return;
+  function signOut() {
+    Store.signOut();
+    try { sessionStorage.removeItem("medulla.site"); sessionStorage.setItem("medulla.toast", "signedOut"); } catch (e) { /* ignore */ }
+    location.href = ROOT + "index.html";
+  }
 
-    function setMenu(open) {
-      menuBtn.setAttribute("aria-expanded", String(open));
-      menuBtn.setAttribute("data-i18n-attr", "aria-label:" + (open ? "nav.closeMenu" : "nav.menu"));
-      menuBtn.setAttribute("aria-label", t(open ? "nav.closeMenu" : "nav.menu"));
-      nav.classList.toggle("is-open", open);
+  // Dark / light switch (2.5), next to the accessibility button on every page.
+  // It sets the same "theme" setting as the accessibility panel; "Auto" (follow
+  // the device) stays available there.
+  function setupThemeToggle(displayBtn) {
+    if (!displayBtn || document.querySelector("[data-theme-toggle]")) return;
+    displayBtn.insertAdjacentHTML("beforebegin", '<button type="button" class="icon-btn theme-btn" data-theme-toggle>' + icon("moon", "icon-moon") + icon("sun", "icon-sun") + "</button>");
+    var btn = document.querySelector("[data-theme-toggle]");
+    function label() {
+      var k = root.getAttribute("data-theme") === "dark" ? "theme.toLight" : "theme.toDark";
+      btn.setAttribute("aria-label", t(k)); btn.setAttribute("title", t(k));
     }
-    menuBtn.addEventListener("click", function () { var o = menuBtn.getAttribute("aria-expanded") !== "true"; setMenu(o); });
-    displayBtn.addEventListener("click", function () { setMenu(false); if (window.MedullaAccess) window.MedullaAccess.toggle(displayBtn); });
+    btn.addEventListener("click", function () {
+      var dark = root.getAttribute("data-theme") !== "dark";
+      prefs.setA11y({ theme: dark ? "dark" : "light" });
+      toast({ icon: dark ? "moon" : "sun", title: t(dark ? "theme.darkOn" : "theme.lightOn"), ms: 1600 });
+    });
+    document.addEventListener("medulla:a11y", label);
+    langListeners.push(label);
+    label();
+  }
+
+  function setupHeader() {
+    var displayBtn = document.getElementById("display-toggle");
+    setupThemeToggle(displayBtn);
     document.querySelectorAll(".lang-btn").forEach(function (b) { b.addEventListener("click", function () { setLang(b.getAttribute("data-lang")); }); });
     document.querySelectorAll("[data-sound-toggle]").forEach(function (b) {
       b.addEventListener("click", function () { window.MedullaSound.setEnabled(!window.MedullaSound.isOn()); });
@@ -540,6 +756,22 @@
       toast({ icon: e.detail.on ? "sound" : "mute", title: t(e.detail.on ? "sound.on" : "sound.off"), ms: 1800 });
     });
     updateSoundButtons();
+    if (isApp) { setupAppShell(displayBtn); return; }
+
+    var menuBtn = document.getElementById("menu-toggle");
+    var nav = document.getElementById("site-nav");
+    if (!menuBtn) { // start.html: no menu, just the accessibility button
+      if (displayBtn) displayBtn.addEventListener("click", function () { if (window.MedullaAccess) window.MedullaAccess.toggle(displayBtn); });
+      return;
+    }
+    function setMenu(open) {
+      menuBtn.setAttribute("aria-expanded", String(open));
+      menuBtn.setAttribute("data-i18n-attr", "aria-label:" + (open ? "nav.closeMenu" : "nav.menu"));
+      menuBtn.setAttribute("aria-label", t(open ? "nav.closeMenu" : "nav.menu"));
+      nav.classList.toggle("is-open", open);
+    }
+    menuBtn.addEventListener("click", function () { var o = menuBtn.getAttribute("aria-expanded") !== "true"; setMenu(o); });
+    if (displayBtn) displayBtn.addEventListener("click", function () { setMenu(false); if (window.MedullaAccess) window.MedullaAccess.toggle(displayBtn); });
     document.addEventListener("keydown", function (e) {
       if (e.key !== "Escape" || (reader.dialog && reader.dialog.open)) return;
       if (nav.classList.contains("is-open")) { setMenu(false); menuBtn.focus(); }
@@ -549,12 +781,45 @@
     });
   }
 
+  // A message left by the previous page (signed in, signed out, data deleted).
+  function pendingToast() {
+    var k = null;
+    try { k = sessionStorage.getItem("medulla.toast"); if (k) sessionStorage.removeItem("medulla.toast"); } catch (e) { k = null; }
+    var o = k === "signedOut" ? { icon: "check", title: t("app.signedOut"), text: t("app.signedOutText") }
+      : k === "deleted" ? { icon: "trash", title: t("data.deleted") }
+      : k === "welcome" && member() ? { char: (Store.get().profile || {}).avatar || "dendi", pose: "hello", title: t("start.welcome", { name: nickName() }), text: t("start.welcomeText") }
+      : null;
+    if (o && CHARACTERS[o.char] === undefined) delete o.char;
+    if (o) setTimeout(function () { toast(o); }, 500);
+  }
+
+  // The menu behind the avatar: a disclosure panel (Escape or a click outside closes it).
+  function setupAppShell(displayBtn) {
+    var btn = document.getElementById("hud-me"), menu = document.getElementById("hud-menu");
+    function setMenu(open, focusBack) {
+      menu.hidden = !open;
+      btn.setAttribute("aria-expanded", String(open));
+      if (open) { var f = menu.querySelector("a[href], button"); if (f) f.focus(); }
+      else if (focusBack) btn.focus();
+    }
+    btn.addEventListener("click", function () { setMenu(menu.hidden); });
+    menu.addEventListener("click", function (e) {
+      if (e.target.closest("[data-sign-out]")) { signOut(); return; }
+      if (e.target.closest("a[href]")) setMenu(false);
+    });
+    document.addEventListener("click", function (e) { if (!menu.hidden && !menu.contains(e.target) && !btn.contains(e.target)) setMenu(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !menu.hidden) setMenu(false, true); });
+    if (displayBtn) displayBtn.addEventListener("click", function () { setMenu(false); if (window.MedullaAccess) window.MedullaAccess.toggle(displayBtn); });
+    window.addEventListener("hashchange", updateAppShell);
+    document.addEventListener("medulla:progress", updateAppShell);
+  }
+
   /* ----------------------------------------------------------- renderers */
 
   var PILLARS = [
-    { key: "edu", char: "memo", href: "learn.html" },
-    { key: "social", char: "syno", href: "parents.html" },
-    { key: "practical", char: "octa", href: "lab.html" }
+    { key: "edu", char: "memo", pose: "aha", href: "learn.html" },
+    { key: "social", char: "syno", pose: "love", href: "parents.html" },
+    { key: "practical", char: "octa", pose: "curious", href: "lab.html" }
   ];
 
   // Number of Brain Lab activities (js/games.js). tools/build.js checks it matches.
@@ -599,7 +864,7 @@
         return "<li>" + icon(icons[k]) + "<span>" + esc(t("botcard." + k)) + "</span></li>";
       }).join("");
       el.innerHTML = '<div class="bot-card">' +
-        '<div class="bot-card-art" aria-hidden="true"><span class="bot-bubble b1">/fact</span><span class="bot-bubble b2">/quiz</span><span class="bot-bubble b3">/word</span>' + charImg("dendi", "idle idle-dendi", "") + "</div>" +
+        '<div class="bot-card-art" aria-hidden="true"><span class="bot-bubble b1">/fact</span><span class="bot-bubble b2">/quiz</span><span class="bot-bubble b3">/word</span>' + poseImg("dendi", "hello", "idle idle-dendi") + "</div>" +
         '<div class="bot-card-body"><p class="eyebrow">' + icon("bot") + "<span>" + esc(t("botcard.eyebrow")) + "</span></p>" +
           "<h3>" + esc(t("botcard.title")) + "</h3><p>" + esc(t("botcard.text")) + "</p>" +
           '<ul class="bot-feats">' + feats + "</ul>" +
@@ -719,7 +984,8 @@
       el.innerHTML = CHARACTER_ORDER.map(function (id) {
         var c = CHARACTERS[id];
         return '<li class="char-card tilt' + (c.guide ? " is-guide" : "") + '" style="--tint:' + c.tint + '" data-tilt>' +
-          '<div class="char-art">' + (c.guide ? '<span class="char-guide">' + esc(t("chars.guide")) + "</span>" : "") + charImg(id, "idle idle-" + id, "") + "</div>" +
+          '<div class="char-art">' + (c.guide ? '<span class="char-guide">' + esc(t("chars.guide")) + "</span>" : "") +
+            '<span class="char-pose">' + charImg(id, "idle idle-" + id + " is-rest", "") + poseImg(id, CHAR_HOVER[id], "idle idle-" + id + " is-hover") + "</span></div>" +
           '<div class="char-body"><h3>' + esc(c.name) + ' <span class="char-kind">' + esc(t("char." + id + ".kind")) + "</span></h3>" +
             '<span class="chip char-trait">' + esc(t("char." + id + ".trait")) + "</span>" +
             '<p class="char-role">' + esc(t("char." + id + ".role")) + "</p>" +
@@ -735,7 +1001,7 @@
         var c = CHARACTERS[p.char];
         var meta = p.key === "practical" ? t("pillar.practical.meta", { n: window.MedullaGames ? window.MedullaGames.list.length : 6 }) : p.key === "social" ? t("pillar.social.meta") : "";
         return '<li class="card pillar tilt" data-tilt><span class="pillar-num" aria-hidden="true">0' + (i + 1) + "</span>" +
-          '<div class="pillar-art" style="--tint:' + c.tint + '">' + charImg(p.char, "idle idle-" + p.char, "") + "</div>" +
+          '<div class="pillar-art" style="--tint:' + c.tint + '">' + poseImg(p.char, p.pose, "idle idle-" + p.char) + "</div>" +
           "<" + headingTag + ">" + esc(t("pillar." + p.key + ".title")) + "</" + headingTag + ">" +
           '<p class="pillar-meta" data-pillar-meta="' + p.key + '">' + esc(meta) + "</p>" +
           "<p>" + esc(t("pillar." + p.key + ".text")) + "</p>" +
@@ -776,7 +1042,7 @@
 
     proof: function (el) {
       var f = (CFG.impact || []).filter(function (i) { return i.key === "followers"; })[0];
-      var avatars = CHARACTER_ORDER.map(function (id) { return '<span class="avatar" style="--tint:' + CHARACTERS[id].tint + '">' + charImg(id, "", "") + "</span>"; }).join("");
+      var avatars = CHARACTER_ORDER.map(function (id) { return '<span class="avatar" style="--tint:' + CHARACTERS[id].tint + '">' + charFace(id) + "</span>"; }).join("");
       el.innerHTML = '<div class="avatars" aria-hidden="true">' + avatars + "</div>" +
         (f && f.value !== null ? "<p><strong>" + esc(t("home.proof.title", { n: fmt(f.value) + (f.suffix || "") })) + "</strong>" + esc(t("home.proof.text")) + "</p>" : "");
     },
@@ -802,7 +1068,7 @@
         var i = todayIndex(facts.length), fact = facts[i], who = factChar(fact);
         el.innerHTML =
           '<div class="feature">' +
-            '<div class="feature-art"><p class="bubble">' + esc(t("fotd.says", { name: CHARACTERS[who].name })) + "</p>" + charImg(who, "idle idle-" + who, "") + "</div>" +
+            '<div class="feature-art"><p class="bubble">' + esc(t("fotd.says", { name: CHARACTERS[who].name })) + "</p>" + poseImg(who, "aha", "idle idle-" + who) + "</div>" +
             '<div class="feature-body">' +
               '<div class="fact-meta" style="justify-content:flex-start"><span class="chip">' + esc(topicName(fact)) + "</span>" + reviewBadge(fact) + "</div>" +
               "<h3>" + esc(localized(fact.title) || "") + "</h3>" +
@@ -827,7 +1093,7 @@
           '<div class="dash-card is-wide" style="padding-right:120px"><small>' + esc(t("lab.lastAccuracy")) + '</small><span class="metric' + (s ? "" : " is-empty") + '">' +
             esc(s ? fmt(s.accuracy, s.accuracy % 1 ? 1 : 0) + "%" : "—") + "</span>" +
             '<div class="meter" style="margin-top:10px"><span style="width:' + (s ? s.accuracy : 0) + '%"></span></div>' +
-            '<span class="dash-host">' + charImg("octa", "idle idle-octa", "") + "</span></div>" +
+            '<span class="dash-host">' + poseImg("octa", s || r ? "correct" : "curious", "idle idle-octa") + "</span></div>" +
         "</div>";
     },
 
@@ -837,7 +1103,7 @@
       el.innerHTML = list.map(function (b) {
         var got = !!s.badges[b.id];
         return '<li class="badge' + (got ? " is-earned" : "") + '" style="--tint:' + CHARACTERS[b.char].tint + '">' +
-          '<span class="badge-art">' + charImg(b.char, "", "") + (got ? "" : '<span class="badge-lock">' + icon("lock") + "</span>") + "</span>" +
+          '<span class="badge-art">' + (got ? poseImg(b.char, "win", "") : charFace(b.char)) + (got ? "" : '<span class="badge-lock">' + icon("lock") + "</span>") + "</span>" +
           '<span class="badge-name">' + esc(t("badge." + b.id + ".name")) + "</span>" +
           '<span class="badge-how">' + esc(got ? t("badge.earned") : t("badge." + b.id + ".how")) + "</span></li>";
       }).join("");
@@ -957,11 +1223,11 @@
       loadJSON("data/kindness.json", { messages: [] }).then(function (data) {
         var list = (data && data.messages) || [];
         if (!list.length) {
-          el.innerHTML = '<div class="empty-state">' + charImg("syno", "idle idle-syno", "") + "<h3>" + esc(t("kind.wallEmptyTitle")) + "</h3><p>" + esc(t("kind.wallEmpty")) + "</p></div>";
+          el.innerHTML = '<div class="empty-state">' + poseImg("syno", "love", "idle idle-syno") + "<h3>" + esc(t("kind.wallEmptyTitle")) + "</h3><p>" + esc(t("kind.wallEmpty")) + "</p></div>";
           return;
         }
         el.innerHTML = '<ul class="kind-wall">' + list.map(function (m) {
-          return '<li class="kind-note" style="--r:' + ((m.id || 0) % 5 - 2) + 'deg">' + charImg(m.character || "syno", "", "") + "<p>" + esc(localized(m.text) || "") + "</p></li>";
+          return '<li class="kind-note" style="--r:' + ((m.id || 0) % 5 - 2) + 'deg">' + poseImg(m.character || "syno", "love", "") + "<p>" + esc(localized(m.text) || "") + "</p></li>";
         }).join("") + "</ul>";
       });
     },
@@ -998,7 +1264,7 @@
     (scope || document).querySelectorAll("img[data-char]").forEach(function (img) {
       var id = img.getAttribute("data-char"), c = CHARACTERS[id];
       if (!c) return;
-      img.src = ROOT + "assets/characters/" + id + ".webp";
+      img.src = poseSrc(id, img.getAttribute("data-pose"));
       img.width = c.w; img.height = c.h;
     });
   }
@@ -1051,9 +1317,20 @@
     barsHtml: barsHtml,
     msText: msText,
     charImg: charImg,
+    charFace: charFace,
     poseImg: poseImg,
+    poseSrc: poseSrc,
+    poses: POSES,
     characters: CHARACTERS,
     characterOrder: CHARACTER_ORDER,
+    avatarMoods: AVATAR_MOODS,
+    avatarBgs: AVATAR_BGS,
+    avatarBgOrder: AVATAR_BG_ORDER,
+    avatarBgOpen: avatarBgOpen,
+    avatarBg: avatarBg,
+    avatarStyle: avatarStyle,
+    avatarSrc: avatarSrc,
+    avatarPic: avatarPic,
     toast: toast,
     applyI18n: applyI18n,
     runRenderers: runRenderers,
@@ -1080,6 +1357,7 @@
     applyI18n();
     updateLangButtons();
     setupHeader();
+    pendingToast();
     root.classList.remove("i18n-wait");
     if (window.MedullaMotion) window.MedullaMotion.init();
     if (VISIT_PAGES.indexOf(page) !== -1) Store.record("visit", { page: page });

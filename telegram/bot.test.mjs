@@ -59,6 +59,15 @@ test("builds a message in each language, escaped, labelled pending review", () =
   assert.equal(escapeHtml("<a&b>"), "&lt;a&amp;b&gt;");
 });
 
+test("posts name the brain-map area, show the character and offer the daily fact in the bot", () => {
+  const fact = content.facts.find((f) => f.character === "memo");
+  const m = buildMessage(fact, "en", { strings: content.strings, assetBase: "https://raw.example/repo/", botUsername: "medulla_test_bot" });
+  assert.match(m.text, /📚 Learning · Memo/);
+  assert.equal(m.link_preview_options.url, "https://raw.example/repo/assets/characters/memo.png");
+  assert.equal(m.reply_markup.inline_keyboard[0][0].url, "https://t.me/medulla_test_bot?start=daily");
+  assert.equal(buildMessage(fact, "en", { strings: content.strings }).link_preview_options.is_disabled, true);
+});
+
 test("every fact fits in one Telegram message in every language", () => {
   for (const f of content.facts) for (const lang of ["uz", "ru", "en"]) {
     assert.ok(buildMessage(f, lang, { strings: content.strings }).text.length < 4096, f.id + " " + lang);

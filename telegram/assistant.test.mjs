@@ -5,8 +5,9 @@ import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
 import http from "node:http";
 import { readFileSync } from "node:fs";
-import { createAssistant, commandList, langFrom, quizOrder, LANGS, dayOfYear } from "./assistant.mjs";
-import { loadAll, makeCall, setup } from "./poll.mjs";
+import { createAssistant, commandList, langFrom, quizOrder, LANGS, dayOfYear, AREAS, areaOf } from "./assistant.mjs";
+import { loadAll, makeCall, setup, deliverDue } from "./poll.mjs";
+import { memoryStore, kvStore, clock, slotOf, DAILY_HOURS } from "./subscribers.mjs";
 
 const { facts, strings, glossary } = loadAll();
 const SITE = "https://medulla.example";
@@ -227,6 +228,204 @@ test("the Worker rejects requests without the webhook secret and answers real up
     const sent = seen.find((s) => s.url.endsWith("/sendMessage"));
     assert.ok(sent, "the Worker replied through the Bot API");
     assert.match(sent.body.text, /Neuron/);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
+/* ------------------------------------------- brain map and daily fact */
+
+// A fake Workers KV namespace (get / put with metadata / delete / list by prefix).
+function fakeKV() {
+  const m = new Map();
+  return {
+    m,
+    async get(k) { return m.has(k) ? m.get(k).value : null; },
+    async put(k, value, opts) { m.set(k, { value, metadata: opts && opts.metadata }); },
+    async delete(k) { m.delete(k); },
+    async list({ prefix = "", limit = 1000 }) {
+      const all = [...m.keys()].filter((k) => k.startsWith(prefix)).sort();
+      return { keys: all.slice(0, limit).map((name) => ({ name, metadata: m.get(name).metadata })), list_complete: all.length <= limit };
+    }
+  };
+}
+const texts = (calls) => calls.filter((c) => c.params && c.params.text).map((c) => c.params.text).join("\n---\n");
+
+test("the menu matches the app: brain map and daily fact buttons", async () => {
+  const { bot, calls } = harness();
+  await bot.handleUpdate(msg("/start"));
+  const data = allButtons(calls[0].params.reply_markup).map((b) => b.callback_data);
+  assert.ok(data.includes("en:a"), "brain map");
+  assert.ok(data.includes("en:s"), "daily fact");
+});
+
+test("the brain map has the site's five areas, each with its step and its checked 'why' fact", async () => {
+  assert.deepEqual(AREAS.map((a) => a.id), ["learn", "move", "explore", "calm", "sleep"]);
+  assert.deepEqual(AREAS.map((a) => a.char), ["memo", "octa", "dendi", "syno", "lumi"]);
+  const site = readFileSync(new URL("../js/explore.js", import.meta.url), "utf8");
+  for (const a of AREAS) assert.match(site, new RegExp(a.id + ': "' + a.fact + '"'), "same why-fact as js/explore.js");
+  for (const lang of LANGS) {
+    const { bot, calls } = harness();
+    await bot.handleUpdate(msg("/map", { from: { language_code: lang } }));
+    assert.equal(allButtons(calls[0].params.reply_markup).filter((b) => /:a:/.test(b.callback_data || "")).length, 5);
+    for (const a of AREAS) {
+      calls.length = 0;
+      await bot.handleUpdate(cbq(lang + ":a:" + a.id));
+      const shown = calls.find((c) => c.method === "editMessageText").params;
+      assert.ok(shown.text.includes(strings[lang]["map.what." + a.id]), lang + " " + a.id);
+      const why = allButtons(shown.reply_markup).find((b) => b.callback_data === lang + ":f:" + a.fact + ":o");
+      assert.ok(why && facts.some((f) => f.id === a.fact), "why button for " + a.id);
+      for (const b of allButtons(shown.reply_markup)) if (b.callback_data) assert.ok(Buffer.byteLength(b.callback_data) <= 64);
+    }
+  }
+  // "another fact" in an area stays in that area
+  const { bot, calls } = harness();
+  await bot.handleUpdate(cbq("en:f:a-sleep"));
+  const sent = calls.find((c) => c.method === "sendMessage").params.text;
+  assert.ok(facts.filter((f) => f.character === "lumi").some((f) => sent.includes(f.title.en)));
+});
+
+test("facts name their area and character, and show the character picture", async () => {
+  const { bot, calls } = harness({ assetBase: "https://raw.example/repo" });
+  const f = facts.find((x) => x.character === "lumi" && x.id !== bot.today().id);
+  await bot.handleUpdate(cbq("en:f:" + f.id + ":o"));
+  const p = calls.find((c) => c.method === "sendMessage").params;
+  assert.match(p.text, /🌙 Sleep · Lumi/);
+  assert.ok(!p.text.includes(strings.en["bot.title"]), "only today's fact is called the fact of the day");
+  assert.equal(p.link_preview_options.url, "https://raw.example/repo/assets/characters/lumi.png");
+  calls.length = 0;
+  await bot.handleUpdate(msg("/fact"));
+  assert.ok(calls[0].params.text.startsWith("🧠 <b>" + strings.en["bot.title"] + "</b>"));
+  assert.equal(areaOf({ character: "memo" }).id, "learn");
+});
+
+test("/daily without a store, or in a group, explains instead of subscribing", async () => {
+  const off = harness();
+  await off.bot.handleUpdate(msg("/daily"));
+  assert.equal(off.calls[0].params.text, strings.en["bot.dailyUnavailable"]);
+  const subs = memoryStore();
+  const grp = harness({ subs });
+  await grp.bot.handleUpdate(msg("/daily", { chat: { id: -100, type: "group" } }));
+  await grp.bot.handleUpdate(cbq("en:s:8", { message_id: 5, chat: { id: -100, type: "group" }, text: "x" }));
+  assert.match(texts(grp.calls), /private chat/);
+  assert.deepEqual(subs.data, {}, "groups are never stored");
+});
+
+test("/daily: consent screen, pick a time, today's fact at once if the time has passed, /stop deletes", async () => {
+  const subs = memoryStore();
+  // the harness clock is 12:00 UTC = 17:00 in Tashkent
+  const { bot, calls } = harness({ subs });
+  await bot.handleUpdate(msg("/daily"));
+  const ask = calls[0].params;
+  assert.equal(ask.text, strings.en["bot.dailyAsk"]);
+  assert.match(ask.text, /under 18/);
+  assert.deepEqual(allButtons(ask.reply_markup).filter((b) => /:s:\d+$/.test(b.callback_data)).map((b) => b.callback_data), DAILY_HOURS.map((h) => "en:s:" + h));
+
+  calls.length = 0;
+  await bot.handleUpdate(cbq("en:s:8"));
+  assert.deepEqual(subs.data[1], { h: 8, l: "en", last: "2027-03-15" });
+  assert.match(calls.find((c) => c.method === "editMessageText").params.text, /08:00/);
+  const daily = calls.filter((c) => c.method === "sendMessage");
+  assert.equal(daily.length, 1, "08:00 has passed, so today's fact comes now");
+  assert.ok(daily[0].params.text.includes(bot.today().title.en));
+  assert.ok(daily[0].params.text.includes("/stop"));
+
+  calls.length = 0;
+  await bot.handleUpdate(cbq("en:s:18"));
+  assert.equal(subs.data[1].h, 18);
+  assert.equal(calls.filter((c) => c.method === "sendMessage").length, 0, "18:00 hasn't come yet");
+
+  await bot.handleUpdate(cbq("en:s:99"));
+  assert.equal(subs.data[1].h, 18, "only the offered hours are accepted");
+
+  await bot.handleUpdate(cbq("ru:m:l")); // picked Russian from the language list
+  assert.equal(subs.data[1].l, "ru");
+
+  calls.length = 0;
+  await bot.handleUpdate(msg("/daily"));
+  assert.match(calls[0].params.text, /18:00/);
+  assert.ok(allButtons(calls[0].params.reply_markup).some((b) => b.text.startsWith("✅") && b.callback_data === "en:s:18"));
+
+  calls.length = 0;
+  await bot.handleUpdate(msg("/stop"));
+  assert.equal(calls[0].params.text, strings.en["bot.dailyOff"]);
+  assert.deepEqual(subs.data, {});
+  calls.length = 0;
+  await bot.handleUpdate(msg("/stop"));
+  assert.equal(calls[0].params.text, strings.en["bot.dailyNone"]);
+});
+
+test("subscribing inside the delivery hour never doubles today's fact", async () => {
+  // chat 13 is in five-minute slot 1 (08:05–08:09)
+  for (const [iso, now] of [["2027-03-15T03:02:00Z", false], ["2027-03-15T03:07:00Z", true]]) {
+    const subs = memoryStore();
+    const { bot, calls } = harness({ subs, now: () => new Date(iso) });
+    await bot.handleUpdate(cbq("en:s:8", { message_id: 5, chat: { id: 13, type: "private" }, text: "x" }));
+    assert.equal(calls.filter((c) => c.method === "sendMessage").length, now ? 1 : 0, iso);
+    assert.equal(subs.data[13].last, now ? "2027-03-15" : null);
+  }
+});
+
+test("a chat that blocked the bot is removed from the daily list", async () => {
+  const subs = memoryStore({ 42: { h: 8, l: "uz", last: null } });
+  const call = async () => { const e = new Error("sendMessage failed: 403 Forbidden: bot was blocked by the user"); e.code = 403; throw e; };
+  const bot = createAssistant({ facts, glossary, strings, subs, call });
+  assert.equal(await bot.sendDaily(42, "uz"), "gone");
+  assert.deepEqual(subs.data, {});
+  const other = memoryStore({ 7: { h: 8, l: "uz" } });
+  const flaky = createAssistant({ facts, glossary, strings, subs: other, call: async () => { const e = new Error("500"); e.code = 500; throw e; } });
+  await assert.rejects(flaky.sendDaily(7, "uz"));
+  assert.ok(other.data[7], "other errors don't unsubscribe anyone");
+});
+
+test("long polling: everyone due today gets the fact once, and a late start catches up", async () => {
+  const store = memoryStore({ 1: { h: 8, l: "en", last: null }, 2: { h: 13, l: "ru", last: null }, 3: { h: 18, l: "uz", last: null } });
+  const { bot, calls } = harness({ subs: store });
+  const at = (iso) => new Date(iso);
+  assert.equal(await deliverDue({ bot, store, now: at("2027-03-15T02:30:00Z") }), 0, "07:30: nobody yet");
+  assert.equal(await deliverDue({ bot, store, now: at("2027-03-15T09:00:00Z") }), 2, "14:00: the 08:00 and 13:00 people");
+  assert.equal(await deliverDue({ bot, store, now: at("2027-03-15T09:01:00Z") }), 0, "never twice a day");
+  assert.equal(await deliverDue({ bot, store, now: at("2027-03-15T13:00:00Z") }), 1, "18:00");
+  assert.equal(await deliverDue({ bot, store, now: at("2027-03-16T03:00:00Z") }), 1, "next day 08:00");
+  assert.equal(calls.filter((c) => c.method === "sendMessage").length, 4);
+  assert.deepEqual(clock(at("2027-03-14T21:30:00Z")), { hour: 2, minute: 30, day: "2027-03-15" });
+});
+
+test("Worker cron: each five-minute run sends one slot of the hour, within the request limit", async () => {
+  const KV = fakeKV();
+  const store = kvStore(KV);
+  for (let id = 1; id <= 60; id++) await store.set(id, { h: 8, l: LANGS[id % 3] });
+  await store.set(500, { h: 13, l: "en" });
+  await store.set(500, { h: 18, l: "en" }); // changing the time moves the delivery key
+  assert.equal([...KV.m.keys()].filter((k) => k.startsWith("d:") && k.endsWith(":500")).length, 1);
+
+  const { deliverBatch } = await import("./worker.mjs");
+  const realFetch = globalThis.fetch;
+  const sentTo = [];
+  globalThis.fetch = async (url, init) => {
+    const u = String(url);
+    if (u.startsWith("https://data.example/data/")) return new Response(readFileSync(new URL("../" + u.slice("https://data.example/".length), import.meta.url)), { status: 200 });
+    if (u.endsWith("/sendMessage")) {
+      const b = JSON.parse(init.body);
+      sentTo.push(String(b.chat_id));
+      if (String(b.chat_id) === "13") return new Response(JSON.stringify({ ok: false, error_code: 403, description: "Forbidden: bot was blocked by the user" }), { status: 403 });
+    }
+    return new Response(JSON.stringify({ ok: true, result: { message_id: 1 } }), { status: 200 });
+  };
+  try {
+    const env = { BOT_TOKEN: TOKEN, DATA_URL: "https://data.example", SUBS: KV, TELEGRAM_API: "https://tg.example", MAX_PER_RUN: "45" };
+    assert.deepEqual(await deliverBatch(env, new Date("2027-03-15T02:05:00Z")), { sent: 0, gone: 0 }, "07:05 is not a delivery hour");
+    let total = 0;
+    for (let s = 0; s < 12; s++) {
+      const r = await deliverBatch(env, new Date(Date.UTC(2027, 2, 15, 3, s * 5)));
+      assert.ok(r.sent + r.gone <= 45);
+      total += r.sent + r.gone;
+    }
+    assert.equal(total, 60, "each 08:00 subscriber exactly once in the hour");
+    assert.equal(new Set(sentTo).size, 60);
+    assert.ok(!sentTo.includes("500"), "the 18:00 subscriber waits");
+    assert.equal(await store.get(13), null, "blocked chat removed");
+    assert.equal(slotOf(13), 1);
   } finally {
     globalThis.fetch = realFetch;
   }

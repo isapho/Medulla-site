@@ -8,6 +8,26 @@ works with no backend and no keys. An optional build script pre-renders pages
 for search engines. Sync across devices, a Telegram channel bot and an
 interactive Telegram bot are optional add-ons.
 
+**New in 2.6:** the Telegram bot can send the **fact of the day every day**
+(opt-in with `/daily`, at 08:00, 13:00 or 18:00 Tashkent time, `/stop` to end
+it) and follows the app: a `/map` of the five brain-care areas, and every fact
+shows its area and character. A GitHub Action also adds **1–2 new sourced
+facts automatically every day** (`tools/auto-fact.mjs`: trusted health sites
+only, the evidence sentence must be on the fetched page, a second fact-check,
+still "Pending expert review"). See `telegram/BOT.md` and `HANDOFF.md`.
+
+**New in 2.4:** My Medulla is a **brain map**: five daily habits (sleep,
+movement, learning, calm, discovery), one per character, with a 30-second
+check-in, each habit tied to a checked fact, its own level, and a small
+"experiment" comparing the visitor's own sleep with their reaction time. The
+app's sidebar became a game-style top bar. See "How the parts connect" below.
+
+**New in 2.3:** the public site (landing, about, parents, events…) and the
+app (My Medulla, facts, Lab) are now separate: visitors see the landing with
+**Sign in** / **Get started**, signed-in visitors get an app with its own top bar
+(phones: tab bar). Sign-in still needs no account. The logo is the team's
+wireframe brain. See `CHANGELOG.md`.
+
 **New in 2.1:** an Accessibility & comfort panel with six profiles for
 different brains (Focus, Easier reading, Calm senses, Seizure-safe, Simple &
 slow, See better), a dark theme, read aloud, hard words explained everywhere,
@@ -40,7 +60,7 @@ cut-outs at double resolution, and new imagery. See `CHANGELOG.md`.
    "what it doesn't show". The site never claims to raise IQ. Research mode
    stays "coming soon" until there is ethics approval and parental consent.
    See RESEARCH.md §6.
-5. **Motion without libraries.** The neuron network is drawn on a canvas, and
+5. **Motion without libraries.** The hero's neural pathways are drawn on a canvas, and
    everything else uses CSS and the Web Animations API. That adds 0 KB, against
    45 to 491 KB for GSAP, Lottie or Rive. Sound is synthesized, off by default,
    and always has a visual equivalent. Calm mode and the system's
@@ -60,16 +80,79 @@ cut-outs at double resolution, and new imagery. See `CHANGELOG.md`.
    the fonts. See RESEARCH.md §8.
 9. **Hard words are explained where they appear.** `data/glossary.json` feeds
    the dotted-underline explanations, the glossary page and the bot's `/word`.
-10. **The Telegram bot stores nothing.** One dependency-free core
-    (`telegram/assistant.mjs`) runs with long polling or as a free Cloudflare
-    Worker; language travels inside the buttons; quizzes are anonymous polls.
-    See RESEARCH.md §9 and `telegram/BOT.md`.
-11. **Character art stays the team's.** The characters come from the team's own
-    Canva cut-out; only their edges were cleaned. Decorative scenes (glass brain,
-    neurons, night sky, waves) were generated with Canva AI and are labelled in
+10. **The Telegram bot stores nothing, unless someone asks for the daily
+    fact.** One dependency-free core (`telegram/assistant.mjs`) runs with long
+    polling or as a free Cloudflare Worker; language travels inside the
+    buttons; quizzes are anonymous polls. `/daily` (2.6) is opt-in, private
+    chats only, and keeps just the chat's number, language and chosen hour
+    until `/stop`. See RESEARCH.md §9 and `telegram/BOT.md`.
+11. **Character art is the team's (2.2).** The team made every expression in
+    Gemini as green-screen sheets with a white sticker border; `tools/cutout.mjs`
+    only removes the green (un-mixing edge colours so nothing fringes), splits
+    the poses and gives each character the same body size in every pose. The
+    drawings are not changed. Raster (WebP) instead of vector, because tracing
+    would flatten the soft shading. Decorative scenes (glass brain, neurons,
+    night sky, waves) were generated with Canva AI and are labelled in
     CREDITS.md; they show no people.
+12. **One icon language.** Icons are inline SVG with rounded 2 px strokes, a
+    soft tinted body and solid accents, and they sit on glossy gradient tiles.
+    They follow `currentColor`, so one set works on white, on purple buttons
+    and in the dark theme.
+13. **A public site and a separate app (2.3).** Visitors first see what Medulla
+    is (landing, about, parents, events, partners, join); the personal part
+    has its own interface (a top bar and, on phones, a tab bar) once they sign in. Signed-in
+    visitors skip the landing and land on their dashboard, like most learning
+    apps. `js/prefs.js` does these redirects in `<head>`, so no page flashes;
+    `<html data-shell="app">` marks app pages and `data-gate` the three pages
+    that redirect. Facts, topics and the Lab stay open to guests (they are the
+    public, searchable content and the Telegram bot links to them); only the
+    dashboard needs a profile.
+14. **"Sign in" without accounts.** Signing in means choosing a character and a
+    generated nickname on this device; no email, password or real name, for the
+    same legal reason as decision 2. Signing out only hides the app; the
+    progress stays until the visitor deletes it. On a shared device, "Start a
+    new profile" asks before deleting and offers the download first.
+15. **The logo is the team's drawing.** It is used as drawn (only trimmed and
+    resized by `tools/logo.mjs`), on a purple-to-navy tile so the white lines
+    read on light pages; at icon sizes the thin network lines are made a
+    little more opaque instead of redrawing them.
+16. **One loop that connects everything (2.4).** The app was a set of
+    separate features (facts, Lab, badges). It is now one loop around brain
+    care: *notice* (a 30-second check-in), *try* (Lab tests), *understand* (the
+    fact behind each habit) and *grow* (the five areas light up and level up),
+    plus a door back to the real project (events, volunteering, parents).
+    Models: Finch (the visitor chooses, a companion grows, nothing is lost) and
+    Pokémon Sleep (the player as a researcher of their own sleep). Self-
+    determination research warns that points and streaks backfire when they
+    feel controlling, so every area lights with any one action, logging counts,
+    there are no penalties, no comparisons with others and no sleep "scores".
+    Targets come only from facts with sources (NHLBI, NHS, WHO); mood is a
+    private check-in, never a score, and a low mood points to a trusted adult.
+17. **A game's top bar, not a dashboard's sidebar (2.4).** A sidebar reads as
+    an education platform. Games keep navigation and status along the edges in
+    fixed places: here chunky tabs with a "pressed key" edge, the streak, and
+    the avatar with a level ring that opens the menu; on phones a bottom tab bar
+    (as in most mobile games and Duolingo). Navy in both themes, so the app has
+    its own frame around the content.
 
 ---
+
+## How the parts connect (2.4)
+
+```
+            check-in (30 s): sleep · screens · movement · mood
+                                   │
+   facts ── Learning (Memo)        ▼              Lab tests ── Discovery (Dendi)
+   daily challenge ─────────►  BRAIN MAP  ◄──── breathing, kindness ── Calm (Syno)
+   wind-down ── Sleep (Lumi)   5 areas, levels    active minutes ── Movement (Octa)
+                                   │
+          "Why?" fact per area · My experiment (sleep vs reaction) · your week
+                                   │
+          Medulla in real life: events · volunteering · parents' page
+```
+
+All of it is stored on the device (`js/store.js`: `days` and `areas`); sync,
+when switched on, carries it like the rest of the progress.
 
 ## Run it
 
@@ -129,12 +212,13 @@ directory `.` (the root).
 ## What's inside
 
 ```
-index.html            Home: neuron-network hero, impact bar, the five characters, story chapters per pillar
+index.html            Landing (public): hero, impact bar, the five characters, story chapters per pillar
+start.html            Sign in: pick a character and nickname, continue, start a new profile, restore a sync code
 learn.html            Fact library: topic hubs, search (all languages), filters, saved facts
 facts/<id>.html       One page per fact (generated): simple/detailed text, listen, save, share card, quiz
 topics/<topic>.html   Topic hubs (generated): sleep, learning, brain, movement, senses, myths
 lab.html              Brain Lab: 6 activities with honest result cards and "My results"
-explore.html          My Medulla: daily challenge, level, streak, badges, saved, history, profile and sync
+explore.html          My Medulla: brain map and check-in, daily challenge, Me (profile, badges, saved, results, sync)
 parents.html          For parents: early signs, questions for a doctor, disclaimer, resource directory
 events.html           Brain Awareness Week (15–21 March 2027) and requesting a visit or workshop
 activities.html       10 printable A4 sheets (colouring pages, maze, neuron labels, sleep diary…)
@@ -152,16 +236,17 @@ data/bot-strings.json   generated by the build for the Telegram Worker
 
 js/i18n.js            Language list and loader      js/prefs.js    Settings applied before first paint
 js/access.js          Accessibility & comfort panel, reading guide, read aloud, hard-word explanations
-js/main.js            Header, footer, icons, characters, reader, shared renderers
+js/main.js            Site header/footer, app top bar and tab bar, icons, characters, reader, renderers
 js/store.js           Progress: XP, levels, streak, badges, saved facts, results (localStorage)
 js/backend.js         Optional sync and counters: none / mock / Supabase
 js/motion.js          Neuron canvas, parallax, reveals, tilt, sparkles; pauses when hidden
 js/sound.js           Synthesized sounds (Web Audio), off by default
-js/games.js           The six activities          js/explore.js   My Medulla
+js/games.js           The six activities          js/explore.js   My Medulla      js/start.js   Sign in
 js/learn.js · js/fact.js · js/fact-template.js · js/lab.js · js/home.js · js/activities.js · js/telegram.js
 css/styles.css · css/app.css · css/polish.css (2.1 look, dark theme, accessibility)
 sw.js · manifest.webmanifest   Offline support and "Add to home screen"
 tools/build.js        Pre-render + checks         backend/   Supabase schema and guide
+tools/logo.mjs        Logo, favicons, app icons   tools/export-png.mjs   Share image (both need Edge or Chrome)
 telegram/             Daily-fact channel bot, interactive bot (assistant, poll, worker), tests, guides
 .github/workflows/    Deploy, checks, daily bot
 ```
@@ -170,33 +255,42 @@ telegram/             Daily-fact channel bot, interactive bot (assistant, poll, 
 
 | Character | Stands for | Leads |
 |---|---|---|
-| **Dendi** (neuron, the guide) | Growth and curiosity | Logo, home, My Medulla, the daily challenge |
-| **Memo** (elephant) | Memory | Daily facts, the library (Educational pillar) |
-| **Octa** (octopus) | Problem solving | Brain Lab tests and games (Practical pillar) |
-| **Syno** (jellyfish) | Feelings and kindness | Breathing, kindness tasks, parents, visits (Social pillar) |
+| **Dendi** (neuron, the guide) | Growth and curiosity | Home, My Medulla, the daily challenge |
+| **Memo** (elephant with brain-shaped ears) | Memory | Daily facts, the library (Educational pillar) |
+| **Octa** (orange octopus with a thinking cap) | Problem solving | Brain Lab tests and games (Practical pillar) |
+| **Syno** (jellyfish with a synapse spark) | Feelings and kindness | Breathing, kindness tasks, parents, visits (Social pillar) |
 | **Lumi** (firefly) | Ideas and sleep | "Did you know" moments, sleep facts, the night wind-down |
 
-The art is used unchanged: no redrawing, recolouring or stretching. Animation
-moves whole images (float, sway, breathe).
+**Source:** the team's Gemini sheets in `assets/source/gemini/`: `lineup.png` (the five
+normal images), `<character>-1.jpg` (hello, curious, aha, correct, try again) and
+`-2.jpg` (focus, win, breathe in, breathe out, asleep), flat green background,
+white sticker border.
+`node tools/cutout.mjs` (needs Edge or Chrome) cuts them out and writes:
 
-**Base art** is the team's own Canva cut-out of the line-up (`assets/source/cutouts/`, 2.1), and
-**reaction poses** (`assets/characters/poses/<character>-<pose>.webp`) from
-the emotion images generated from that sheet. Poses are registered in `POSES`
-in `js/main.js` (`M.poseImg(character, pose, class)` falls back to the normal
-image when a pose doesn't exist). In use:
+- `assets/characters/<id>.webp` (+ `.png` for the Telegram bot): the normal image, from `lineup.png`
+- `assets/characters/poses/<id>-<pose>.webp`: 10 expressions each, 512 × 512
+- `assets/characters/faces/<id>.webp`: head crops for avatars
+- `assets/printables/<id>-lines.png`: colouring pages traced from the "hello" pose
+
+To replace a sheet, save the new image under the same name and run the tool.
+The pose order, which pose is the normal image and the head crops are at the
+top of `tools/cutout.mjs`.
 
 | Pose | Where |
 |---|---|
-| `correct`, `tryagain` | Quiz feedback on fact pages and in the daily challenge |
-| `win` | Game result cards, daily challenge done |
-| `hello` | Welcome dialog (Dendi) |
-| `aha` | The fact reader (the presenter) |
-| `curious` | Empty states (Memo), 404 and offline pages |
-| `asleep` | The wind-down result card (Lumi) |
+| `hello` | Hero (Dendi), welcome dialog, greeting on My Medulla, Telegram card, page heroes |
+| `curious` | Lab tests before a run, flip cards, empty states, 404, offline |
+| `focus` | Lab tests while running, activity cards |
+| `aha` | Fact reader, fact pages, fact of the day, Memo's chapter |
+| `correct` / `tryagain` | Quiz feedback, finished lab tests; `correct` also stands in for "love" (kindness) |
+| `win` | Result cards, badges, daily challenge done, closing band |
+| `inhale` / `exhale` | Syno breathing with you (lab and home), Lumi's wind-down |
+| `asleep` | Lumi's night mode, the sleep topic |
 
-To add or replace a pose: put the cut-out PNG in `assets/source/poses/`, save
-the WebP in `assets/characters/poses/`, and add the pose name to `POSES`.
-Prompts for generating more are in `assets/source/character-poses-prompt.md`.
+`M.poseImg(character, pose, class)` and `M.poseSrc(character, pose)` in
+`js/main.js` build the image; `M.charFace(character)` gives the avatar crop. In
+static HTML use `<img data-char="memo" data-pose="aha">` (`data-pose="face"` for
+a crop); the build fills in the `src`.
 
 ---
 
@@ -235,8 +329,10 @@ Everything is in `js/config.js`, with comments. `null` shows "TBD". Run
 4. Run `node tools/build.js`. It fails if any key or fact text is missing. The language button appears by itself.
 
 ### Add a character
-1. Put the art in `assets/characters/<id>.webp` (and the `.png` original).
-2. Add it to `CHARACTERS` and `CHARACTER_ORDER` in `js/main.js` (pixel size and a tint from the palette),
+1. Make its two pose sheets (green background, white border), save them as
+   `assets/source/gemini/<id>-1.jpg` and `-2.jpg`, add them to `SHEETS`, `IDLE_FROM` and
+   `FACE` in `tools/cutout.mjs`, and run `node tools/cutout.mjs`.
+2. Add it to `CHARACTERS` and `CHARACTER_ORDER` in `js/main.js` (a tint that contrasts with it),
    and to `CHARS` in `js/fact-template.js`.
 3. Add `char.<id>.kind`, `.trait`, `.role`, `.line` and `.alt` to every `js/lang/*.js` file, then run the build.
 
@@ -291,6 +387,48 @@ node telegram/bot.mjs --dry-run
 - Animation pauses when the tab is hidden or the element is off screen.
 - Every sound has a visual equivalent.
 - Characters are decorative (empty `alt`) wherever their name is written next to them.
+
+## Tested (2.4, 13 October 2026)
+
+- **Store:** check-ins, all five areas lighting, the full-network bonus and
+  badge, invalid values refused, area totals rebuilt for older saved progress.
+- **Flows in headless Edge:** a new profile, check-ins from the map, a
+  simulated week (levels, week grid, the experiment comparing two groups), the
+  avatar menu, Me sub-tabs, guest mode; the keyboard keeps focus on the chip or
+  area that was pressed, Escape closes the menu and returns focus.
+- **Top bar fit:** uz/ru/en, guest and signed in, normal and 125 % text, 360 to
+  1440 px: nothing overflows. Only at 360 px with 125 % text, one Uzbek
+  tab label is shortened with "…".
+- **axe-core 4.10:** no violations on the map (three panels), the open menu,
+  Me, badges, daily, lab and guest pages, light and dark, 1440 and 390 px.
+- **Build checks** pass; 27 bot tests pass.
+
+## Tested (2.3, 13 October 2026)
+
+- **Flows in headless Edge:** guest landing → dashboard link → sign-in page →
+  back to the dashboard route; signing in from a fact page returns to that
+  fact; landing redirects when signed in, `?site=1` shows it; sign out (with
+  message), "Welcome back", start a new profile, delete all data (signs out);
+  arrow keys in the character picker; the phone menu closes with Escape and
+  gives focus back.
+- **Header fit:** public header and app top bar in uz/ru/en, guest and signed
+  in, at 360–1440 px: nothing overflows or wraps.
+- **axe-core 4.10:** no violations on the landing, sign-in, facts, a fact, a
+  topic, about, lab and My Medulla pages, guest and signed in, light and dark,
+  1440 and 390 px (run with motion off; with motion on, axe flags text that is
+  still fading in).
+- **Build checks** pass; 27 bot tests pass.
+- Not tested: Safari/iOS and real screen readers.
+
+## Tested (2.2, 13 October 2026)
+
+- **axe-core 4.10:** no violations on 14 pages plus a fact and a topic page, light and dark.
+- **Build checks** pass; 27 bot tests pass.
+- **Screens:** home at 1280–1366 px and 390 px, light and dark, with motion on and
+  off; lab, explore, about, topic, fact and offline pages; every character and
+  expression on light and dark backgrounds, with no green fringe. The share-card
+  canvas exports with the new art.
+- Not tested: Safari/iOS and real screen readers.
 
 ## Tested (2.1, 12 October 2026)
 

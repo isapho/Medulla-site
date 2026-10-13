@@ -21,3 +21,5 @@ jobs:
         run: node tools/build.js --check
       - name: Telegram bot tests (mock server, nothing is sent)
         run: node --test telegram/bot.test.mjs telegram/assistant.test.mjs
+      - name: Automatic-fact tests (fake model, nothing is called)
+        run: node --test tools/auto-fact.test.mjs

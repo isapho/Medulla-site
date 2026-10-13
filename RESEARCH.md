@@ -374,6 +374,25 @@ online life in Uzbekistan happens, without us storing anything about them?
 3. **Same content rules as the site:** a source on every fact, "Pending expert
    review" until reviewed, no medical advice, and the breathing exercise is the
    NHS 5-in / 5-out one already used in the Lab.
+4. **The daily fact is the one exception, opt-in and minimal (2.6).** A bot can
+   only message someone on its own if it remembers where to send, so `/daily`
+   keeps three things: the private chat's number, the language and one of three
+   hours. No name, username, age or messages. The consent screen says exactly
+   that, asks under-18s to check with a parent or guardian first (the same rule
+   as sync, decision 2), and `/stop` or blocking the bot deletes the entry.
+   Groups can't subscribe (the channel is for that). On the free Workers plan a
+   run may make 50 outgoing requests and 1,000 to KV, and the cron CPU limit
+   is 10 ms, so the Worker runs every 5 minutes and each delivery hour is cut
+   into 12 batches of up to 45 chats (about 540 chats per hour slot); Workers
+   Paid lifts this to 10,000 requests per run.
+   Sources: [Workers limits](https://developers.cloudflare.com/workers/platform/limits/) ·
+   [KV limits](https://developers.cloudflare.com/kv/platform/limits/) ·
+   [Cron triggers](https://developers.cloudflare.com/workers/configuration/cron-triggers/).
+5. **The bot follows the app's brain map (2.6).** Facts are labelled with the
+   area of the character who presents them (Learning with Memo, Movement with
+   Octa, Discovery with Dendi, Calm with Syno, Sleep with Lumi), `/map` shows the
+   five areas with the site's own step texts, targets and "why" facts, and the
+   lighting up itself stays in the app, on the device.
 
 ---
 

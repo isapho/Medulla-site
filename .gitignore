@@ -6,3 +6,7 @@ Thumbs.db
 
 # Cloudflare Wrangler local cache
 .wrangler/
+tools/out/
+
+# Telegram bot: daily-fact subscriptions when run with long polling
+telegram/.subscribers.json*

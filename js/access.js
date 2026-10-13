@@ -222,7 +222,8 @@
   document.addEventListener("click", function (e) {
     var b = e.target.closest(".ax-drawer [data-lang]");
     if (!b) return;
-    var hb = document.querySelector('.site-header [data-lang="' + b.getAttribute("data-lang") + '"]');
+    // the header's buttons (or, on start.html, the ones beside the card)
+    var hb = document.querySelector('.site-header [data-lang="' + b.getAttribute("data-lang") + '"], .start-top [data-lang="' + b.getAttribute("data-lang") + '"]');
     if (hb) hb.click();
   });
 

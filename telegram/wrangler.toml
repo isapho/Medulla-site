@@ -11,6 +11,21 @@ DATA_URL = "https://raw.githubusercontent.com/isapho/Medulla-site/main"
 # The public address of the website. Empty = no website buttons or links in the
 # bot. Set it to "https://isapho.github.io/Medulla-site" (or your domain) when the site is live.
 SITE_URL = ""
+# Daily-fact messages per five-minute run. 45 fits the free plan (50 requests per run);
+# on Workers Paid it can be raised to a few hundred.
+MAX_PER_RUN = "45"
+
+# Every 5 minutes. The Worker only does work at 08:00, 13:00 and 18:00 Tashkent
+# time (03, 08, 13 UTC), and only when the SUBS namespace below is bound.
+[triggers]
+crons = ["*/5 * * * *"]
+
+# The daily fact (/daily) keeps its small subscriber list in this KV namespace
+# (created in the Cloudflare account as "medulla-bot-SUBS"). Without the binding
+# the bot works as before and /daily says the daily fact isn't switched on yet.
+[[kv_namespaces]]
+binding = "SUBS"
+id = "67b1b3fa636d4eeb890181ace623dae7"
 
 # Secrets (never put them here):
 #   npx wrangler secret put BOT_TOKEN

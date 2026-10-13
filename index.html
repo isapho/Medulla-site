@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="uz">
+<html lang="uz" data-gate="landing">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -22,6 +22,7 @@
   <!-- meta:end -->
   <meta name="theme-color" content="#FFFFFF">
   <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="assets/brand/logo-tile.svg">
   <link rel="icon" type="image/png" href="assets/brand/favicon-64.png">
   <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +31,7 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/polish.css">
-  <link rel="preload" as="image" href="assets/characters/dendi.webp" type="image/webp">
+  <link rel="preload" as="image" href="assets/characters/poses/dendi-hello.webp" type="image/webp">
   <link rel="preload" as="image" href="assets/img/brain-glass.webp" type="image/webp">
   <script src="js/prefs.js"></script>
 </head>
@@ -49,7 +50,7 @@
           <h1 id="hero-title"><span data-i18n="home.hero.titleA">Miya salomatligi —</span> <span class="accent" data-i18n="home.hero.titleB">yoshlar uchun tushunarli tilda</span></h1>
           <p class="lead" data-i18n="home.hero.lead">Medulla — Oʻzbekistondagi talabalar loyihasi. Biz miya salomatligi, kognitiv rivojlanish (fikrlash qobiliyatlarining oʻsishi) va miya kasalliklari bor bolalarni qoʻllab-quvvatlash bilan shugʻullanamiz.</p>
           <div class="btn-row">
-            <a class="btn btn-primary press" href="explore.html"><span data-i18n="home.hero.ctaStart">Kashf etishni boshlash</span><span class="arrow-dot"><span data-icon="arrow"></span></span></a>
+            <a class="btn btn-primary press" href="start.html"><span data-i18n="home.hero.ctaStart">Kashf etishni boshlash</span><span class="arrow-dot"><span data-icon="arrow"></span></span></a>
             <a class="btn btn-play" href="learn.html" data-render="heroReader"><span class="play"><span data-icon="play"></span></span><span data-i18n="home.hero.ctaFact">Kun faktini oʻqing</span></a>
           </div>
           <div class="proof" data-render="proof"></div>
@@ -57,19 +58,17 @@
 
         <div class="hero-art">
           <div class="hero-layer" data-depth="0.015" aria-hidden="true">
-            <div class="hero-dots"></div>
             <div class="hero-circle"></div>
             <img class="hero-brain" src="assets/img/brain-glass.webp" width="900" height="741" alt="" fetchpriority="high" decoding="async">
           </div>
           <div class="hero-layer" data-depth="0.06" aria-hidden="true">
-            <svg class="hero-path" viewBox="0 0 160 90" fill="none"><path d="M2 86C30 60 52 74 76 52S118 8 156 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 7"/></svg>
-            <img class="hero-lumi idle idle-lumi" src="assets/characters/lumi.webp" width="160" height="161" alt="">
+            <img class="hero-lumi idle idle-lumi" src="assets/characters/lumi.webp" width="240" height="240" alt="">
           </div>
           <div class="hero-layer" data-depth="0.035">
-            <img class="hero-dendi idle idle-dendi" src="assets/characters/dendi.webp" width="194" height="280" data-i18n-attr="alt:char.dendi.alt" fetchpriority="high" alt="Dendi — Medullaning neyron qahramoni">
+            <img class="hero-dendi idle idle-dendi" src="assets/characters/poses/dendi-hello.webp" width="240" height="240" data-i18n-attr="alt:char.dendi.alt" fetchpriority="high" alt="Dendi — Medullaning neyron qahramoni">
           </div>
           <a class="float-card fc-fact" href="learn.html" data-render="heroFact">
-            <span class="avatar" style="--tint:#E8E5FF"><img src="assets/characters/memo.webp" width="276" height="229" alt=""></span>
+            <span class="avatar" style="--tint:#FFF5EC"><img src="assets/characters/faces/memo.webp" width="64" height="64" alt=""></span>
             <span><small data-i18n="home.card.fact">Kun fakti</small><strong></strong></span>
           </a>
           <a class="float-card fc-lab" href="lab.html#stroop">
@@ -109,11 +108,11 @@
 
     <!-- Story: one chapter per pillar, each led by its character -->
     <nav class="story-nav" data-story-nav data-i18n-attr="aria-label:story.nav" aria-label="Boblar">
-      <a href="#ch-memo" style="--tint:#E8E5FF"><img src="assets/characters/memo.webp" data-char="memo" alt="" width="276" height="229"><span class="sr-only" data-i18n="story.memo.eyebrow">Memoning faktlari</span></a>
-      <a href="#ch-octa" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="198" height="233"><span class="sr-only" data-i18n="story.octa.eyebrow">Octaning laboratoriyasi</span></a>
-      <a href="#ch-syno" style="--tint:#ECE9FF"><img src="assets/characters/syno.webp" data-char="syno" alt="" width="168" height="248"><span class="sr-only" data-i18n="story.syno.eyebrow">Synoning burchagi</span></a>
-      <a href="#ch-lumi" style="--tint:#FFF3E6"><img src="assets/characters/lumi.webp" data-char="lumi" alt="" width="160" height="161"><span class="sr-only" data-i18n="story.lumi.eyebrow">Lumining kechasi</span></a>
-      <a href="#ch-dendi" style="--tint:#EFEDFF"><img src="assets/characters/dendi.webp" data-char="dendi" alt="" width="194" height="280"><span class="sr-only" data-i18n="story.dendi.eyebrow">Dendining yoʻli</span></a>
+      <a href="#ch-memo" style="--tint:#FFF5EC"><img src="assets/characters/faces/memo.webp" data-char="memo" data-pose="face" alt="" width="240" height="240"><span class="sr-only" data-i18n="story.memo.eyebrow">Memoning faktlari</span></a>
+      <a href="#ch-octa" style="--tint:#FFF2E9"><img src="assets/characters/faces/octa.webp" data-char="octa" data-pose="face" alt="" width="240" height="240"><span class="sr-only" data-i18n="story.octa.eyebrow">Octaning laboratoriyasi</span></a>
+      <a href="#ch-syno" style="--tint:#FFF0E6"><img src="assets/characters/faces/syno.webp" data-char="syno" data-pose="face" alt="" width="240" height="240"><span class="sr-only" data-i18n="story.syno.eyebrow">Synoning burchagi</span></a>
+      <a href="#ch-lumi" style="--tint:#E9E6FF"><img src="assets/characters/faces/lumi.webp" data-char="lumi" data-pose="face" alt="" width="240" height="240"><span class="sr-only" data-i18n="story.lumi.eyebrow">Lumining kechasi</span></a>
+      <a href="#ch-dendi" style="--tint:#FFF1E4"><img src="assets/characters/faces/dendi.webp" data-char="dendi" data-pose="face" alt="" width="240" height="240"><span class="sr-only" data-i18n="story.dendi.eyebrow">Dendining yoʻli</span></a>
     </nav>
 
     <div class="story" data-story>
@@ -124,7 +123,7 @@
         <div class="container chapter-grid">
           <div class="chapter-host" data-reveal="left">
             <span class="chapter-num" data-i18n="story.memo.num">01 · Taʼlimiy</span>
-            <div class="host-circle" style="--tint:#E8E5FF"><img src="assets/characters/memo.webp" class="idle idle-memo" data-char="memo" alt="" width="276" height="229" loading="lazy"></div>
+            <div class="host-circle" style="--tint:#FFF5EC"><img src="assets/characters/poses/memo-aha.webp" class="idle idle-memo" data-char="memo" data-pose="aha" alt="" width="240" height="240" loading="lazy"></div>
             <p class="bubble" style="position:static" data-i18n="story.memo.says">Har kuni bitta fakt keltiraman — doim manbasi bilan.</p>
           </div>
           <div class="chapter-body">
@@ -135,31 +134,82 @@
             <div class="explainers chapter-demo" data-reveal data-anim-root>
               <figure class="explainer" style="margin:0">
                 <p class="ex-title"><span data-icon="bolt"></span><span data-i18n="explain.fire.title">Neyron qanday signal beradi</span></p>
-                <svg viewBox="0 0 400 150" role="img" data-i18n-attr="aria-label:explain.fire.aria" aria-label="Animatsiya: signal neyrondan akson boʻylab yuguradi, sinapsdan oʻtib keyingi hujayraga yetadi.">
-                  <path class="nf-dend" d="M40 75 15 50M40 75 10 82M42 80 20 112M50 58 42 28M50 92 46 124"/>
-                  <circle class="nf-soma" cx="56" cy="75" r="20"/>
-                  <path class="nf-axon" d="M76 75H320"/>
-                  <rect x="112" y="64" width="38" height="22" rx="11" fill="#fff" stroke="#A29BFE" stroke-width="3"/>
-                  <rect x="176" y="64" width="38" height="22" rx="11" fill="#fff" stroke="#A29BFE" stroke-width="3"/>
-                  <rect x="240" y="64" width="38" height="22" rx="11" fill="#fff" stroke="#A29BFE" stroke-width="3"/>
-                  <path class="nf-signal" d="M76 75H320"/>
-                  <circle class="nf-spark" cx="334" cy="75" r="6"/>
-                  <circle class="nf-next" cx="362" cy="75" r="18"/>
-                  <text x="56" y="128" class="sc-label" text-anchor="middle" data-i18n="explain.fire.neuron">neyron</text>
-                  <text x="195" y="110" class="sc-label" text-anchor="middle" data-i18n="explain.fire.myelin">mielin</text>
-                  <text x="348" y="128" class="sc-label" text-anchor="middle" data-i18n="explain.fire.synapse">sinaps</text>
+                <svg viewBox="0 0 420 160" class="nf" role="img" data-i18n-attr="aria-label:explain.fire.aria" aria-label="Animatsiya: signal neyrondan akson boʻylab yuguradi, sinapsdan oʻtib keyingi hujayraga yetadi.">
+                  <defs>
+                    <radialGradient id="nf-soma-g" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#A396F8"/><stop offset=".6" stop-color="#6C5CE7"/><stop offset="1" stop-color="#4A3BC4"/></radialGradient>
+                    <linearGradient id="nf-my-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#F1EFFF"/><stop offset="1" stop-color="#D3CEFF"/></linearGradient>
+                    <radialGradient id="nf-glow-g"><stop offset="0" stop-color="#FFC27F" stop-opacity="1"/><stop offset=".35" stop-color="#FF9F43" stop-opacity=".55"/><stop offset="1" stop-color="#FF9F43" stop-opacity="0"/></radialGradient>
+                    <linearGradient id="nf-post-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#D9D4FF"/><stop offset="1" stop-color="#B3ACFF"/></linearGradient>
+                    <radialGradient id="nf-bouton-g" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#A396F8"/><stop offset="1" stop-color="#5848D8"/></radialGradient>
+                  </defs>
+                  <g class="nf-dend" fill="none" stroke-linecap="round">
+                    <path d="M68 70C58 60 48 54 32 50" stroke-width="5"/><path d="M48 54C42 46 38 38 37 28" stroke-width="3"/><path d="M32 50C24 48 18 42 14 35" stroke-width="2.4"/><path d="M32 50C24 53 17 53 10 57" stroke-width="2.4"/>
+                    <path d="M62 84C52 84 40 82 26 84" stroke-width="4.4"/><path d="M40 82C34 76 28 73 21 72" stroke-width="2.4"/><path d="M26 84C20 88 15 93 11 99" stroke-width="2.2"/>
+                    <path d="M70 94C60 104 50 112 36 118" stroke-width="5"/><path d="M50 111C46 120 44 128 43 137" stroke-width="2.8"/><path d="M36 118C28 118 20 123 14 128" stroke-width="2.2"/>
+                    <path d="M82 58C83 46 80 34 74 22" stroke-width="4.4"/><path d="M80 38C86 32 92 28 99 26" stroke-width="2.4"/><path d="M88 103C90 116 88 128 82 140" stroke-width="3.6"/>
+                  </g>
+                  <g class="nf-tips"><circle cx="37" cy="28" r="2.6"/><circle cx="14" cy="35" r="2.4"/><circle cx="10" cy="57" r="2.4"/><circle cx="21" cy="72" r="2.4"/><circle cx="11" cy="99" r="2.4"/><circle cx="43" cy="137" r="2.6"/><circle cx="14" cy="128" r="2.4"/><circle cx="74" cy="22" r="2.6"/><circle cx="99" cy="26" r="2.4"/><circle cx="82" cy="140" r="2.6"/></g>
+                  <path class="nf-hillock" d="M106 70C114 74 118 77 126 78.5V81.5C118 83 114 86 106 90Z"/>
+                  <path class="nf-soma" d="M84 56C99 56 109 67 110 79C111 92 101 104 86 104C70 104 59 95 59 81C59 66 70 56 84 56Z" fill="url(#nf-soma-g)"/>
+                  <circle class="nf-soma-flash" cx="84" cy="80" r="34" fill="url(#nf-glow-g)"/>
+                  <ellipse cx="86" cy="80" rx="11.5" ry="10.5" fill="#fff" opacity=".42"/><circle cx="88" cy="78" r="3.6" fill="#C9C3FF"/><circle cx="82" cy="84" r="1.3" fill="#C9C3FF"/>
+                  <path d="M69 69c3-5 8-8 14-8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+                  <path class="nf-axon" d="M124 80H300"/>
+                  <g class="nf-myelin">
+                    <rect x="132" y="69" width="46" height="22" rx="11" fill="url(#nf-my-g)"/><rect x="190" y="69" width="46" height="22" rx="11" fill="url(#nf-my-g)"/><rect x="248" y="69" width="46" height="22" rx="11" fill="url(#nf-my-g)"/>
+                    <path d="M140 74.5H162M198 74.5H220M256 74.5H278" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+                    <path d="M141 86H169M199 86H227M257 86H285" stroke="#B9B2FF" stroke-width="1.6" stroke-linecap="round"/>
+                  </g>
+                  <g class="nf-nodes"><circle class="nf-node n1" cx="184" cy="80" r="8"/><circle class="nf-node n2" cx="242" cy="80" r="8"/><circle class="nf-node n3" cx="300" cy="80" r="8"/></g>
+                  <path class="nf-term" d="M298 80C308 80 312 70 320 66M298 80H322M298 80C308 80 312 90 320 94"/>
+                  <g class="nf-boutons"><circle cx="325" cy="65" r="7"/><circle cx="327" cy="80" r="7"/><circle cx="325" cy="95" r="7"/></g>
+                  <g fill="#DCD7FF"><circle cx="323" cy="63" r="1.5"/><circle cx="327" cy="67" r="1.5"/><circle cx="325" cy="78" r="1.5"/><circle cx="329" cy="82" r="1.5"/><circle cx="323" cy="93" r="1.5"/><circle cx="327" cy="97" r="1.5"/></g>
+                  <path class="nf-post" d="M343 34C352 55 352 105 343 126C362 143 400 140 411 116C419 98 419 62 411 44C400 20 362 17 343 34Z" fill="url(#nf-post-g)"/>
+                  <path class="nf-post-flash" d="M343 34C352 55 352 105 343 126C362 143 400 140 411 116C419 98 419 62 411 44C400 20 362 17 343 34Z"/>
+                  <path d="M343 34C352 55 352 105 343 126" fill="none" stroke="#8C7FF2" stroke-width="2.6" stroke-linecap="round"/>
+                  <ellipse cx="386" cy="80" rx="12" ry="11" fill="#fff" opacity=".45"/><circle cx="388" cy="78" r="3.4" fill="#8C7FF2" opacity=".8"/>
+                  <g class="nf-receptors"><rect x="344" y="60" width="4.5" height="9" rx="2.2"/><rect x="345.5" y="75.5" width="4.5" height="9" rx="2.2"/><rect x="344" y="91" width="4.5" height="9" rx="2.2"/></g>
+                  <g class="nf-nt"><circle cx="333" cy="61" r="1.9"/><circle cx="335" cy="68" r="1.9"/><circle cx="335" cy="77" r="1.9"/><circle cx="336" cy="84" r="1.9"/><circle cx="333" cy="92" r="1.9"/><circle cx="335" cy="99" r="1.9"/></g>
+                  <g class="nf-ap"><circle cy="80" r="14" fill="url(#nf-glow-g)"/><circle cy="80" r="4.6" fill="#FF9F43"/><circle cy="80" r="2" fill="#fff"/></g>
+                  <text x="84" y="154" class="sc-label" text-anchor="middle" data-i18n="explain.fire.neuron">neyron</text>
+                  <text x="213" y="112" class="sc-label" text-anchor="middle" data-i18n="explain.fire.myelin">mielin</text>
+                  <text x="337" y="152" class="sc-label" text-anchor="middle" data-i18n="explain.fire.synapse">sinaps</text>
                 </svg>
                 <figcaption data-i18n="explain.fire.caption">Signal akson boʻylab yuguradi, mielin uni tezlashtiradi. Sinapsda kimyoviy moddalar signalni keyingi hujayraga uzatadi (NINDS, MedlinePlus).</figcaption>
               </figure>
               <figure class="explainer" style="margin:0">
                 <p class="ex-title"><span data-icon="neuron"></span><span data-i18n="explain.memory.title">Xotira qanday mustahkamlanadi</span></p>
-                <svg viewBox="0 0 400 150" role="img" data-i18n-attr="aria-label:explain.memory.aria" aria-label="Animatsiya: oʻrganish, uyqu va eslashdan keyin ikki neyron orasidagi aloqa qalinlashadi.">
-                  <path class="mc-link" d="M78 70C160 20 240 120 322 70" stroke-width="3"/>
-                  <circle class="mc-node" cx="70" cy="70" r="16"/>
-                  <circle class="mc-node" cx="330" cy="70" r="16"/>
-                  <text x="70" y="125" class="mc-step" data-i18n="explain.memory.learn">oʻrganish</text>
-                  <text x="200" y="125" class="mc-step" data-i18n="explain.memory.sleep">uyqu</text>
-                  <text x="330" y="125" class="mc-step" data-i18n="explain.memory.recall">eslash</text>
+                <svg viewBox="0 0 400 160" class="mc" data-smil role="img" data-i18n-attr="aria-label:explain.memory.aria" aria-label="Animatsiya: oʻrganish, uyqu va eslashdan keyin ikki neyron orasidagi aloqa qalinlashadi.">
+                  <defs>
+                    <radialGradient id="mc-soma-g" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#A396F8"/><stop offset=".6" stop-color="#6C5CE7"/><stop offset="1" stop-color="#4A3BC4"/></radialGradient>
+                    <radialGradient id="mc-glow-o"><stop offset="0" stop-color="#FFC27F"/><stop offset=".35" stop-color="#FF9F43" stop-opacity=".6"/><stop offset="1" stop-color="#FF9F43" stop-opacity="0"/></radialGradient>
+                    <radialGradient id="mc-glow-l"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".35" stop-color="#A29BFE" stop-opacity=".7"/><stop offset="1" stop-color="#A29BFE" stop-opacity="0"/></radialGradient>
+                    <g id="mc-cell">
+                      <g fill="none" stroke="#6C5CE7" stroke-linecap="round"><path d="M50 52C42 44 34 40 24 38" stroke-width="3.2"/><path d="M38 41C34 34 33 28 34 20" stroke-width="2"/><path d="M48 66C40 72 32 76 22 78" stroke-width="3.2"/><path d="M33 76C29 82 27 88 28 96" stroke-width="2"/><path d="M57 44C55 34 50 28 44 22" stroke-width="2.4"/><path d="M57 76C57 86 53 94 47 100" stroke-width="2.4"/></g>
+                      <g fill="#A29BFE"><circle cx="24" cy="38" r="2.2"/><circle cx="34" cy="20" r="2"/><circle cx="22" cy="78" r="2.2"/><circle cx="28" cy="96" r="2"/><circle cx="44" cy="22" r="2"/><circle cx="47" cy="100" r="2"/></g>
+                      <path d="M62 44C72 44 79 51 79 60C79 70 71 77 61 77C51 77 45 70 45 60C45 51 52 44 62 44Z" fill="url(#mc-soma-g)"/>
+                      <ellipse cx="63" cy="60" rx="7" ry="6.5" fill="#fff" opacity=".42"/><circle cx="64.5" cy="59" r="2.3" fill="#C9C3FF"/>
+                      <path d="M51 53c2-3 5-5 9-5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".5"/>
+                    </g>
+                  </defs>
+                  <rect class="mc-night" x="0" y="0" width="400" height="112" rx="14"/>
+                  <path class="mc-path mc-p3" pathLength="1" d="M80 55C150 12 250 92 320 55"/>
+                  <path class="mc-path mc-p2" pathLength="1" d="M80 65C150 34 250 106 320 65"/>
+                  <path class="mc-path mc-p1" d="M80 60C150 22 250 98 320 60"/>
+                  <use href="#mc-cell"/>
+                  <use href="#mc-cell" transform="translate(400 0) scale(-1 1)"/>
+                  <circle class="mc-lit" cx="338" cy="60" r="32" fill="url(#mc-glow-l)"/>
+                  <g class="mc-pulse mc-pa"><circle r="9" fill="url(#mc-glow-l)"><animateMotion dur="2.4s" repeatCount="indefinite" path="M80 60C150 22 250 98 320 60"/></circle></g>
+                  <g class="mc-pulse mc-pb"><circle r="8" fill="url(#mc-glow-l)"><animateMotion dur="1s" repeatCount="indefinite" path="M80 65C150 34 250 106 320 65"/></circle><circle r="8" fill="url(#mc-glow-l)"><animateMotion dur="1s" begin="0.5s" repeatCount="indefinite" path="M80 60C150 22 250 98 320 60"/></circle></g>
+                  <g class="mc-pulse mc-pc"><circle r="11" fill="url(#mc-glow-o)"><animateMotion dur="0.8s" repeatCount="indefinite" path="M80 60C150 22 250 98 320 60"/></circle><circle r="9" fill="url(#mc-glow-o)"><animateMotion dur="0.8s" begin="0.4s" repeatCount="indefinite" path="M80 55C150 12 250 92 320 55"/></circle></g>
+                  <path class="mc-track" d="M90 126H310"/>
+                  <path class="mc-progress" d="M90 126H310"/>
+                  <g class="mc-ms mc-ms1"><circle cx="90" cy="126" r="13"/><path d="M90 121.5c-2.2-1.6-4.6-2-7-1.8v8.6c2.4-.2 4.8.2 7 1.8 2.2-1.6 4.6-2 7-1.8v-8.6c-2.4-.2-4.8.2-7 1.8zM90 121.5v8.6"/></g>
+                  <g class="mc-ms mc-ms2"><circle cx="200" cy="126" r="13"/><path d="M205 128.5a6.2 6.2 0 1 1-6.5-8.4 4.8 4.8 0 0 0 6.5 8.4z"/></g>
+                  <g class="mc-ms mc-ms3"><circle cx="310" cy="126" r="13"/><path d="M310 119a4.6 4.6 0 0 0-2.8 8.3c.5.4.8 1 .8 1.6h4c0-.6.3-1.2.8-1.6a4.6 4.6 0 0 0-2.8-8.3zM308.3 132h3.4"/></g>
+                  <text x="90" y="155" class="mc-step" data-i18n="explain.memory.learn">oʻrganish</text>
+                  <text x="200" y="155" class="mc-step" data-i18n="explain.memory.sleep">uyqu</text>
+                  <text x="310" y="155" class="mc-step" data-i18n="explain.memory.recall">eslash</text>
                 </svg>
                 <figcaption data-i18n="explain.memory.caption">Aloqalar tajribaga qarab oʻzgaradi (StatPearls). Uyqu ularni saqlashga yordam beradi (NINDS), eslab koʻrish esa qayta oʻqishdan foydaliroq (Roediger va Karpicke).</figcaption>
               </figure>
@@ -174,7 +224,7 @@
         <div class="container chapter-grid">
           <div class="chapter-host" data-reveal="left">
             <span class="chapter-num" data-i18n="story.octa.num">02 · Amaliy</span>
-            <div class="host-circle" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" class="idle idle-octa" data-char="octa" alt="" width="198" height="233" loading="lazy"></div>
+            <div class="host-circle" style="--tint:#FFF2E9"><img src="assets/characters/poses/octa-curious.webp" class="idle idle-octa" data-char="octa" data-pose="curious" alt="" width="240" height="240" loading="lazy"></div>
             <p class="bubble" style="position:static" data-i18n="story.octa.says">Taxmin qilmaymiz — sinab koʻramiz!</p>
           </div>
           <div class="chapter-body">
@@ -182,9 +232,9 @@
             <h2 id="ch-octa-title" data-i18n="story.octa.title">Haqiqiy psixologik tajribalarni sinab koʻring</h2>
             <p data-i18n="story.octa.text">Oltita mashgʻulot, har biri halol natija kartochkasi bilan tugaydi: nimani oʻlchaydi va nimani koʻrsatmaydi.</p>
             <ul class="activity-grid chapter-demo" data-reveal>
-              <li><a class="activity-card tilt press" data-tilt href="lab.html#stroop"><span class="act-meta"><span class="chip" data-i18n="game.kind.test">Tajriba</span></span><span class="act-art" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="198" height="233" loading="lazy"></span><h3 data-i18n="game.stroop.title">Strup testi</h3><p data-i18n="game.stroop.short">Soʻzni emas, siyoh rangini tanlang.</p></a></li>
-              <li><a class="activity-card tilt press" data-tilt href="lab.html#digits"><span class="act-meta"><span class="chip" data-i18n="game.kind.test">Tajriba</span></span><span class="act-art" style="--tint:#F3F1FF"><img src="assets/characters/octa.webp" data-char="octa" alt="" width="198" height="233" loading="lazy"></span><h3 data-i18n="game.digits.title">Raqamlar xotirasi</h3><p data-i18n="game.digits.short">Raqamlar qatorini eslab qoling va qayta yozing.</p></a></li>
-              <li><a class="activity-card tilt press" data-tilt href="lab.html#breathing"><span class="act-meta"><span class="chip" data-i18n="game.kind.exercise">Mashq</span></span><span class="act-art" style="--tint:#ECE9FF"><img src="assets/characters/syno.webp" data-char="syno" alt="" width="168" height="248" loading="lazy"></span><h3 data-i18n="game.breathing.title">Syno bilan nafas olish</h3><p data-i18n="game.breathing.short">Sekin, yoʻl-yoʻriqli nafas mashqi.</p></a></li>
+              <li><a class="activity-card tilt press" data-tilt href="lab.html#stroop"><span class="act-meta"><span class="chip" data-i18n="game.kind.test">Tajriba</span></span><span class="act-art" style="--tint:#FFF2E9"><img src="assets/characters/poses/octa-focus.webp" data-char="octa" data-pose="focus" alt="" width="240" height="240" loading="lazy"></span><h3 data-i18n="game.stroop.title">Strup testi</h3><p data-i18n="game.stroop.short">Soʻzni emas, siyoh rangini tanlang.</p></a></li>
+              <li><a class="activity-card tilt press" data-tilt href="lab.html#digits"><span class="act-meta"><span class="chip" data-i18n="game.kind.test">Tajriba</span></span><span class="act-art" style="--tint:#FFF2E9"><img src="assets/characters/poses/octa-curious.webp" data-char="octa" data-pose="curious" alt="" width="240" height="240" loading="lazy"></span><h3 data-i18n="game.digits.title">Raqamlar xotirasi</h3><p data-i18n="game.digits.short">Raqamlar qatorini eslab qoling va qayta yozing.</p></a></li>
+              <li><a class="activity-card tilt press" data-tilt href="lab.html#breathing"><span class="act-meta"><span class="chip" data-i18n="game.kind.exercise">Mashq</span></span><span class="act-art" style="--tint:#FFF0E6"><img src="assets/characters/poses/syno-inhale.webp" data-char="syno" data-pose="inhale" alt="" width="240" height="240" loading="lazy"></span><h3 data-i18n="game.breathing.title">Syno bilan nafas olish</h3><p data-i18n="game.breathing.short">Sekin, yoʻl-yoʻriqli nafas mashqi.</p></a></li>
             </ul>
             <p class="note"><span data-icon="info"></span><span data-i18n="lab.note">Miya oʻyinlari asosan aynan oʻsha oʻyinni yaxshiroq oʻynashga oʻrgatadi. Ularning kundalik fikrlashga yoki IQ ga taʼsiri ilmiy jihatdan deyarli isbotlanmagan. Bu mashgʻulotlar qiziqish uchun, tashxis qoʻyish uchun emas.</span></p>
             <div class="btn-row chapter-demo"><a class="btn btn-primary press" href="lab.html"><span data-icon="target"></span><span data-i18n="story.octa.cta">Laboratoriyani ochish</span></a></div>
@@ -197,7 +247,7 @@
         <div class="container chapter-grid">
           <div class="chapter-host" data-reveal="left" data-anim-root>
             <span class="chapter-num" data-i18n="story.syno.num">03 · Ijtimoiy</span>
-            <div class="breath-visual mini-breath" aria-hidden="true"><div class="breath-blob"></div><img src="assets/characters/syno.webp" class="breath-syno" data-char="syno" alt="" width="168" height="248" loading="lazy"></div>
+            <div class="breath-visual mini-breath" aria-hidden="true"><div class="breath-blob"></div><img src="assets/characters/poses/syno-inhale.webp" class="breath-syno" data-char="syno" data-pose="inhale" alt="" width="240" height="240" loading="lazy"><img src="assets/characters/poses/syno-exhale.webp" class="breath-syno breath-syno-out" data-char="syno" data-pose="exhale" alt="" width="240" height="240" loading="lazy"></div>
             <p class="mini-breath-label" aria-hidden="true"><span data-i18n="game.breathing.in">Nafas oling…</span><span data-i18n="game.breathing.out">…va chiqaring</span></p>
           </div>
           <div class="chapter-body">
@@ -223,7 +273,7 @@
         <div class="container chapter-grid">
           <div class="chapter-host" data-reveal="left">
             <span class="chapter-num" data-i18n="story.lumi.num">04 · Uyqu va gʻoyalar</span>
-            <div class="host-circle" style="--tint:#FFF3E6"><img src="assets/characters/lumi.webp" class="idle idle-lumi" data-char="lumi" alt="" width="160" height="161" loading="lazy"></div>
+            <div class="host-circle" style="--tint:#E9E6FF"><img src="assets/characters/poses/lumi-aha.webp" class="idle idle-lumi" data-char="lumi" data-pose="aha" alt="" width="240" height="240" loading="lazy"></div>
             <p class="bubble" style="position:static" data-i18n="story.lumi.says">Bilasizmi? Uxlayotganingizda miyangiz band boʻladi.</p>
           </div>
           <div class="chapter-body">
@@ -233,10 +283,19 @@
             <div class="explainers chapter-demo" data-reveal data-anim-root>
               <figure class="explainer" style="margin:0">
                 <p class="ex-title"><span data-icon="moon"></span><span data-i18n="explain.sleep.title">Bir kechalik uyqu</span></p>
-                <svg viewBox="0 0 400 175" role="img" data-i18n-attr="aria-label:explain.sleep.aria" aria-label="Animatsiya: uyqu grafigi uygʻoqlikdan 1–3-bosqichlar va REM orqali bir necha marta oʻtadi, tunning oxirida REM uzayadi.">
+                <svg viewBox="0 0 400 175" class="sc" data-smil role="img" data-i18n-attr="aria-label:explain.sleep.aria" aria-label="Animatsiya: uyqu grafigi uygʻoqlikdan 1–3-bosqichlar va REM orqali bir necha marta oʻtadi, tunning oxirida REM uzayadi.">
+                  <defs>
+                    <linearGradient id="sc-line-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#A29BFE"/><stop offset=".5" stop-color="#6C5CE7"/><stop offset="1" stop-color="#FF9F43"/></linearGradient>
+                    <linearGradient id="sc-deep-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6C5CE7" stop-opacity="0"/><stop offset="1" stop-color="#6C5CE7" stop-opacity=".16"/></linearGradient>
+                    <radialGradient id="sc-dot-g"><stop offset="0" stop-color="#fff"/><stop offset=".4" stop-color="#FF9F43"/><stop offset="1" stop-color="#FF9F43" stop-opacity="0"/></radialGradient>
+                  </defs>
+                  <rect class="sc-band" x="40" y="125" width="352" height="22" rx="6" fill="url(#sc-deep-g)"/>
                   <g class="sc-grid"><line x1="40" x2="392" y1="20" y2="20"/><line x1="40" x2="392" y1="50" y2="50"/><line x1="40" x2="392" y1="80" y2="80"/><line x1="40" x2="392" y1="110" y2="110"/><line x1="40" x2="392" y1="140" y2="140"/></g>
-                  <rect class="sc-rem" x="124" y="40" width="8" height="20" rx="3"/><rect class="sc-rem" x="208" y="40" width="16" height="20" rx="3"/><rect class="sc-rem" x="280" y="40" width="24" height="20" rx="3"/><rect class="sc-rem" x="348" y="40" width="30" height="20" rx="3"/>
+                  <rect class="sc-rem" x="124" y="40" width="8" height="20" rx="4"/><rect class="sc-rem" x="208" y="40" width="16" height="20" rx="5"/><rect class="sc-rem" x="280" y="40" width="24" height="20" rx="6"/><rect class="sc-rem" x="348" y="40" width="30" height="20" rx="6"/>
                   <path class="sc-line" d="M40 20 52 80 62 110 74 140H96L106 110 118 80 124 50H132L140 80 150 110 160 140H178L188 110 200 80 208 50H224L232 80 244 110H262L272 80 280 50H304L312 80 324 110H334L342 80 348 50H378L390 20"/>
+                  <circle class="sc-head" r="9" fill="url(#sc-dot-g)"><animateMotion dur="9s" repeatCount="indefinite" calcMode="linear" keyPoints="0;1;1" keyTimes="0;0.7;1" path="M40 20 52 80 62 110 74 140H96L106 110 118 80 124 50H132L140 80 150 110 160 140H178L188 110 200 80 208 50H224L232 80 244 110H262L272 80 280 50H304L312 80 324 110H334L342 80 348 50H378L390 20"/></circle>
+                  <g class="sc-moon"><path d="M58 166a6 6 0 1 1-6.4-8 4.6 4.6 0 0 0 6.4 8z"/></g>
+                  <g class="sc-sun"><circle cx="384" cy="161" r="4.2"/><path d="M384 152.5v2M384 167.5v2M375.5 161h2M390.5 161h2M378 155l1.4 1.4M388.6 165.6l1.4 1.4M378 167l1.4-1.4M388.6 156.4l1.4-1.4"/></g>
                   <text x="34" y="24" class="sc-label" text-anchor="end" data-i18n="explain.sleep.awake">uygʻoq</text>
                   <text x="34" y="54" class="sc-label" text-anchor="end">REM</text>
                   <text x="34" y="84" class="sc-label" text-anchor="end">1</text>
@@ -248,12 +307,45 @@
               </figure>
               <figure class="explainer" style="margin:0">
                 <p class="ex-title"><span data-icon="eye"></span><span data-i18n="explain.pupil.title">Yorugʻlik va qorachiq</span></p>
-                <svg viewBox="0 0 300 150" id="pupil-eye" class="pupil-eye" role="img" data-i18n-attr="aria-label:explain.pupil.aria" aria-label="Koʻz rasmi. Surgichni siljitib yorugʻlikni oʻzgartiring — qorachiq kattaligi oʻzgaradi.">
-                  <circle class="pupil-sun" cx="40" cy="40" r="22"/>
-                  <ellipse cx="185" cy="80" rx="95" ry="58" fill="#fff" stroke="#0D1128" stroke-width="3"/>
-                  <circle class="pupil-iris" cx="185" cy="80" r="46"/>
-                  <circle class="pupil-hole" id="pupil-hole" cx="185" cy="80" r="26"/>
-                  <circle cx="200" cy="66" r="6" fill="#fff" opacity=".85"/>
+                <svg viewBox="0 0 300 170" id="pupil-eye" class="pupil-eye" role="img" data-i18n-attr="aria-label:explain.pupil.aria" aria-label="Koʻz rasmi. Surgichni siljitib yorugʻlikni oʻzgartiring — qorachiq kattaligi oʻzgaradi.">
+                  <defs>
+                    <linearGradient id="pe-warm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF7EC"/><stop offset="1" stop-color="#FFE1C0"/></linearGradient>
+                    <linearGradient id="pe-dusk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ECE9FF"/><stop offset="1" stop-color="#C9C2FF"/></linearGradient>
+                    <linearGradient id="pe-night" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1A1F4A"/><stop offset="1" stop-color="#0B0E22"/></linearGradient>
+                    <radialGradient id="pe-sclera" cx=".5" cy=".42" r=".62"><stop offset=".5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#DCD8F2"/></radialGradient>
+                    <radialGradient id="pe-iris" gradientUnits="userSpaceOnUse" cx="180" cy="86" r="44"><stop offset="0" stop-color="#D4CEFF"/><stop offset=".3" stop-color="#9A8DF6"/><stop offset=".72" stop-color="#6252DE"/><stop offset="1" stop-color="#36299E"/></radialGradient>
+                    <radialGradient id="pe-pupil" cx=".42" cy=".38" r=".62"><stop offset="0" stop-color="#25215A"/><stop offset="1" stop-color="#090B1E"/></radialGradient>
+                    <radialGradient id="pe-sun-g" cx=".4" cy=".38" r=".62"><stop offset="0" stop-color="#FFF1DC"/><stop offset=".55" stop-color="#FFB662"/><stop offset="1" stop-color="#FF9F43"/></radialGradient>
+                    <linearGradient id="pe-beam" x1="0" y1="0" x2="1" y2=".6"><stop offset="0" stop-color="#FFD39E" stop-opacity=".85"/><stop offset="1" stop-color="#FFD39E" stop-opacity="0"/></linearGradient>
+                    <clipPath id="pe-clip"><path d="M92 86C124 38 236 38 268 86C236 134 124 134 92 86Z"/></clipPath>
+                  </defs>
+                  <rect x="0" y="0" width="300" height="170" rx="18" fill="url(#pe-dusk)"/>
+                  <rect class="pe-day" x="0" y="0" width="300" height="170" rx="18" fill="url(#pe-warm)"/>
+                  <rect class="pe-dark" x="0" y="0" width="300" height="170" rx="18" fill="url(#pe-night)"/>
+                  <g class="pe-stars" fill="#FFFFFF"><circle cx="262" cy="22" r="1.6"/><circle cx="282" cy="44" r="1.1"/><circle cx="236" cy="14" r="1.2"/><circle cx="278" cy="140" r="1.3"/><circle cx="22" cy="132" r="1.2"/></g>
+                  <path class="pe-beam" d="M50 32 132 52 150 120 40 52Z" fill="url(#pe-beam)"/>
+                  <g class="pe-sun">
+                    <path class="pe-rays" d="M40 14v-6M40 72v6M14 40H8M72 40h6M21.6 21.6l-4.2-4.2M58.4 58.4l4.2 4.2M21.6 58.4l-4.2 4.2M58.4 21.6l4.2-4.2"/>
+                    <circle cx="40" cy="40" r="16" fill="url(#pe-sun-g)"/>
+                  </g>
+                  <path d="M100 64C132 22 228 22 260 64" fill="none" stroke="#231A63" stroke-width="2" stroke-linecap="round" opacity=".25"/>
+                  <g clip-path="url(#pe-clip)">
+                    <rect x="90" y="36" width="180" height="100" fill="url(#pe-sclera)"/>
+                    <circle cx="180" cy="86" r="44" fill="url(#pe-iris)"/>
+                    <path d="M193.0 86.0Q206.0 87.6 219.0 86.0M194.3 88.3Q204.6 93.1 215.4 96.2M195.5 90.1Q204.1 93.6 213.7 93.9M191.9 91.3Q200.7 95.4 210.8 95.9M192.6 93.3Q201.9 101.4 212.6 107.5M192.4 96.1Q198.5 104.8 206.2 111.9M189.2 95.2Q196.5 103.1 206.4 108.3M188.5 97.8Q193.3 105.3 200.8 110.8M188.0 99.9Q191.0 111.2 195.9 121.6M184.6 98.2Q186.9 109.9 191.4 121.0M183.8 100.0Q186.3 109.7 192.7 118.2M181.6 101.9Q181.2 110.2 183.8 118.2M180.0 99.0Q176.9 111.8 175.3 124.7M177.7 100.3Q174.5 111.1 174.6 122.4M175.9 101.5Q173.4 110.4 175.0 120.2M174.7 97.9Q169.0 105.9 165.4 114.9M172.8 98.6Q164.1 107.5 157.1 117.5M169.9 98.4Q162.8 106.0 158.8 116.1M170.8 95.2Q162.9 102.6 157.8 112.5M168.2 94.5Q159.6 97.6 152.1 102.4M166.1 94.0Q155.0 97.5 145.1 103.3M167.8 90.6Q156.7 94.7 147.2 102.7M166.0 89.8Q156.0 91.3 146.9 96.1M164.1 87.6Q155.8 85.6 147.6 85.4M167.0 86.0Q154.1 84.4 141.0 85.8M165.7 83.7Q154.7 81.9 143.2 84.5M164.5 81.9Q156.1 77.7 146.8 76.2M168.1 80.7Q160.5 74.3 152.1 69.5M167.4 78.8Q157.3 71.9 145.2 68.4M167.6 75.9Q159.7 69.1 149.3 65.7M170.8 76.8Q164.9 67.6 157.6 59.6M171.5 74.2Q168.2 65.7 163.2 58.3M172.0 72.1Q166.5 62.1 157.2 54.4M175.4 73.8Q172.0 62.4 165.2 52.3M176.2 72.0Q176.5 61.7 174.9 51.8M178.4 70.1Q179.3 61.8 177.5 53.7M180.0 73.0Q180.0 60.0 175.3 47.3M182.3 71.7Q185.7 61.0 186.2 49.7M184.1 70.5Q189.4 62.5 192.8 53.9M185.3 74.1Q190.1 65.7 192.1 56.0M187.3 73.4Q193.5 62.9 195.8 50.3M190.1 73.6Q198.5 67.2 205.1 59.1M189.2 76.8Q198.5 71.0 206.6 63.9M191.8 77.5Q199.2 72.6 204.5 64.8M193.9 78.0Q204.2 72.9 212.4 64.3M192.2 81.4Q204.1 79.9 215.6 76.7M194.0 82.2Q204.1 81.6 213.8 78.4M195.9 84.4Q204.1 83.6 211.6 79.0" fill="none" stroke="#ECE9FF" stroke-width="1.1" stroke-linecap="round" opacity=".5"/>
+                    <path d="M199.0 86.0L200.4 87.8L199.7 89.5L197.6 90.7L196.4 92.0L197.0 93.9L197.7 96.2L196.6 97.6L194.1 97.9L192.3 98.3L191.9 100.1L191.6 102.6L190.2 103.7L187.9 103.0L186.0 102.4L184.7 103.6L183.5 105.7L181.8 106.4L180.0 105.0L178.5 103.4L176.9 103.7L174.9 105.1L173.0 105.3L171.9 103.5L171.2 101.3L169.8 100.6L167.4 101.0L165.4 100.6L165.0 98.6L165.4 96.2L164.7 94.8L162.5 94.1L160.7 93.0L160.9 91.1L162.3 89.1L162.6 87.5L161.0 86.0L159.6 84.2L160.3 82.5L162.4 81.3L163.6 80.0L163.0 78.1L162.3 75.8L163.4 74.4L165.9 74.1L167.7 73.7L168.1 71.9L168.4 69.4L169.8 68.3L172.1 69.0L174.0 69.6L175.3 68.4L176.5 66.3L178.2 65.6L180.0 67.0L181.5 68.6L183.1 68.3L185.1 66.9L187.0 66.7L188.1 68.5L188.8 70.7L190.2 71.4L192.6 71.0L194.6 71.4L195.0 73.4L194.6 75.8L195.3 77.2L197.5 77.9L199.3 79.0L199.1 80.9L197.7 82.9L197.4 84.5L199.0 86.0Z" fill="none" stroke="#E2DEFF" stroke-width="1.6" opacity=".65"/>
+                    <circle cx="180" cy="86" r="43" fill="none" stroke="#231A63" stroke-width="3.4" opacity=".8"/>
+                    <circle class="pupil-hole" id="pupil-hole" cx="180" cy="86" r="20" fill="url(#pe-pupil)"/>
+                    <ellipse cx="197" cy="69" rx="7.5" ry="5.6" fill="#fff" opacity=".92" transform="rotate(-24 197 69)"/>
+                    <circle cx="165" cy="102" r="3" fill="#fff" opacity=".65"/>
+                    <path d="M92 86C124 38 236 38 268 86C236 54 124 54 92 86Z" fill="#231A63" opacity=".12"/>
+                    <g class="pe-lid"><path class="pe-lid-fill" d="M92 86C124 38 236 38 268 86V20H92Z"/></g>
+                  </g>
+                  <path d="M94 88C126 133 234 133 266 88" fill="none" stroke="#231A63" stroke-width="2.4" stroke-linecap="round" opacity=".7"/>
+                  <g class="pe-lid pe-lid-top">
+                    <path d="M89 88C123 36 237 36 271 88" fill="none" stroke="#231A63" stroke-width="4.4" stroke-linecap="round"/>
+                    <path d="M107.5 68.2Q104.9 65.4 100.1 62.9M127.0 57.8Q125.1 54.2 121.6 51.1M149.4 51.1Q148.3 46.9 146.2 43.4M173.3 48.1Q173.1 43.5 172.6 39.8M197.7 49.0Q198.3 44.6 199.5 41.0M221.1 53.6Q222.5 49.7 225.2 46.4M242.3 62.0Q244.5 58.8 248.6 56.0M258.6 73.0Q261.5 70.5 266.7 68.3" fill="none" stroke="#231A63" stroke-width="2.4" stroke-linecap="round"/>
+                  </g>
                 </svg>
                 <label class="sr-only" for="pupil-range" data-i18n="explain.pupil.slider">Yorugʻlik miqdori</label>
                 <input id="pupil-range" class="pupil-range" type="range" min="0" max="100" value="40">
@@ -273,13 +365,13 @@
         <div class="container chapter-grid">
           <div class="chapter-host" data-reveal="left">
             <span class="chapter-num" data-i18n="story.dendi.num">05 · Kashfiyot</span>
-            <div class="host-circle" style="--tint:#EFEDFF"><img src="assets/characters/dendi.webp" class="idle idle-dendi" data-char="dendi" alt="" width="194" height="280" loading="lazy"></div>
+            <div class="host-circle" style="--tint:#FFF1E4"><img src="assets/characters/poses/dendi-correct.webp" class="idle idle-dendi" data-char="dendi" data-pose="correct" alt="" width="240" height="240" loading="lazy"></div>
             <p class="bubble" style="position:static" data-i18n="story.dendi.says">Har bir kichik qadam yangi shoxcha oʻstiradi.</p>
           </div>
           <div class="chapter-body">
             <p class="eyebrow"><span data-icon="compass"></span><span data-i18n="story.dendi.eyebrow">Dendining yoʻli</span></p>
             <h2 id="ch-dendi-title" data-i18n="story.dendi.title">Shaxsiy maydoningiz: “Mening Medullam”</h2>
-            <p data-i18n="story.dendi.text">Kunlik topshiriq (bitta fakt, uchta savol, bitta oʻyin), sokin oʻsish, nishonlar va saqlangan faktlar. Akkaunt kerak emas — hammasi qurilmangizda qoladi.</p>
+            <p data-i18n="story.dendi.text">Miya xaritasi: besh odat — uyqu, harakat, bilim, xotirjamlik va kashfiyot — har biri oʻz qahramoni bilan. Ularni har kuni yoqing, kunlik topshiriqni bajaring va oʻz uyqungizni reaksiyangiz bilan solishtiring. Akkaunt kerak emas — hammasi qurilmangizda qoladi.</p>
             <ul class="mini-badges chapter-demo" data-render="badgesPreview" data-limit="6" data-reveal></ul>
             <div class="btn-row chapter-demo">
               <a class="btn btn-primary press" href="explore.html#/daily"><span data-icon="play"></span><span data-i18n="story.dendi.cta">Bugungi topshiriq</span></a>
@@ -296,7 +388,7 @@
         <div class="why-art why-photo" data-reveal="zoom">
           <img class="why-neurons" src="assets/img/neurons.webp" width="1200" height="897" alt="" loading="lazy" decoding="async">
           <span class="why-tag" aria-hidden="true"><span data-icon="shield"></span><span data-i18n="value.evidence.title">Avvalo dalil</span></span>
-          <img src="assets/characters/syno.webp" class="why-syno idle idle-syno" data-char="syno" alt="" width="168" height="248" loading="lazy">
+          <img src="assets/characters/poses/syno-correct.webp" class="why-syno idle idle-syno" data-char="syno" data-pose="correct" alt="" width="240" height="240" loading="lazy">
         </div>
         <div data-reveal>
           <p class="eyebrow"><span data-icon="shield"></span><span data-i18n="why.eyebrow">Nega Medulla?</span></p>
@@ -333,7 +425,7 @@
               <span class="demo-ruler"></span>
               <div class="demo-pop"><strong data-i18n="ax.glossary">Qiyin soʻzlarni izohlash</strong><span data-i18n="home.access.demoDef">Neyron — kichik elektr signallarini tashiydigan nerv hujayrasi.</span></div>
             </div>
-            <img src="assets/characters/memo.webp" data-char="memo" alt="" width="276" height="229" loading="lazy">
+            <img src="assets/characters/poses/memo-hello.webp" data-char="memo" data-pose="hello" alt="" width="240" height="240" loading="lazy">
           </div>
         </div>
       </div>
@@ -374,10 +466,10 @@
             <p data-i18n="cta.text">Kuzating, ulashing, koʻngilli boʻling yoki maktabingizda toʻgarak oching.</p>
             <div class="btn-row">
               <a class="btn btn-light press" href="join.html"><span data-icon="users"></span><span data-i18n="cta.primary">Bizga qoʻshiling</span></a>
-              <a class="btn btn-outline-light press" href="explore.html"><span data-i18n="cta.secondary">“Mening Medullam”ni ochish</span><span data-icon="arrow"></span></a>
+              <a class="btn btn-outline-light press" href="start.html"><span data-i18n="cta.secondary">“Mening Medullam”ni ochish</span><span data-icon="arrow"></span></a>
             </div>
           </div>
-          <div class="cta-art"><img src="assets/characters/dendi.webp" class="idle idle-dendi" data-char="dendi" alt="" width="194" height="280" loading="lazy"></div>
+          <div class="cta-art"><img src="assets/characters/poses/dendi-win.webp" class="idle idle-dendi" data-char="dendi" data-pose="win" alt="" width="240" height="240" loading="lazy"></div>
         </div>
       </div>
     </section>

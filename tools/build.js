@@ -61,9 +61,11 @@ const loc = (v, lang) => (v && typeof v === "object" ? v[lang || DEFAULT] || v.e
 const esc = Tpl.esc;
 
 const TOPICS = ["sleep", "learning", "brain", "movement", "senses", "myths"];
-const PAGES = ["index", "learn", "lab", "explore", "parents", "events", "activities", "about", "partners", "join", "glossary", "accessibility", "privacy", "offline", "404"];
+const PAGES = ["index", "start", "learn", "lab", "explore", "parents", "events", "activities", "about", "partners", "join", "glossary", "accessibility", "privacy", "offline", "404"];
 const glossary = JSON.parse(read("data/glossary.json")).terms || [];
-const CHAR_DIMS = { dendi: [194, 280], memo: [276, 229], octa: [198, 233], syno: [168, 248], lumi: [160, 161] };
+// Host character and expression on each topic page.
+const TOPIC_HOST = { sleep: ["lumi", "asleep"], senses: ["lumi", "curious"], movement: ["octa", "win"], brain: ["dendi", "aha"], myths: ["dendi", "curious"], learning: ["memo", "correct"] };
+const CHAR_DIMS = { dendi: [240, 240], memo: [240, 240], octa: [240, 240], syno: [240, 240], lumi: [240, 240] };
 
 /* --------------------------------------------------------------- checks */
 
@@ -209,7 +211,8 @@ function prerender(html, base) {
   // <img data-char="memo"> → add src
   html = html.replace(/<img\b([^>]*)\bdata-char="([a-z]+)"([^>]*)>/gi, (tag, a, id, b) => {
     if (/\ssrc="/.test(tag)) tag = tag.replace(/\ssrc="[^"]*"/, "");
-    return tag.replace(/<img\b/, `<img src="${base}assets/characters/${id}.webp"`);
+    const pose = (tag.match(/\bdata-pose="([a-z]+)"/) || [])[1];
+    return tag.replace(/<img\b/, `<img src="${base}assets/characters/${pose === "face" ? "faces/" + id : pose === "avatar" ? "avatars/" + id + "-classic" : pose ? "poses/" + id + "-" + (pose === "love" ? "correct" : pose) : id}.webp"`);
   });
   return html;
 }
@@ -219,14 +222,16 @@ function setMeta(html, meta) {
 }
 
 function shellHead(meta, base, extraHead) {
+  // fact and topic pages are part of the app (sidebar / tab bar, see js/main.js)
   return `<!doctype html>
-<html lang="uz">
+<html lang="uz" data-shell="app">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   ${metaBlock(meta)}
   <meta name="theme-color" content="#FFFFFF">
   <link rel="manifest" href="${base}manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="${base}assets/brand/logo-tile.svg">
   <link rel="icon" type="image/png" href="${base}assets/brand/favicon-64.png">
   <link rel="apple-touch-icon" href="${base}assets/brand/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -303,7 +308,7 @@ function topicPage(key) {
           <h1 data-i18n="topic.${key}"></h1>
           <p class="lead" id="topic-lead">${esc(t("topicPage.lead", { topic: name }))}</p>
         </div>
-        <div class="page-hero-art"><img class="idle idle-memo" data-char="${key === "sleep" || key === "senses" ? "lumi" : key === "movement" ? "octa" : key === "brain" || key === "myths" ? "dendi" : "memo"}" alt="" width="160" height="160"></div>
+        <div class="page-hero-art"><img class="idle idle-memo" data-char="${TOPIC_HOST[key][0]}" data-pose="${TOPIC_HOST[key][1]}" alt="" width="240" height="240"></div>
       </div>
     </section>
     <section class="section" style="padding-top:32px">
@@ -371,17 +376,19 @@ if (!CHECK_ONLY) {
   // 4. file:// mirror
   write("data/facts.js", "// GENERATED from data/facts.json by tools/build.js. Do not edit by hand.\n// Used only when the site is opened directly from disk (file://).\nwindow.MEDULLA_FACTS = " + JSON.stringify(facts, null, 2) + ";\n");
 
-  // 4b. texts for the Telegram bot (telegram/worker.js reads this from the site)
+  // 4b. texts for the Telegram bot (telegram/worker.mjs reads this from DATA_URL):
+  // its own texts plus the brain map's area names, titles, steps and targets
+  const BOT_KEY = /^(bot\.|map\.(area|title|what)\.|map\.(title|why)$|map\.(sleep|move)\.hint$|common\.(source|pendingReview)$)/;
   const botStrings = {};
   LANGS.forEach((l) => {
     botStrings[l] = {};
-    Object.keys(STR[l]).filter((k) => k.startsWith("bot.") || k === "common.source" || k === "common.pendingReview").sort()
+    Object.keys(STR[l]).filter((k) => BOT_KEY.test(k)).sort()
       .forEach((k) => { botStrings[l][k] = STR[l][k]; });
   });
   write("data/bot-strings.json", JSON.stringify(botStrings, null, 2) + "\n");
 
   // 5. sitemap + robots
-  const urls = PAGES.filter((p) => ["404", "offline", "explore"].indexOf(p) === -1).map((p) => (p === "index" ? "" : p + ".html"))
+  const urls = PAGES.filter((p) => ["404", "offline", "explore", "start"].indexOf(p) === -1).map((p) => (p === "index" ? "" : p + ".html"))
     .concat(facts.map((f) => "facts/" + f.id + ".html")).concat(TOPICS.map((k) => "topics/" + k + ".html"));
   const today = new Date().toISOString().slice(0, 10);
   const origin = DOMAIN || "https://YOUR-DOMAIN.example";
@@ -389,21 +396,22 @@ if (!CHECK_ONLY) {
     (DOMAIN ? "" : "<!-- Set `domain` in js/config.js and run node tools/build.js to replace YOUR-DOMAIN. -->\n") +
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     urls.map((u) => `  <url><loc>${origin}/${u}</loc><lastmod>${today}</lastmod></url>`).join("\n") + "\n</urlset>\n");
-  write("robots.txt", "User-agent: *\nAllow: /\nDisallow: /explore.html\n" + (DOMAIN ? `Sitemap: ${DOMAIN}/sitemap.xml\n` : "# Sitemap: set `domain` in js/config.js and run node tools/build.js\n"));
+  write("robots.txt", "User-agent: *\nAllow: /\nDisallow: /explore.html\nDisallow: /start.html\n" + (DOMAIN ? `Sitemap: ${DOMAIN}/sitemap.xml\n` : "# Sitemap: set `domain` in js/config.js and run node tools/build.js\n"));
 
   // 6. service-worker precache list + version
   const precache = [
-    "./", "index.html", "learn.html", "lab.html", "explore.html", "offline.html", "manifest.webmanifest",
+    "./", "index.html", "start.html", "learn.html", "lab.html", "explore.html", "offline.html", "manifest.webmanifest",
     "css/styles.css", "css/app.css", "css/polish.css",
     "js/prefs.js", "js/config.js", "js/i18n.js", "js/store.js", "js/backend.js", "js/sound.js", "js/motion.js", "js/main.js", "js/access.js",
-    "js/home.js", "js/learn.js", "js/lab.js", "js/games.js", "js/explore.js", "js/fact-template.js", "js/fact.js",
+    "js/home.js", "js/start.js", "js/learn.js", "js/lab.js", "js/games.js", "js/explore.js", "js/fact-template.js", "js/fact.js",
     "js/lang/uz.js", "js/lang/ru.js", "js/lang/en.js",
     "data/facts.json", "data/kindness.json", "data/resources.json", "data/glossary.json",
     "glossary.html", "accessibility.html",
-    "assets/brand/logo-96.webp", "assets/brand/logo-192.webp", "assets/brand/logo-white-96.webp", "assets/brand/favicon-64.png",
+    "assets/brand/logo-mark-96.webp", "assets/brand/logo-mark.webp", "assets/brand/logo-tile.svg", "assets/brand/favicon-64.png", "assets/brand/icon-192.png",
     "assets/img/brain-glass.webp"
   ]
     .concat(Object.keys(CHAR_DIMS).map((c) => "assets/characters/" + c + ".webp"))
+    .concat(Object.keys(CHAR_DIMS).map((c) => "assets/characters/faces/" + c + ".webp"))
     // reactions used offline: quiz feedback, game results and the offline page
     .concat(Object.keys(CHAR_DIMS).flatMap((c) => ["correct", "tryagain", "win"].map((p) => "assets/characters/poses/" + c + "-" + p + ".webp")))
     .concat(["assets/characters/poses/lumi-curious.webp"]);

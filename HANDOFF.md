@@ -6,24 +6,50 @@ goes. Tick the boxes as you go.
 
 ---
 
-## 0. Version 2.1: check it, then publish (new)
+## 0. Versions 2.2, 2.3 and 2.4: check them, then publish (new)
 
-Version 2.1 (accessibility & comfort, dark theme, hard words, the interactive
-Telegram bot, new character art and imagery) is in this folder but **not yet
-committed or pushed**. Pushing to `main` publishes it on GitHub Pages.
+Version 2.1 is published. Versions 2.2 (your new Gemini character sheets with
+ten expressions each, bubbly icons, the new hero background and the redrawn
+explainers), 2.3 (separate public site and app, the sign-in page, your
+wireframe-brain logo) and 2.4 (the brain map, the game-style top bar) are in this folder but **not yet committed or pushed**.
+Pushing to `main` publishes them on GitHub Pages.
 
-- [ ] Open the site locally (`npx serve .`), try the accessibility button
-      (or Alt + A), a few profiles, the dark theme and a dotted hard word.
+- [ ] Try the new flow: open the landing, press **Boshlash**, pick a character,
+      enter, look around the app (top bar on a computer, tab bar on a phone),
+      then **Chiqish** (sign out) in the avatar menu. Open the landing again after
+      signing in: it goes to the dashboard (`index.html?site=1` shows the landing).
+- [ ] Try the brain map: tap an area, log sleep, movement and mood, read a
+      fact, play a Lab test, and watch the areas light up. Ask a few students
+      whether the five areas and their names make sense in Uzbek and Russian.
+- [ ] Ask your expert reviewer to check the new health lines too: the sleep
+      and movement targets (NHLBI, WHO) and the low-mood note in the Calm area
+      (`map.sleep.hint`, `map.move.hint`, `map.mood.support` in `js/lang/*.js`).
+      If your school or partners have a helpline for young people, it could be
+      added to that note.
+- [ ] Check the logo in the header, footer, browser tab and on the sign-in page.
+      If you have a larger or sharper export of it, put it in
+      `assets/source/logo-network.png` (the original drawing for the browser tab: `assets/source/logo-original.png`) and run `node tools/logo.mjs`, then
+      `node tools/export-png.mjs` (share image) and `node tools/build.js`.
+- [ ] Telegram: give the bot the new picture with @BotFather `/setuserpic`
+      using `assets/brand/icon-512.png` (and the channel/Instagram too, if you
+      want them to match).
+
+- [ ] Open the site locally (`npx serve .`) and look at the home page in light
+      and dark, the character cards (point at one), the Lab (start a test) and
+      the eye on the home page (move the slider).
+- [ ] Look at every cut-out: with the local server running, open
+      `tools/out/cut.html` (`?bg=d` for the dark background). To fix one, replace
+      its sheet in `assets/source/gemini/` and run `node tools/cutout.mjs`.
+- [ ] Optional: in the first Memo sheet, "aha" overlapped "curious". It is
+      cleaned up, but regenerating that sheet with more space between poses
+      would be cleaner. If Gemini lets you download the full-size PNG, use it
+      instead of the chat image for sharper art.
 - [ ] If you like it, commit and push:
       ```bash
       git add -A
-      git commit -m "Medulla 2.1: accessibility & comfort, hard words, Telegram assistant, new look"
+      git commit -m "Medulla 2.2 to 2.4: new characters and icons, public site and app, team logo, brain map"
       git push
       ```
-- [ ] Canva: a working copy called **"Medulla website images (working copy)"**
-      was created in your Canva account to export the generated images at full
-      size. Your original "Untitled design" (the character cut-out) was not
-      changed. You can delete the working copy.
 
 ## 1. Version control: DONE
 
@@ -125,7 +151,33 @@ Only with each person's permission. Names and photos of adults only.
 - [ ] Free hosting: a Cloudflare account, then `npx wrangler deploy` in `telegram/`,
       the two secrets (`BOT_TOKEN`, `WEBHOOK_SECRET`) and the one `setWebhook` link (BOT.md §3).
 - [ ] Run `node telegram/poll.mjs --setup` once with the token: command menu and
-      descriptions in uz/ru/en.
+      descriptions in uz/ru/en. (Run it again after updating to 2.6: the menu
+      gained `/map`, `/daily` and `/stop`.)
+- [x] **Daily fact for each person (2.6):** the KV namespace `medulla-bot-SUBS` is created and bound in `wrangler.toml`. Still needed: `npx wrangler deploy`. (How it was made: in `telegram/` run
+      `npx wrangler kv namespace create SUBS`, paste the id it prints into
+      `wrangler.toml` (the commented `[[kv_namespaces]]` block, remove the `#`),
+      then `npx wrangler deploy` again. Until then `/daily` politely says it isn't
+      switched on. Running the bot on a computer instead (`poll.mjs`) needs nothing:
+      it keeps the list in `telegram/.subscribers.json`.
+- [ ] When the website is live, set `SITE_URL` in `wrangler.toml` and redeploy:
+      the bot then shows "Open my brain map" and website buttons.
+
+**New fact every day, automatically (2.6):**
+
+- [ ] **First push your local work** (versions 2.2–2.6 are still only on this
+      computer; GitHub has 2.1). Otherwise the bot reads old texts, and the
+      automatic facts would conflict with your local `data/facts.json`.
+- [ ] Get an API key at console.anthropic.com, then GitHub → Settings → Secrets
+      and variables → Actions → New repository secret: `ANTHROPIC_API_KEY`.
+      Expect a few cents a day.
+- [ ] Actions → "Add a new fact" → Run workflow (leave "dry run" ticked) and read
+      the log. Untick it for one real run. After that it runs by itself every day.
+- [ ] Optional variable `FACTS_PER_RUN` = 2 for two facts a day.
+- [ ] **Review facts.** They are published as "Pending expert review". Look at
+      the new ones in `data/facts.json` now and then, fix or delete any, and set
+      `reviewed: true` after a specialist has checked them.
+- Note: the daily fact is `facts[day % number of facts]`, so every added fact
+  moves today's pick. The job runs at 01:30 so nobody notices.
 
 **Daily channel post:**
 
@@ -138,28 +190,14 @@ Only with each person's permission. Names and photos of adults only.
 
 ## 10. Art
 
-- [ ] Ask the illustrator for **high-resolution transparent exports** of the
-      five characters and the logo. Use at least 800 px for characters, an SVG
-      for the logo if possible, and the same file names in
-      `assets/characters/` and `assets/brand/`. The current cut-outs come from a
-      1024 px sheet.
-- [ ] Optional for richer animation: **layered files** (for example Dendi's
-      branches, Octa's arms and Lumi's wings as separate parts), so they can be
-      animated without redrawing.
-- [x] First set of 10 emotion images received (hello, curious, aha, correct, tryagain,
-      focus, win, inhale, exhale, asleep). **Redo these**, because they drifted from the
-      sheet: `focus` for all five (frowning, looks angry; ask for a calm, determined
-      look), and Syno in `aha`, `inhale`, `exhale`, `asleep` (different body, missing the
-      orange spark). The other scenes in `assets/source/character-poses-prompt.md`
-      (ready, oops, reading, kind, comfort, sleepy, goodnight, offline, safe) are optional.
-- [x] **Characters:** replaced with your clean Canva cut-out (October 2026),
-      edges cleaned, twice the old resolution. For even sharper art, export the
-      original line-up at a larger size from its source file.
+- [x] **Characters (2.2):** your Gemini sheets, cut out with `tools/cutout.mjs`.
+- [x] **Logo (2.2):** a white-line brain mark for the purple tile, as SVG.
 - [ ] Decide whether you are happy with the four Canva-AI scenes (glass brain,
       neurons, night sky, waves; listed in CREDITS.md). Replace any you don't like
       with the same file names in `assets/img/`.
-- [ ] **Clean line art** for the colouring pages. It replaces the automatic
-      tracing in `assets/printables/*-lines.png`.
+- [x] **Line art** for the colouring pages is traced from the new art
+      (`assets/printables/*-lines.png`). Clean line art from an illustrator
+      would still look better.
 - [ ] A designed 1200×630 share image if you want one instead of
       `assets/brand/og-image.jpg`.
 

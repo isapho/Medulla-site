@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="uz">
+<html lang="uz" data-shell="app" data-gate="member">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -23,6 +23,7 @@
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#FFFFFF">
   <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="assets/brand/logo-tile.svg">
   <link rel="icon" type="image/png" href="assets/brand/favicon-64.png">
   <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,20 +45,11 @@
     </section>
     <section class="section" style="padding-top:20px">
       <div class="container">
-        <nav class="app-tabs" id="app-tabs" data-i18n-attr="aria-label:explore.tabsLabel" aria-label="“Mening Medullam” boʻlimlari">
-          <a href="#/"><span data-icon="home"></span><span data-i18n="explore.tab.home">Umumiy</span></a>
-          <a href="#/daily"><span data-icon="play"></span><span data-i18n="explore.tab.daily">Kunlik</span></a>
-          <a href="#/badges"><span data-icon="trophy"></span><span data-i18n="explore.tab.badges">Nishonlar</span></a>
-          <a href="#/saved"><span data-icon="bookmark"></span><span data-i18n="explore.tab.saved">Saqlangan</span></a>
-          <a href="#/history"><span data-icon="chart"></span><span data-i18n="explore.tab.history">Natijalar</span></a>
-          <a href="#/me"><span data-icon="user"></span><span data-i18n="explore.tab.me">Men</span></a>
-        </nav>
         <div id="view" class="view" aria-live="polite"></div>
       </div>
     </section>
   </main>
 
-  <dialog class="modal" id="onboard"></dialog>
   <dialog class="modal" id="consent"></dialog>
 
   <footer id="site-footer" class="site-footer"></footer>

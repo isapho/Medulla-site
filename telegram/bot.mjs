@@ -16,6 +16,10 @@
  *                  optional: one channel per language (overrides CHANNEL_ID)
  *   LANGS          optional, default "uz,ru,en"
  *   SITE_URL       optional, e.g. "https://medulla.uz" → adds a "Read the full fact" button
+ *   ASSET_URL      optional, where assets/characters/*.png are served (default: SITE_URL,
+ *                  else the public GitHub repository): the character shows as a preview
+ *   BOT_USERNAME   optional, default js/config.js → telegramBot: adds a button that
+ *                  turns on the daily fact in a private chat with the bot
  *   TZ_NAME        optional, default "Asia/Tashkent": which calendar day counts as "today"
  *   TELEGRAM_API   optional, default "https://api.telegram.org" (tests point it at a mock)
  *
@@ -25,9 +29,11 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import path from "node:path";
 import vm from "node:vm";
+import { areaOf } from "./assistant.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(HERE, "..");
+const REPO_RAW = "https://raw.githubusercontent.com/isapho/Medulla-site/main";
 
 /* ------------------------------------------------------------- content */
 
@@ -63,7 +69,7 @@ export function escapeHtml(s) {
 
 const loc = (v, lang) => (v && typeof v === "object" ? v[lang] || v.en : v);
 
-export function buildMessage(fact, lang, { strings, siteUrl } = {}) {
+export function buildMessage(fact, lang, { strings, siteUrl, assetBase, botUsername } = {}) {
   const t = (key, vars) => {
     let s = (strings[lang] || {})[key];
     if (s === undefined) s = (strings.en || {})[key];
@@ -71,8 +77,10 @@ export function buildMessage(fact, lang, { strings, siteUrl } = {}) {
     return vars ? s.replace(/\{(\w+)\}/g, (m, k) => (vars[k] !== undefined ? vars[k] : m)) : s;
   };
   const name = fact.character.charAt(0).toUpperCase() + fact.character.slice(1); // Dendi, Memo, Octa, Syno, Lumi
+  const area = areaOf(fact); // the brain-map area of the presenting character
   const lines = [
-    "🧠 <b>" + escapeHtml(t("bot.title")) + "</b> · " + escapeHtml(name),
+    "🧠 <b>" + escapeHtml(t("bot.title")) + "</b>",
+    area.emoji + " " + escapeHtml(t("map.area." + area.id)) + " · " + escapeHtml(name),
     "",
     "<b>" + escapeHtml(loc(fact.title, lang)) + "</b>",
     "",
@@ -92,11 +100,16 @@ export function buildMessage(fact, lang, { strings, siteUrl } = {}) {
   if (!fact.reviewed) lines.push("⏳ <i>" + escapeHtml(t("common.pendingReview")) + "</i>");
   lines.push("", "#Medulla #" + escapeHtml(t("bot.hashtag")));
 
-  const body = { text: lines.join("\n"), parse_mode: "HTML", link_preview_options: { is_disabled: true } };
-  if (siteUrl) {
-    const url = siteUrl.replace(/\/$/, "") + "/facts/" + fact.id + ".html";
-    body.reply_markup = { inline_keyboard: [[{ text: t("bot.more"), url }]] };
-  }
+  const assets = assetBase && /^https:\/\//.test(assetBase) ? assetBase.replace(/\/$/, "") : null;
+  const body = {
+    text: lines.join("\n"), parse_mode: "HTML",
+    link_preview_options: assets ? { url: assets + "/assets/characters/" + fact.character + ".png", prefer_small_media: true } : { is_disabled: true }
+  };
+  const rows = [];
+  if (siteUrl) rows.push([{ text: t("bot.more"), url: siteUrl.replace(/\/$/, "") + "/facts/" + fact.id + ".html" }]);
+  // People who'd rather get it privately can turn on /daily in the bot.
+  if (botUsername) rows.push([{ text: t("bot.btn.dailyDm"), url: "https://t.me/" + botUsername + "?start=daily" }]);
+  if (rows.length) body.reply_markup = { inline_keyboard: rows };
   return body;
 }
 
@@ -141,6 +154,8 @@ export async function run({ argv = process.argv.slice(2), env = process.env, log
 
   const { facts, strings, config } = loadContent(root);
   const siteUrl = env.SITE_URL || config.domain || null;
+  const assetBase = env.ASSET_URL || (siteUrl && /^https:/.test(siteUrl) ? siteUrl : REPO_RAW);
+  const botUsername = env.BOT_USERNAME || config.telegramBot || null;
   const fact = pickFact(facts, date, timeZone);
   const targets = channelsFor(langs, env);
 
@@ -153,9 +168,9 @@ export async function run({ argv = process.argv.slice(2), env = process.env, log
   log("Fact of the day: " + fact.id + " (day " + dayOfYear(date, timeZone) + ", " + timeZone + ")");
   const sent = [];
   for (const { lang, chatId } of targets) {
-    const body = buildMessage(fact, lang, { strings, siteUrl });
+    const body = buildMessage(fact, lang, { strings, siteUrl, assetBase, botUsername });
     if (dryRun) {
-      log("\n--- " + lang + " → " + (chatId || "(no channel set)") + " ---\n" + body.text + (body.reply_markup ? "\n[" + body.reply_markup.inline_keyboard[0][0].text + "] " + body.reply_markup.inline_keyboard[0][0].url : ""));
+      log("\n--- " + lang + " → " + (chatId || "(no channel set)") + " ---\n" + body.text + (body.reply_markup ? "\n" + body.reply_markup.inline_keyboard.map((r) => "[" + r[0].text + "] " + r[0].url).join("\n") : ""));
       continue;
     }
     const result = await sendMessage({ api: env.TELEGRAM_API || "https://api.telegram.org", token: env.BOT_TOKEN, chatId, body, fetchImpl });

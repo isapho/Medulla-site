@@ -114,8 +114,45 @@
     setTimeout(function () { root.classList.remove("i18n-wait"); }, 1500);
   }
 
+  // Public site and app (2.3). Runs before the first paint, so nobody sees
+  // the wrong page flash. <html data-gate="…"> on a page:
+  //   "landing"  index.html: signed-in visitors go straight to their dashboard
+  //              (index.html?site=1 shows the landing for the rest of the tab)
+  //   "member"   explore.html: needs a profile on this device, else start.html
+  //   "start"    start.html: signed-in visitors go on into the app
+  // <html class="is-member"> tells the CSS which header buttons to show.
+  // If storage is blocked no profile can last, so nothing is redirected.
+  function safeNext(v) {
+    return v && /^(?:[a-z0-9-]+\/)?[a-z0-9-]+\.html(?:#\/[a-z]*)?$/.test(v) ? v : null;
+  }
+  var signedIn = false;
+  (function gate() {
+    var mode = root.getAttribute("data-gate"), st = null, storage = true;
+    try { st = JSON.parse(window.localStorage.getItem("medulla.state") || "null"); } catch (e) { storage = false; }
+    if (st && st.profile) signedIn = st.profile.signedIn !== undefined ? !!st.profile.signedIn : !!st.profile.onboarded;
+    root.classList.toggle("is-member", signedIn);
+    if (!mode || !storage) return;
+    var params = null;
+    try { params = new URLSearchParams(window.location.search); } catch (e) { return; }
+    var routeHash = window.location.hash.indexOf("#/") === 0 ? window.location.hash : "";
+    var target = null;
+    if (mode === "landing" && signedIn) {
+      var stay = params.has("site");
+      try { if (stay) sessionStorage.setItem("medulla.site", "1"); else stay = sessionStorage.getItem("medulla.site") === "1"; } catch (e) { /* ignore */ }
+      if (!stay) target = "explore.html" + routeHash;
+    }
+    if (mode === "member" && !signedIn) target = "start.html?next=" + encodeURIComponent((window.location.pathname.split("/").pop() || "explore.html") + routeHash);
+    if (mode === "start" && signedIn) target = safeNext(params.get("next")) || "explore.html";
+    if (!target) return;
+    // Opened inside Telegram: remember it, the launch data in the hash is dropped.
+    try { if (/tgWebAppData|tgWebAppPlatform/.test(window.location.hash)) sessionStorage.setItem("medulla.tg", "1"); } catch (e) { /* ignore */ }
+    root.classList.add("gate-leaving");
+    window.location.replace(target);
+  })();
+
   window.MedullaPrefs = {
     KEYS: KEYS, get: get, set: set, DEFAULTS: DEFAULTS,
+    safeNext: safeNext,
     a11y: function () { var o = {}, k; for (k in state) o[k] = state[k]; return o; },
     // Change one or more settings: setA11y({ text: 2 }) or setA11y("reset").
     setA11y: function (changes) {

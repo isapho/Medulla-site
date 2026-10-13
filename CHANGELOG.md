@@ -1,5 +1,208 @@
 # Changelog
 
+## 2.6.0 (13 October 2026): a daily fact from the Telegram bot, and a bot that matches the app
+
+### Added
+- **Daily fact in a private chat** (`/daily`, or 🔔 in the bot's menu): the
+  bot sends the website's fact of the day every day at 08:00, 13:00 or 18:00
+  Tashkent time, in the person's language, with a quiz button, the area's step
+  for today and `/stop`. If the chosen time has already passed, today's fact
+  comes at once. Opt-in only: the screen says the bot keeps just the chat's
+  number, the language and the hour, and asks under-18s to check with a parent
+  or guardian first. `/stop` or blocking the bot deletes the entry; groups
+  can't subscribe; changing the language in the bot changes the daily
+  language too.
+  - Cloudflare Worker: a KV namespace (`SUBS`) and a cron trigger every
+    5 minutes; each delivery hour goes out in 12 batches of up to 45 chats,
+    which keeps every run inside the free plan's limit of 50 requests.
+  - Long polling (`poll.mjs`): the list lives in `telegram/.subscribers.json`
+    (ignored by git) and a computer that was off at the delivery time catches up.
+- **Brain map in the bot** (`/map`, 🗺 in the menu): the app's five areas with
+  their characters; each area shows the site's step for today, the sleep and
+  movement targets (NHLBI, WHO), its "why" fact, another fact from that area,
+  a quiz (Learning) or the breathing minute (Calm), and "Open my brain map"
+  once the site is live.
+- The channel post has a "Get it every day in a private chat" button
+  (`t.me/<bot>?start=daily`). New deep links: `?start=map`, `?start=daily`.
+- 10 new bot tests (37 in total).
+- **Automatic daily fact** (`tools/auto-fact.mjs`, `.github/workflows/auto-fact.yml`):
+  every day at 01:30 Tashkent time a GitHub Action adds 1 (or 2) new facts to
+  `data/facts.json`, rebuilds the site and starts the deploy; the Telegram bot
+  reads `facts.json` from the repository, so it has them at once. A fact is
+  searched on trusted health sites only (NHS, WHO, NIH institutes, MedlinePlus,
+  CDC, PubMed), written in uz/ru/en with a quiz from the page's own text, and
+  must pass: an exact evidence sentence found in the fetched page, an allowed
+  https source, no duplicate id, title or source, quiz and Telegram length
+  limits, the site's build checks, and a second independent fact-check. Facts
+  are published with `reviewed: false` ("Pending expert review"). Needs the
+  `ANTHROPIC_API_KEY` secret; without it the job does nothing. 7 tests with a
+  fake model.
+
+### Changed
+- Every fact in the bot and the channel names its brain-map area and character
+  ("🌙 Sleep · Lumi") and shows that character as a small picture (from the site,
+  or from the public repository while the site is offline). Only today's fact is
+  called "Brain fact of the day".
+- Bot menu: Brain map and Daily fact replace the Sleep fact button (`/sleep`
+  still works). The command menu gained `/map`, `/daily` and `/stop`:
+  run `node telegram/poll.mjs --setup` once to update it.
+- `/privacy`, `/help`, the bot descriptions and the site's Privacy page
+  describe the daily-fact exception in uz, ru and en.
+- Telegram Mini App: Telegram's header now matches the app's navy top bar (and
+  the light or dark theme on public pages) instead of always white.
+- `data/bot-strings.json` also carries the brain map's area texts.
+
+## 2.5.0 (13 October 2026): more avatars, a dark/light switch, clearer top bar
+
+### Added
+- **Avatar studio** in Me (Men): choose a character, then one of nine
+  expressions (Classic, Hello, Happy, Champion, Aha!, Curious, Focused, Calm,
+  Sleepy), then a background. That makes 45 avatar pictures instead of 5,
+  each showing the whole character (not just the head). The
+  avatar shows in the top bar, the menu, the greeting and on the sign-in page.
+  Like the rewards in Finch, two backgrounds open with levels: Sunset at
+  level 3 and Galaxy at level 5. Stored on the device as `profile.mood` and
+  `profile.bg`.
+- `tools/avatars.mjs`: makes the avatars
+  (`assets/characters/avatars/<character>-<mood>.webp`, 160 px) from the
+  normal image and the expression poses. It only crops the art.
+- **Dark / light switch** in the top bar (app, public site and sign-in page),
+  next to the accessibility button: a moon in the light theme, a sun in the
+  dark one. It sets the same Theme setting as the accessibility panel, where
+  "Auto" (follow the device) is still available.
+
+### Changed
+- **Browser-tab icon:** now the team's original drawing
+  (`assets/source/logo-original.png`: dark wireframe brain, navy network,
+  light paper). The logo everywhere else (header, sign-in page, About, app
+  icons, share image) stays the purple tile. `tools/logo.mjs` makes both.
+- **Top bar icons:** Map is now a brain, Daily a calendar with a tick, Brain
+  Lab a flask, the streak a flame, and the accessibility button a clearer
+  figure in a circle.
+- **Followers:** the 150+ count is now labelled Instagram + Telegram (home
+  page, impact numbers, timeline) with a combined icon.
+- **Sign-in page fits one screen:** on wide screens the character sits beside
+  the heading and the spacing, logo and text scale with the window height
+  (checked at 1885 × 865, 1366 × 650 and 390 × 844). The dark brand panel has
+  a new background of glowing neurons on navy, generated with Canva
+  (`assets/img/start-neurons.webp`, see CREDITS.md), and its five characters
+  are shown whole.
+
+## 2.4.0 (13 October 2026): the brain map, a game-style top bar
+
+### Added
+- **Brain map** (the new My Medulla home). Five areas of brain care around
+  the visitor's own character, each led by one character: Learning (Memo),
+  Movement (Octa), Discovery (Dendi), Calm and kindness (Syno) and Sleep
+  (Lumi). Doing one thing in an area lights it for the day; lighting all five
+  links the whole network (+15 XP). Each area has its own level, so the five
+  habits grow like skills.
+  - **30-second check-in** inside the areas: last night's sleep in hours,
+    screens away the hour before bed, active minutes today, mood (five faces).
+    Self-reported, private, on the device only. A low mood shows a gentle note
+    to talk to a trusted adult (no diagnosis, no scores).
+  - **The targets come from the checked facts:** 8–10 h of sleep for teens and
+    9–12 h for children (NHLBI), screens away an hour before bed (NHS), an
+    average of 60 active minutes a day for ages 5–17 (WHO guidelines, linked).
+    Every area links its "Why?" fact.
+  - **The rest of the site plugs in:** reading a fact or answering a question
+    lights Learning; a Lab test or the daily challenge lights Discovery;
+    breathing with Syno or a kindness action lights Calm; the wind-down with
+    Lumi lights Sleep.
+  - **My experiment:** the visitor's own Reaction test results on days after
+    8+ hours of sleep against days after less, with an honest note (few days,
+    many other causes, not a finding).
+  - **Your week:** a 7-day grid of the five areas. Missed days erase nothing.
+  - **Medulla in real life:** a card that leads from the app to the project:
+    events, volunteering and the parents' page.
+  - Four badges: Sleep diary, Brain on the move, Listen to yourself, Full network.
+- **"Me" tab** with sub-tabs: Profile (now with the five areas as skills),
+  Badges, Saved, Results.
+
+### Changed
+- **The sidebar is gone.** The app has a game-style top bar instead: chunky
+  tabs (Map, Daily, Facts, Lab, Me), the streak, and the avatar with a ring
+  that fills towards the next level. The avatar opens a menu (profile card,
+  badges, saved, results, printables, hard words, language, sound, the
+  Medulla website, sign out). On phones: the same top bar and a bottom tab bar
+  whose active tab pops up. Both are navy in light and dark themes.
+- The landing page's My Medulla chapter describes the brain map.
+- Old progress is kept: each area's days are rebuilt from the days already
+  stored on the device.
+
+### Removed
+- The old dashboard cards (purple daily banner, week summary counts, streak
+  neuron); their content now lives in the map, the Daily tab and Me.
+
+## 2.3.0 (13 October 2026): a public site and a separate app, the team's logo
+
+### Changed
+- **Two interfaces instead of one.** Before, the landing page and every other
+  page had the same header, including the visitor's level pill, so a first
+  visit looked like someone else's account.
+  - **Public site** (landing, About, Parents, Events, Partners, Join, Privacy,
+    Accessibility): a site menu with **Sign in** and **Get started**. Once
+    signed in, the header shows **My Medulla** with the visitor's character.
+  - **App** (My Medulla, Facts, Lab, Printables, Hard words, every fact and
+    topic page): a sidebar on wide screens (Learn: Home, Daily challenge,
+    Facts, Lab, Printables, Hard words; Personal: Badges, Saved, Results,
+    Profile; then the Medulla website and Sign out), and on phones a top bar,
+    a slide-in menu and a bottom tab bar. The top bar shows the page name, the
+    streak and the level. Guests can still read facts and play in the Lab; the
+    menu then shows "Guest mode" with a Sign in button.
+  - Signed-in visitors who open the landing page go straight to their
+    dashboard (`index.html?site=1` still shows the landing). Guests who open
+    the dashboard go to the sign-in page and come back to where they were.
+- **Sign-in page** (`start.html`) replaces the welcome pop-up on My Medulla.
+  Still no accounts: two steps, pick a character and a nickname made of
+  friendly words. A profile already on the device gets "Welcome back" with
+  **Continue**, **Start a new profile** (asks first, offers the download) and,
+  when sync is on, **I have a code**. **Sign out** keeps the progress on the
+  device; "Delete all my data" signs out too.
+- **Logo:** the team's own artwork, a white wireframe brain wrapped in a
+  network (`assets/source/logo-network.png`), replaces the simplified
+  white-line mark from 2.2. `tools/logo.mjs` makes the header mark, the
+  favicon, the app icons and the tile; the share image was re-exported.
+- My Medulla's own row of tabs is gone (the sidebar and tab bar replace it).
+- Dark theme: the XP number on the dashboard had too little contrast; fixed.
+
+### Removed
+- `tools/brand.js` and the vector logo files (`logo-mark.svg`,
+  `logo-ink.svg`, `logo-tile-maskable.svg`).
+
+## 2.2.0 (13 October 2026): new character expressions, new logo, bubbly icons, richer motion
+
+### Changed
+- **Character art:** the team's new Gemini sheets (a line-up for the normal images and two per character, white
+  sticker border on green), cut out by `tools/cutout.mjs` without changing the
+  drawings: no green fringe on light or dark pages, every pose with the same
+  body size. 10 expressions per character (hello, curious, aha, correct, try
+  again, focus, win, breathe in, breathe out, asleep); Syno had 5 before.
+- **More expressions on the site:** cards change expression when you point at
+  them, lab tests show a curious then concentrating Octa, Syno breathes in and
+  out with you, Lumi falls asleep during the wind-down, badges celebrate, topic
+  pages and page heroes each have a fitting mood. Avatars use head crops.
+- **Colouring pages** traced from the new art.
+- **Logo:** a clean white-line brain on the purple tile (`tools/brand.js`), so
+  the brain is visible at 16–44 px. New favicon (SVG + PNG), app icons and
+  share image.
+- **Icons:** the whole set redrawn rounder and "bubbly": 2 px rounded strokes,
+  a soft tinted body, solid accents, on glossy gradient tiles with a gentle
+  shadow.
+- **Hero background:** the random network of straight lines is replaced by a few
+  smooth pathways that flow into the brain, with soft signals travelling along
+  them and two slow orbit rings. Phones keep the headline clear.
+- **Explainers redrawn:** a detailed neuron whose signal jumps between the
+  myelin gaps and crosses the synapse; memory consolidation in three acts
+  (learn, sleep with fast replay, recall with a thicker bundle); a hypnogram
+  with a glowing head and deep-sleep band; and a new eye with iris fibres,
+  lashes and a lid that narrows in bright light, in a room that goes from night
+  through dusk to daylight. On wide screens each explainer sits beside its text.
+- Character tints are warm, so the purple characters stand out.
+
+### Removed
+- The 2.1 Canva cut-outs, the first AI poses, the bitmap logo and the old colouring pages.
+
 ## 2.1.0 (12 October 2026): every brain, Telegram assistant, new look
 
 ### Added

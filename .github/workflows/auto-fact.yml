@@ -1,0 +1,100 @@
+# Adds 1–2 new, sourced brain facts to data/facts.json every day, fully automatically.
+# See tools/auto-fact.mjs for how a fact is searched, written and double-checked.
+#
+# Setup (GitHub → repository → Settings → Secrets and variables → Actions):
+#   Secret:    ANTHROPIC_API_KEY   from console.anthropic.com (a few cents a day)
+#   Variable:  FACTS_PER_RUN       optional, 1 or 2 (default 1)
+# Until the secret exists, the job just says so and stops.
+#
+# Timing: 20:30 UTC = 01:30 in Tashkent. The site and the bot choose
+# "fact of the day" as facts[day-of-year % number of facts], so adding a fact
+# changes which fact is today's. Doing it at 01:30 means that happens while
+# nobody is reading, before the 08:00 channel post.
+#
+# Every new fact is published with reviewed:false, so it shows
+# "Pending expert review" until a person changes it to true.
+
+name: Add a new fact
+
+on:
+  # The daily schedule is switched OFF until the ANTHROPIC_API_KEY secret exists and a
+  # dry run has been read. To switch it on, remove the # from the next two lines.
+  # schedule:
+  #   - cron: "30 20 * * *"
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "How many facts (1 or 2)"
+        default: "1"
+      dry_run:
+        description: "Only print the facts, do not publish"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write   # commit data/facts.json and the pages built from it
+  actions: write    # start the Pages deploy (pushes from Actions don't trigger it)
+
+concurrency:
+  group: auto-fact
+  cancel-in-progress: false
+
+jobs:
+  add:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      COUNT: ${{ github.event_name == 'workflow_dispatch' && inputs.count || vars.FACTS_PER_RUN || '1' }}
+      DRY: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Stop politely if the API key is missing
+        id: key
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY secret is not set: nothing to do (see the top of this file)."
+            echo "have=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "have=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Tests (fake model, nothing is sent)
+        if: steps.key.outputs.have == 'true'
+        run: node --test tools/auto-fact.test.mjs
+      - name: Install the Anthropic SDK (not saved in the repository)
+        if: steps.key.outputs.have == 'true'
+        run: npm install --no-save --no-package-lock @anthropic-ai/sdk
+      - name: Write the new fact(s)
+        if: steps.key.outputs.have == 'true'
+        run: |
+          if [ "$DRY" = "true" ]; then
+            node tools/auto-fact.mjs --count="$COUNT" --dry-run
+          else
+            node tools/auto-fact.mjs --count="$COUNT"
+          fi
+      - name: Rebuild pages, sitemap and bot texts, then check everything
+        if: steps.key.outputs.have == 'true' && env.DRY != 'true'
+        run: |
+          node tools/build.js
+          node tools/build.js --check
+          node --test telegram/bot.test.mjs telegram/assistant.test.mjs
+      - name: Commit and publish
+        if: steps.key.outputs.have == 'true' && env.DRY != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet; then
+            echo "No new fact was accepted today. Nothing to publish."
+            exit 0
+          fi
+          git config user.name "medulla-fact-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "New fact(s) of the day (automatic, pending expert review)"
+          git push
+          # The Telegram bot reads data/facts.json from this branch, so it has them already.
+          # The website needs a deploy; a push made with GITHUB_TOKEN doesn't start one.
+          gh workflow run pages.yml

@@ -7,7 +7,9 @@ or English.
 | What people can do | How |
 |---|---|
 | Fact of the day (the same one the website and channel show) | `/fact` or the menu |
-| A random fact, a sleep fact | `/random`, `/sleep` |
+| **Get the fact of the day every day** at 08:00, 13:00 or 18:00 (Tashkent time) | `/daily` or 🔔 in the menu; `/stop` ends it |
+| **The brain map**: the app's five areas (Learning · Memo, Movement · Octa, Discovery · Dendi, Calm · Syno, Sleep · Lumi), each with today's small step, its target and its "why" fact | `/map` or 🗺 in the menu |
+| A random fact, a sleep fact, another fact from one area | `/random`, `/sleep`, 🎲 in an area |
 | Switch between the simple and the detailed text | the 🔎 / ✏️ button under a fact |
 | A quick quiz (Telegram's own quiz poll, anonymous) | `/quiz` or ❓ under a fact |
 | Hard words explained (the site's glossary) | `/word synapse`, or just send a word |
@@ -18,14 +20,27 @@ or English.
 | Change language | `/lang` |
 | See what the bot keeps (nothing) | `/privacy` |
 
+Every fact says which brain-map area it belongs to (the area of the character
+who presents it, as on the site) and shows that character as a small picture.
+The daily message adds the area's step for today and an "Open my brain map"
+button once the site is live, so the bot leads back to the app where the
+areas light up. The bot itself never tracks anyone's habits.
+
 Accessibility in the bot: short messages, every button has an emoji **and**
 words, the simple text comes first, quizzes have no time limit, and a word
 the person doesn't know can be looked up by just typing it.
 
 ## Privacy (why it is built this way)
 
-- **Nothing is stored.** No database, no logs, no user ids. Each message is
-  answered and forgotten.
+- **Nothing is stored**, except for people who turn on the daily fact. No
+  logs, no names or usernames. Each message is answered and forgotten.
+- **The daily fact is opt-in.** A bot can't write to someone later without
+  remembering where, so `/daily` keeps exactly three things: the private
+  chat's number, the language and the hour. The screen that turns it on says
+  so and asks under-18s to check with a parent or guardian first. `/stop`
+  deletes the entry at once; blocking the bot does too (Telegram answers
+  "blocked" on the next send and the bot removes the chat). Groups can't
+  subscribe. `/privacy` and the site's Privacy page say the same.
 - The language comes from the button someone pressed, or from Telegram's
   `language_code` at the moment they write. It is not saved.
 - Quiz polls are **anonymous**.
@@ -49,7 +64,9 @@ the person doesn't know can be looked up by just typing it.
 node telegram/poll.mjs --demo "/start" uz
 ```
 
-prints what the bot would answer, without a token. With the real token
+prints what the bot would answer, without a token (`--demo --daily ru` prints
+today's daily message). In Git Bash on Windows, put `MSYS_NO_PATHCONV=1` in
+front, or it turns `/start` into a folder path. With the real token
 (PowerShell):
 
 ```powershell
@@ -60,7 +77,9 @@ $env:BOT_TOKEN="123:ABC"; $env:SITE_URL="https://isapho.github.io/Medulla-site";
 `--setup` registers the command menu and descriptions in all three languages
 and the Mini App menu button. The second command runs the bot until you press
 Ctrl+C. While it runs this way, `/breathe` can also guide the minute live
-(the message changes every 5 seconds).
+(the message changes every 5 seconds), and the daily fact goes out from this
+computer: the list is kept in `telegram/.subscribers.json` (never committed),
+and if the computer was off at 08:00 the fact goes out when it starts again.
 
 ## 3. Run it all the time for free (Cloudflare Workers)
 
@@ -80,6 +99,21 @@ A laptop can't stay on all day, so for real use deploy `worker.mjs`:
    https://api.telegram.org/bot<BOT_TOKEN>/setWebhook?url=https://medulla-bot.<your-subdomain>.workers.dev/&secret_token=<WEBHOOK_SECRET>
    ```
 4. Run `node telegram/poll.mjs --setup` once (step 2) for the command menu.
+5. **Switch on the daily fact** (still in `telegram/`):
+   ```bash
+   npx wrangler kv namespace create SUBS
+   ```
+   Copy the `id` it prints into `wrangler.toml` (the `[[kv_namespaces]]` block
+   at the bottom; remove the `#` signs), then `npx wrangler deploy` again.
+   The cron trigger is already in `wrangler.toml`: every 5 minutes. It only
+   works at 08:00, 13:00 and 18:00 Tashkent time; each run sends to one twelfth
+   of that hour's people, so the whole list goes out within the hour.
+
+   **How many people:** the free plan allows 50 requests per run, so a run
+   sends at most 45 (`MAX_PER_RUN`), which is about 540 people per time
+   (about 1,600 across the three times). With Workers Paid ($5 a month), raise
+   `MAX_PER_RUN` to a few hundred. If Medulla grows past that, tell people to
+   follow the channel instead.
 
 The Worker reads `data/facts.json`, `data/glossary.json` and
 `data/bot-strings.json` from `DATA_URL` in `wrangler.toml` (the public GitHub repository, so it works even while the website is offline; `SITE_URL` stays empty until the site is live, then the bot also shows website buttons), so every site update also
@@ -96,17 +130,22 @@ webhook when it starts; run step 3 again afterwards to switch back.
 node --test telegram/assistant.test.mjs
 ```
 
-17 tests with a fake Telegram: menus in three languages, the daily fact,
-every quiz as a valid quiz poll, 64-byte button data, hard-word lookup,
-groups, inline mode, the breathing minute, the Worker's secret check, and that
-errors never contain the token. GitHub Actions runs them on every push.
+26 tests with a fake Telegram and a fake KV: menus in three languages, the
+fact of the day, every quiz as a valid quiz poll, 64-byte button data,
+hard-word lookup, groups, inline mode, the breathing minute, the Worker's
+secret check, that errors never contain the token, the brain map (same five
+areas and "why" facts as `js/explore.js`), the whole `/daily` → `/stop` flow,
+no fact twice in a day, blocked chats removed, the laptop catching up, and the
+Worker's five-minute batches staying under the request limit. GitHub Actions
+runs them on every push.
 
 ## Files
 
 | File | What it is |
 |---|---|
-| `assistant.mjs` | The bot itself: one `handleUpdate(update)` function, no packages |
-| `poll.mjs` | Run with long polling; `--setup`, `--demo` |
-| `worker.mjs`, `wrangler.toml` | The same bot as a Cloudflare Worker (webhook) |
+| `assistant.mjs` | The bot itself: `handleUpdate(update)` and `sendDaily(chat, lang)`, no packages |
+| `subscribers.mjs` | Who turned on the daily fact: Workers KV, a JSON file, or memory (tests) |
+| `poll.mjs` | Run with long polling (also sends the daily fact); `--setup`, `--demo` |
+| `worker.mjs`, `wrangler.toml` | The same bot as a Cloudflare Worker (webhook + cron for the daily fact) |
 | `assistant.test.mjs` | Tests |
 | `bot.mjs` | The separate daily channel post (see `MINI_APP.md`) |

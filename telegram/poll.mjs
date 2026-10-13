@@ -6,23 +6,52 @@
  *   BOT_TOKEN=123:abc SITE_URL=https://medulla.uz node telegram/poll.mjs
  *   BOT_TOKEN=123:abc node telegram/poll.mjs --setup     set commands, descriptions and menu button, then exit
  *   node telegram/poll.mjs --demo "/word synapse"      print the reply to one message, no token needed
+ *   node telegram/poll.mjs --demo --daily ru           print today's daily-fact message
  *
  * Environment:
  *   BOT_TOKEN     from @BotFather (secret; never commit it)
  *   SITE_URL      optional, the public https address of the site (adds "Open Medulla" and links)
+ *   ASSET_URL     optional, where assets/characters/*.png are served (default: SITE_URL,
+ *                 else the public GitHub repository)
+ *   SUBS_FILE     optional, where /daily subscriptions are kept
+ *                 (default telegram/.subscribers.json, ignored by git)
  *   TELEGRAM_API  optional, default https://api.telegram.org (tests use a mock)
  *
+ * While it runs, it also sends the daily fact to everyone who turned it on
+ * (checked every minute; a computer that was off at 08:00 catches up later).
+ *
  * Long polling and a webhook can't run at the same time: this script removes
- * any webhook first. For a free always-on version, use telegram/worker.js.
+ * any webhook first. For a free always-on version, use telegram/worker.mjs.
  */
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync, renameSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { loadContent } from "./bot.mjs";
 import { createAssistant, commandList, LANGS } from "./assistant.mjs";
+import { storeOver, memoryStore, clock } from "./subscribers.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(HERE, "..");
+const REPO_RAW = "https://raw.githubusercontent.com/isapho/Medulla-site/main";
+
+/* /daily subscriptions in a JSON file (see subscribers.mjs). */
+export function fileStore(file) {
+  let data = {};
+  try { data = JSON.parse(readFileSync(file, "utf8")); } catch (e) { data = {}; }
+  return storeOver(data, () => { writeFileSync(file + ".tmp", JSON.stringify(data, null, 1)); renameSync(file + ".tmp", file); });
+}
+
+/* Send today's fact to everyone whose time has come and who hasn't had it. */
+export async function deliverDue({ bot, store, now = new Date(), log = () => {} }) {
+  const { hour, day } = clock(now);
+  let sent = 0;
+  for (const s of await store.dueToday(hour, day)) {
+    try {
+      if ((await bot.sendDaily(s.chatId, s.lang)) === "sent") { await store.markSent(s.chatId, day); sent++; }
+    } catch (e) { log("daily fact: " + e.message); }
+  }
+  return sent;
+}
 
 export function loadAll(root = ROOT) {
   const { facts, strings, config } = loadContent(root);
@@ -40,7 +69,9 @@ export function makeCall({ api = "https://api.telegram.org", token, fetchImpl = 
       const retry = data.parameters && data.parameters.retry_after;
       if ((res.status === 429 || res.status >= 500) && attempt < 3) { await new Promise((r) => setTimeout(r, (retry || attempt + 1) * 1000)); continue; }
       // The token is in the URL only; never print the URL.
-      throw new Error(method + " failed: " + res.status + " " + (data.description || ""));
+      const err = new Error(method + " failed: " + res.status + " " + (data.description || ""));
+      err.code = data.error_code || res.status;
+      throw err;
     }
   };
 }
@@ -63,10 +94,15 @@ export async function poll({ env = process.env, log = console.log, signal } = {}
   const { facts, strings, config, glossary } = loadAll();
   const siteUrl = env.SITE_URL || config.domain || null;
   const call = makeCall({ api: env.TELEGRAM_API, token: env.BOT_TOKEN });
-  const bot = createAssistant({ facts, glossary, strings, siteUrl, call, canWait: true });
+  const store = fileStore(env.SUBS_FILE || path.join(HERE, ".subscribers.json"));
+  const bot = createAssistant({ facts, glossary, strings, siteUrl, assetBase: env.ASSET_URL || siteUrl || REPO_RAW, subs: store, call, canWait: true });
   await call("deleteWebhook", { drop_pending_updates: false });
   const me = await call("getMe", {});
   log("Medulla bot @" + me.username + " is running (long polling). Ctrl+C to stop.");
+  const tick = () => deliverDue({ bot, store, log }).then((n) => { if (n) log("Daily fact sent to " + n + " chat(s)."); }).catch((e) => log("daily fact: " + e.message));
+  tick();
+  const timer = setInterval(tick, 60 * 1000);
+  if (signal) signal.addEventListener("abort", () => clearInterval(timer));
   let offset = 0;
   while (!(signal && signal.aborted)) {
     let updates = [];
@@ -89,8 +125,9 @@ async function demo(text, lang = "en") {
   const { facts, strings, config, glossary } = loadAll();
   const sent = [];
   const call = async (method, params) => { sent.push({ method, params }); return { message_id: 1 }; };
-  const bot = createAssistant({ facts, glossary, strings, siteUrl: config.domain || "https://example.org", call });
-  await bot.handleUpdate({ update_id: 1, message: { message_id: 1, chat: { id: 1, type: "private" }, from: { language_code: lang }, text } });
+  const bot = createAssistant({ facts, glossary, strings, siteUrl: config.domain || "https://example.org", assetBase: REPO_RAW, subs: memoryStore(), call });
+  if (text === "--daily") await bot.sendDaily(1, lang); // what a subscriber gets each day
+  else await bot.handleUpdate({ update_id: 1, message: { message_id: 1, chat: { id: 1, type: "private" }, from: { language_code: lang }, text } });
   for (const s of sent) {
     console.log("→ " + s.method + "\n" + (s.params.text || s.params.question || ""));
     const kb = s.params.reply_markup && s.params.reply_markup.inline_keyboard;

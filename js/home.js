@@ -10,7 +10,7 @@ Medulla.ready(function () {
   /* hero neuron network: grows with pointer movement and scrolling */
   var hero = document.querySelector(".hero");
   var canvas = document.getElementById("hero-canvas");
-  if (canvas && Mo) Mo.neuronField(canvas, { cx: 0.72, cy: 0.42, pointerHost: hero });
+  if (canvas && Mo) Mo.neuronField(canvas, { cx: 0.72, cy: 0.42, target: ".hero-brain", pointerHost: hero });
 
   /* pointer parallax between the hero layers */
   var layers = hero ? Array.prototype.slice.call(hero.querySelectorAll("[data-depth]")) : [];
@@ -36,7 +36,7 @@ Medulla.ready(function () {
       var f = facts[M.todayIndex(facts.length)], who = M.factChar(f);
       flip.innerHTML = '<div class="flip-inner">' +
         '<button type="button" class="flip-face flip-front press" aria-expanded="false"><span class="chip">' + M.esc(M.topicName(f)) + "</span>" +
-          "<h3>" + M.esc(M.localized(f.title)) + '</h3><span class="flip-hint">' + M.icon("refresh") + M.esc(M.t("daily.flip")) + "</span>" + M.charImg(who, "idle idle-" + who, "") + "</button>" +
+          "<h3>" + M.esc(M.localized(f.title)) + '</h3><span class="flip-hint">' + M.icon("refresh") + M.esc(M.t("daily.flip")) + "</span>" + M.poseImg(who, "curious", "idle idle-" + who) + "</button>" +
         '<div class="flip-face flip-back" inert><span class="chip">' + M.esc(M.topicName(f)) + "</span><h3>" + M.esc(M.localized(f.title)) + "</h3>" +
           '<p class="fact-text">' + M.esc(M.localized(f.simple)) + "</p>" + M.sourceLine(f) +
           '<div class="btn-row"><a class="text-link" href="' + M.factUrl(f) + '">' + M.esc(M.t("daily.readMore")) + M.icon("arrow", "icon-sm") + "</a></div></div></div>";
@@ -61,7 +61,7 @@ Medulla.ready(function () {
     var update = function () {
       var v = range.value / 100;
       eye.style.setProperty("--light", v);
-      hole.setAttribute("r", (34 - v * 22).toFixed(1));
+      hole.setAttribute("r", (27 - v * 18).toFixed(1));
       range.setAttribute("aria-valuetext", M.t(v < 0.34 ? "explain.pupil.dark" : v < 0.67 ? "explain.pupil.mid" : "explain.pupil.bright"));
     };
     range.addEventListener("input", update);

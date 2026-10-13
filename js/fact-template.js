@@ -8,11 +8,11 @@
   "use strict";
 
   var CHARS = {
-    dendi: { name: "Dendi", w: 194, h: 280, tint: "#EFEDFF" },
-    memo: { name: "Memo", w: 276, h: 229, tint: "#E8E5FF" },
-    octa: { name: "Octa", w: 198, h: 233, tint: "#F3F1FF" },
-    syno: { name: "Syno", w: 168, h: 248, tint: "#ECE9FF" },
-    lumi: { name: "Lumi", w: 160, h: 161, tint: "#FFF3E6" }
+    dendi: { name: "Dendi", w: 240, h: 240, tint: "#FFF1E4" },
+    memo: { name: "Memo", w: 240, h: 240, tint: "#FFF5EC" },
+    octa: { name: "Octa", w: 240, h: 240, tint: "#FFF2E9" },
+    syno: { name: "Syno", w: 240, h: 240, tint: "#FFF0E6" },
+    lumi: { name: "Lumi", w: 240, h: 240, tint: "#E9E6FF" }
   };
 
   function esc(s) {
@@ -31,9 +31,9 @@
     return order;
   }
 
-  function charImg(id, base, cls) {
+  function charImg(id, base, cls, pose) {
     var c = CHARS[id] || CHARS.memo;
-    return '<img src="' + base + "assets/characters/" + id + '.webp" width="' + c.w + '" height="' + c.h + '" alt=""' + (cls ? ' class="' + cls + '"' : "") + ">";
+    return '<img src="' + base + "assets/characters/" + (pose ? "poses/" + id + "-" + pose : id) + '.webp" width="' + c.w + '" height="' + c.h + '" alt=""' + (cls ? ' class="' + cls + '"' : "") + ">";
   }
 
   /**
@@ -67,7 +67,7 @@
 
   function side(f, ctx) {
     var t = ctx.t, loc = ctx.loc, base = ctx.base, c = CHARS[f.character] || CHARS.memo;
-    return '<div class="card fact-presenter"><div class="host-circle" style="--tint:' + c.tint + '">' + charImg(f.character || "memo", base, "idle idle-" + (f.character || "memo")) + "</div>" +
+    return '<div class="card fact-presenter"><div class="host-circle" style="--tint:' + c.tint + '">' + charImg(f.character || "memo", base, "idle idle-" + (f.character || "memo"), "aha") + "</div>" +
         '<p class="muted" style="margin:0">' + esc(t("reader.presenter", { name: c.name })) + "</p></div>" +
       ((ctx.related || []).length ? '<div class="card"><h2 class="h3" style="margin:0 0 10px">' + esc(t("fact.related")) + '</h2><ul class="related-list">' +
         ctx.related.map(function (r) { return '<li><a href="' + base + "facts/" + r.id + '.html"><span>' + esc(loc(r.title)) + "</span>" + ic("arrow") + "</a></li>"; }).join("") +

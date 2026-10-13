@@ -2,8 +2,8 @@
  * Printable activity sheets (A4). Each sheet is built here in the current
  * language and printed on its own: "Print" marks it .is-printing and calls
  * window.print(); css/app.css hides everything else when printing.
- * Colouring pages use line art traced from the character sheet
- * (assets/printables/*-lines.png); see HANDOFF.md for designer line art.
+ * Colouring pages use line art made from the character art
+ * (assets/printables/*-lines.png, made by tools/cutout.mjs).
  */
 Medulla.ready(function () {
   "use strict";
@@ -65,12 +65,11 @@ Medulla.ready(function () {
   /* -------------------------------------------------------------- sheets */
 
   var CHARS = ["dendi", "memo", "octa", "syno", "lumi"];
-  var CHAR_PX = { dendi: [591, 843], memo: [834, 699], octa: [603, 705], syno: [513, 750], lumi: [486, 492] };
 
   function sheets() {
     var out = [];
     CHARS.forEach(function (id) {
-      var c = M.characters[id], img = M.root() + "assets/printables/" + id + "-lines.png", px = CHAR_PX[id];
+      var c = M.characters[id], img = M.root() + "assets/printables/" + id + "-lines.png", px = [1024, 1024];
       out.push({
         id: "color-" + id, char: id, kind: "color",
         title: t("sheet.color.title", { name: c.name }),
