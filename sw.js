@@ -7,7 +7,7 @@
  *  - Other same-origin files (images): served from cache, refreshed in the background.
  *  - Google Fonts: cached after first use. Everything else: network only.
  */
-const VERSION = "medulla-336d390251";
+const VERSION = "medulla-4952d80757";
 const PRECACHE = [
   "./",
   "index.html",
@@ -93,7 +93,8 @@ self.addEventListener("activate", (event) => {
 });
 
 function fromNetworkAndCache(request, cacheName) {
-  return fetch(request).then((res) => {
+  // "no-cache" = always revalidate with the server, so a page never gets a stale script from the HTTP cache.
+  return fetch(request, { cache: "no-cache" }).then((res) => {
     if (res && res.ok && (res.type === "basic" || res.type === "cors")) {
       const copy = res.clone();
       caches.open(cacheName).then((c) => c.put(request, copy));

@@ -17,7 +17,11 @@ Medulla.ready(function () {
 
   /* -------------------------------------------------------------- helpers */
 
-  function nick() { return M.nickName(); }
+  function nick() {
+    if (M.nickName) return M.nickName();
+    var n = Store.ensureProfile().nick; // an older cached main.js
+    return t("nick.format", { adj: t("nick.adj." + n.a), noun: t("nick.noun." + n.n), num: n.num });
+  }
   function avatar() { return Store.get().profile.avatar || "dendi"; }
   function today() { return Store.dayKey(); }
   function dayIdx() { return M.todayIndex(1000); }

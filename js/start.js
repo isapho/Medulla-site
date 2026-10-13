@@ -22,7 +22,11 @@ Medulla.ready(function () {
   var mode = Store.hasProfile() ? "back" : "new";
   var chosen = Store.get().profile.avatar || "dendi";
 
-  function nick() { return M.nickName(); }
+  function nick() {
+    if (M.nickName) return M.nickName();
+    var n = Store.ensureProfile().nick; // an older cached main.js
+    return t("nick.format", { adj: t("nick.adj." + n.a), noun: t("nick.noun." + n.n), num: n.num });
+  }
 
   // Before signing in: say what is kept, with a link to the Privacy Policy (as on any professional site).
   function legal() {
