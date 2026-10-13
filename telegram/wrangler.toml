@@ -10,7 +10,7 @@ compatibility_date = "2026-09-01"
 DATA_URL = "https://raw.githubusercontent.com/isapho/Medulla-site/main"
 # The public address of the website. Empty = no website buttons or links in the
 # bot. Set it to "https://isapho.github.io/Medulla-site" (or your domain) when the site is live.
-SITE_URL = ""
+SITE_URL = "https://isapho.github.io/Medulla-site"
 # Daily-fact messages per five-minute run. 45 fits the free plan (50 requests per run);
 # on Workers Paid it can be raised to a few hundred.
 MAX_PER_RUN = "45"

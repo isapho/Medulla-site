@@ -13,7 +13,7 @@
 window.MEDULLA_CONFIG = {
   // Public site address without a trailing slash, e.g. "https://medulla.uz".
   // Used for share links, Open Graph tags and sitemap.xml (run node tools/build.js after setting it).
-  domain: null,
+  domain: "https://isapho.github.io/Medulla-site",
 
   // Contact email, e.g. "hello@medulla.uz". Builds every mailto: link.
   contactEmail: null,
