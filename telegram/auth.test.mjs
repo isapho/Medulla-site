@@ -45,7 +45,7 @@ test("Telegram widget: valid signature passes; tampering, wrong bot and old logi
 });
 
 test("Telegram Mini App initData is verified with the WebAppData key", async () => {
-  assert.deepEqual(await verifyTelegramWebApp(webAppData(), BOT, NOW), { id: "42" });
+  assert.equal((await verifyTelegramWebApp(webAppData(), BOT, NOW)).id, "42");
   assert.equal(await verifyTelegramWebApp(webAppData().replace("auth_date=", "auth_date=1"), BOT, NOW), null);
   assert.equal(await verifyTelegramWebApp(webAppData({ id: 42 }, NOW - 90000), BOT, NOW), null);
   assert.equal(await verifyTelegramWebApp("", BOT, NOW), null);
@@ -140,4 +140,28 @@ test("bot login code: issued once, exchanged once, same account as the Telegram 
   assert.equal((await api(post("/auth/telegram-code", { code }), e)).status, 401, "single use");
   assert.equal((await api(post("/auth/telegram-code", { code: "AAAA-AAAA" }), e)).status, 401, "unknown code");
   assert.equal((await api(post("/auth/telegram-code", { code: "12" }), e)).status, 401);
+});
+
+test("after a Telegram sign-in the bot is told to confirm it, in the person's language", async () => {
+  const e = env();
+  const seen = [];
+  const run = (body, path = "/auth/telegram-code") => handleApi(post(path, body), e, path, { fetchImpl: fakeFetch, now: () => NOW, notify: async (id, lang) => void seen.push([id, lang]) });
+  const code = await issueLoginCode(e.SUBS, 42, "ru");
+  assert.equal((await run({ code })).status, 200);
+  assert.deepEqual(seen, [["42", "ru"]]);
+  assert.equal((await run({ code })).status, 401);
+  assert.equal(seen.length, 1, "a rejected code sends nothing");
+  // widget login: id only, falls back to Uzbek
+  await run(widgetFields(), "/auth/telegram");
+  assert.deepEqual(seen[1], ["42", "uz"]);
+  // Mini App login: language from Telegram's own data
+  const wa = new URLSearchParams({ auth_date: String(NOW - 5), user: JSON.stringify({ id: 9, language_code: "en" }) });
+  const chk = [...wa.keys()].sort().map((k) => k + "=" + wa.get(k)).join("\n");
+  const sk = crypto.createHmac("sha256", "WebAppData").update(BOT).digest();
+  wa.set("hash", crypto.createHmac("sha256", sk).update(chk).digest("hex"));
+  await run({ initData: wa.toString() }, "/auth/telegram-webapp");
+  assert.deepEqual(seen[2], ["9", "en"]);
+  // Google sign-in never messages anyone on Telegram
+  await run({ credential: idToken() }, "/auth/google");
+  assert.equal(seen.length, 3);
 });

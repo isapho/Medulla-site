@@ -1192,6 +1192,7 @@ Object.assign(window.MEDULLA_I18N.strings.uz, {
   "login.tgHint": "Endi koʻk Telegram tugmasini bosing.",
   "bot.loginCode": "🔑 Medulla uchun kirish kodingiz. Uni 5 daqiqa ichida saytga kiriting:",
   "bot.loginWarn": "U bir marta ishlaydi. Hech kimga bermang. Agar siz soʻramagan boʻlsangiz, bu xabarga eʼtibor bermang.",
+  "bot.loginDone": "✅ Siz Medulla saytiga kirdingiz. Natijalaringiz endi sinxronlanadi. Agar bu siz boʻlmasangiz, kodlaringizni hech kimga bermang va Men → Sinxronlash boʻlimida oʻchiring.",
   "bot.loginOff": "Saytga kirish hali yoqilmagan.",
   "bot.loginPrivate": "Iltimos, /login ni guruhda emas, men bilan shaxsiy chatda yuboring.",
   "bot.btn.openSignIn": "🌐 Kirish sahifasini ochish",

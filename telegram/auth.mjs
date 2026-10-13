@@ -73,7 +73,7 @@ export async function verifyTelegramWebApp(initData, botToken, nowSec = Math.flo
   if (!at || nowSec - at > maxAge) return null;
   let user = null;
   try { user = JSON.parse(params.get("user") || "null"); } catch (e) { user = null; }
-  return user && user.id ? { id: String(user.id) } : null;
+  return user && user.id ? { id: String(user.id), lang: user.language_code } : null;
 }
 
 /* "Sign in with Google" ID token (a JWT signed with RS256). */
@@ -117,10 +117,11 @@ export function newLoginCode() {
   return c.slice(0, 4) + "-" + c.slice(4);
 }
 const normLogin = (c) => String(c || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
-export async function issueLoginCode(KV, userId) {
+export async function issueLoginCode(KV, userId, lang = "uz") {
   for (let i = 0; i < 3; i++) {
     const code = newLoginCode(), k = "l:" + normLogin(code);
-    if (await KV.get(k) === null) { await KV.put(k, String(userId), { expirationTtl: LOGIN_TTL }); return code; }
+    // the language is kept only to answer "you are signed in" in the same language
+    if (await KV.get(k) === null) { await KV.put(k, JSON.stringify({ id: String(userId), l: lang }), { expirationTtl: LOGIN_TTL }); return code; }
   }
   throw new Error("could not issue a code");
 }
@@ -144,7 +145,9 @@ export function corsHeaders(request, env) {
     : {};
 }
 
-export async function handleApi(request, env, path, { fetchImpl = fetch, now = () => Math.floor(Date.now() / 1000) } = {}) {
+/* notify(userId, lang): tells the person in the bot chat that they signed in (worker.mjs).
+   after(promise): lets the answer go out first (ctx.waitUntil). Both are optional. */
+export async function handleApi(request, env, path, { fetchImpl = fetch, now = () => Math.floor(Date.now() / 1000), notify = null, after = (p) => p } = {}) {
   const cors = corsHeaders(request, env);
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (request.method !== "POST") return json({ ok: false, reason: "method" }, 405, cors);
@@ -154,19 +157,29 @@ export async function handleApi(request, env, path, { fetchImpl = fetch, now = (
 
   if (path.startsWith("/auth/")) {
     if (!env.AUTH_SECRET) return reply({ ok: false, reason: "off" }, 503);
-    let who = null, provider = null;
+    let who = null, provider = null, lang = "uz";
     if (path === "/auth/telegram" && env.BOT_TOKEN) { provider = "telegram"; who = await verifyTelegramWidget(body, env.BOT_TOKEN, now()); }
     else if (path === "/auth/telegram-webapp" && env.BOT_TOKEN) { provider = "telegram"; who = await verifyTelegramWebApp(body.initData, env.BOT_TOKEN, now()); }
     else if (path === "/auth/telegram-code" && env.SUBS) {
       provider = "telegram";
       const k = "l:" + normLogin(body.code);
-      const id = normLogin(body.code).length === 8 ? await env.SUBS.get(k) : null;
-      if (id) { await env.SUBS.delete(k); who = { id: String(id) }; } // single use
+      const raw = normLogin(body.code).length === 8 ? await env.SUBS.get(k) : null;
+      if (raw) {
+        await env.SUBS.delete(k); // single use
+        let v = null;
+        try { v = JSON.parse(raw); } catch (e) { v = null; }
+        who = { id: String(v && typeof v === "object" ? v.id : raw) };
+        if (v && v.l) lang = v.l;
+      }
     }
     else if (path === "/auth/google" && env.GOOGLE_CLIENT_ID) { provider = "google"; who = await verifyGoogle(body.credential, env.GOOGLE_CLIENT_ID, { fetchImpl, nowSec: now() }); }
     else return reply({ ok: false, reason: "off" }, 404);
     if (!who) return reply({ ok: false, reason: "invalid" }, 401);
-    return reply({ ok: true, code: await codeFor(env.AUTH_SECRET, provider, who.id) });
+    if (who.lang) lang = who.lang;
+    const out = reply({ ok: true, code: await codeFor(env.AUTH_SECRET, provider, who.id) });
+    // Telegram: say "signed in" in the bot chat (the user id is the private chat id).
+    if (provider === "telegram" && notify) after(Promise.resolve(notify(who.id, lang)).catch(() => {}));
+    return out;
   }
 
   if (!env.SUBS) return reply({ ok: false, reason: "off" }, 503);

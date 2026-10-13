@@ -61,7 +61,7 @@ async function assistantFor(env) {
     facts: c.facts, glossary: c.glossary, strings: c.strings,
     siteUrl: env.SITE_URL || null, assetBase: env.SITE_URL || dataUrl,
     subs: env.SUBS ? kvStore(env.SUBS) : null,
-    login: env.SUBS && env.AUTH_SECRET ? { issue: (userId) => issueLoginCode(env.SUBS, userId) } : null,
+    login: env.SUBS && env.AUTH_SECRET ? { issue: (userId, lang) => issueLoginCode(env.SUBS, userId, lang) } : null,
     call: callFor(env), canWait: false
   });
 }
@@ -87,7 +87,16 @@ export default {
   async fetch(request, env, ctx) {
     // Sign in with Telegram / Google and cloud sync for the website (telegram/auth.mjs).
     const path = new URL(request.url).pathname;
-    if (path.startsWith("/auth/") || path.startsWith("/sync/")) return handleApi(request, env, path);
+    if (path.startsWith("/auth/") || path.startsWith("/sync/")) {
+      // After a Telegram sign-in the bot confirms it in the person's chat.
+      const notify = env.BOT_TOKEN ? async (userId, lang) => {
+        const c = await content(env.DATA_URL || env.SITE_URL);
+        const l = ["uz", "ru", "en"].includes(String(lang).slice(0, 2)) ? String(lang).slice(0, 2) : "uz";
+        const text = (c.strings[l] || {})["bot.loginDone"] || c.strings.en["bot.loginDone"];
+        if (text) await callFor(env)("sendMessage", { chat_id: userId, text });
+      } : null;
+      return handleApi(request, env, path, { notify, after: (p) => ctx.waitUntil(p) });
+    }
     if (request.method !== "POST") return new Response("Medulla bot is running.", { status: 200 });
     // Only Telegram knows the secret (set with setWebhook … &secret_token=).
     if (!env.WEBHOOK_SECRET || request.headers.get("X-Telegram-Bot-Api-Secret-Token") !== env.WEBHOOK_SECRET) {

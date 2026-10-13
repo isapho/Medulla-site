@@ -188,7 +188,7 @@ export function createAssistant({ facts, glossary = [], strings, siteUrl = null,
     const chatId = msg.chat.id;
     if (msg.chat.type !== "private") return send(chatId, escapeHtml(t(lang, "bot.loginPrivate")), { inline_keyboard: [backRow(lang)] });
     if (!login || !msg.from || !msg.from.id) return send(chatId, escapeHtml(t(lang, "bot.loginOff")), menuKeyboard(lang));
-    const code = await login.issue(msg.from.id);
+    const code = await login.issue(msg.from.id, lang);
     const rows = [];
     const open = siteButton(t(lang, "bot.btn.openSignIn"), "start.html?lang=" + lang);
     if (open) rows.push([open]);

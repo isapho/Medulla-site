@@ -1192,6 +1192,7 @@ Object.assign(window.MEDULLA_I18N.strings.en, {
   "login.tgHint": "Now press the blue Telegram button.",
   "bot.loginCode": "🔑 Your Medulla sign-in code. Type it on the website within 5 minutes:",
   "bot.loginWarn": "It works once. Don't share it with anyone. If you didn't ask for it, ignore this message.",
+  "bot.loginDone": "✅ You are signed in on the Medulla website. Your progress now syncs. If this wasn't you, don't share your codes and turn sync off in Me → Sync.",
   "bot.loginOff": "Website sign-in isn't switched on yet.",
   "bot.loginPrivate": "Please send /login to me in a private chat, not in a group.",
   "bot.btn.openSignIn": "🌐 Open the sign-in page",
