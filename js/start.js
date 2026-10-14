@@ -158,9 +158,9 @@ Medulla.ready(function () {
 
   function viewNew() {
     return head("hello", t("start.title"), t("start.lead")) +
-      '<div class="start-step"><p class="start-step-label" id="start-pick-label"><span class="start-num" aria-hidden="true">1</span>' + esc(t("start.pick")) + "</p>" + picker() + "</div>" +
+      '<div class="start-step"><p class="start-step-label" id="start-pick-label"><span class="start-num" aria-hidden="true">1</span>' + esc(t("start.pick")) + '<span class="start-chosen" id="start-chosen" aria-hidden="true">' + esc(M.characters[chosen].name) + "</span></p>" + picker() + "</div>" +
       '<div class="start-step"><p class="start-step-label"><span class="start-num" aria-hidden="true">2</span>' + esc(t("start.nick")) + "</p>" +
-        '<div class="nick-row"><span class="nick" id="start-nick">' + esc(nick()) + '</span><button type="button" class="btn btn-ghost btn-sm press" data-reroll>' + icon("refresh") + "<span>" + esc(t("me.newNick")) + "</span></button></div>" +
+        '<div class="nick-row start-tag"><span class="start-tag-pic" style="--tint:' + M.characters[chosen].tint + '"><img src="' + M.avatarSrc(chosen, "face") + '" width="40" height="40" alt="" decoding="async"></span><span class="nick" id="start-nick">' + esc(nick()) + '</span><button type="button" class="btn btn-ghost btn-sm press" data-reroll>' + icon("refresh") + "<span>" + esc(t("me.newNick")) + "</span></button></div>" +
         '<div class="field start-name"><label for="start-name">' + esc(t("start.nameLabel")) + ' <span class="muted">' + esc(t("start.nameOptional")) + "</span></label>" +
           '<input id="start-name" class="input" maxlength="20" autocomplete="off" spellcheck="false" placeholder="' + esc(t("start.namePlaceholder")) + '" value="' + esc(Store.get().profile.name || "") + '" aria-describedby="start-name-hint">' +
           '<p class="muted start-note sr-only" id="start-name-hint">' + esc(t("start.nameHint")) + "</p></div></div>" +
@@ -216,6 +216,10 @@ Medulla.ready(function () {
       b.setAttribute("aria-checked", String(on));
       b.setAttribute("tabindex", on ? "0" : "-1");
     });
+    var label = view.querySelector("#start-chosen");
+    if (label) { label.textContent = M.characters[chosen].name; label.classList.remove("pop-in"); void label.offsetWidth; label.classList.add("pop-in"); }
+    var tag = view.querySelector(".start-tag-pic");
+    if (tag) { tag.style.setProperty("--tint", M.characters[chosen].tint); tag.querySelector("img").src = M.avatarSrc(chosen, "face"); }
     var art = view.querySelector(".start-hero-art");
     if (art) {
       art.style.setProperty("--tint", M.characters[chosen].tint);

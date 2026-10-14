@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased: friendlier mood faces and a polished sign-in page
+
+### Changed
+- **Mood check-in (Syno · Calm):** five new colourful faces, one colour per mood (sad blue with a tear, sleepy lilac with "zz", calm yellow, happy green, beaming orange with a sparkle). The chosen chip fills with its mood colour and the face pops; the others soften.
+- **Sign-in page:** starry brand panel with a glow behind the logo, a soft lavender/peach backdrop behind the card, a gradient top edge, a checkmark and name chip on the chosen character, the nickname shown as a name tag with the character's face, and a gradient enter button with a gentle shine (off in calm mode / reduced motion).
+
 ## 2.7.0 (13 October 2026): sign in with Telegram and Google, cloud sync
 
 ### Added
