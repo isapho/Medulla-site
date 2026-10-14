@@ -93,14 +93,35 @@ Medulla.ready(function () {
   }
 
   // 1 = low … 5 = great, drawn as small faces (no emoji: they differ per device).
+  // Five colourful faces, one colour per mood (sad blue → sleepy lilac → calm yellow → happy green → beaming orange).
+  var MOOD_COL = ["", ["#9CC8FF", "#5B8DEF"], ["#D9D2FF", "#9C8CF0"], ["#FFE58A", "#F5C33B"], ["#A8EBB8", "#4CC57A"], ["#FFC58A", "#FF8A3D"]];
   function moodFace(v) {
-    var mouth = ["", "M8 16.6c2.4-2.6 5.6-2.6 8 0", "M8.6 15.8h6.8", "M8.6 15.2h6.8", "M8 14.4c2.4 2.8 5.6 2.8 8 0", "M7.4 13.8c2.6 4 6.6 4 9.2 0"][v];
-    var eyes = v === 2 ? '<path d="M7.8 10.4h2.6M13.6 10.4h2.6"/>' : '<circle class="d" cx="9.1" cy="10" r="1.25"/><circle class="d" cx="14.9" cy="10" r="1.25"/>';
-    return '<svg class="icon mood-face" viewBox="0 0 24 24" aria-hidden="true"><circle class="f" cx="12" cy="12" r="9"/>' + eyes + '<path d="' + mouth + '"/></svg>';
+    var c = MOOD_COL[v], g = "mf-g" + v, ink = "#2B2350";
+    var eyes = {
+      1: '<path d="M14 21.5l5-2M34 19.5l5 2" stroke="' + ink + '" stroke-width="2.4" stroke-linecap="round" fill="none"/><ellipse cx="17.5" cy="25" rx="2.4" ry="3" fill="' + ink + '"/><ellipse cx="30.5" cy="25" rx="2.4" ry="3" fill="' + ink + '"/><path d="M33 29.5c0 0-2.2 3.2-2.2 4.6a2.2 2.2 0 0 0 4.4 0c0-1.4-2.2-4.6-2.2-4.6z" fill="#5BB8FF"/>',
+      2: '<path d="M13.5 25c1.6 1.8 4.6 1.8 6.2 0M28.3 25c1.6 1.8 4.6 1.8 6.2 0" stroke="' + ink + '" stroke-width="2.4" stroke-linecap="round" fill="none"/><text x="35" y="14" font-family="Sora, sans-serif" font-weight="700" font-size="9" fill="#7C6CE0">z</text><text x="40" y="8.5" font-family="Sora, sans-serif" font-weight="700" font-size="6.5" fill="#7C6CE0">z</text>',
+      3: '<ellipse cx="17.5" cy="23.5" rx="2.4" ry="3" fill="' + ink + '"/><ellipse cx="30.5" cy="23.5" rx="2.4" ry="3" fill="' + ink + '"/>',
+      4: '<ellipse cx="17.5" cy="22.5" rx="2.4" ry="3" fill="' + ink + '"/><ellipse cx="30.5" cy="22.5" rx="2.4" ry="3" fill="' + ink + '"/><circle cx="18.3" cy="21.4" r="0.9" fill="#fff"/><circle cx="31.3" cy="21.4" r="0.9" fill="#fff"/>',
+      5: '<path d="M13.5 23.5c1.2-2.6 5-2.6 6.2 0M28.3 23.5c1.2-2.6 5-2.6 6.2 0" stroke="' + ink + '" stroke-width="2.4" stroke-linecap="round" fill="none"/><path d="M41 6l1.1 2.6 2.6 1.1-2.6 1.1L41 13.4l-1.1-2.6-2.6-1.1 2.6-1.1z" fill="#FFD23F"/>'
+    }[v];
+    var mouth = {
+      1: '<path d="M18.5 34.5c3-3 8-3 11 0" stroke="' + ink + '" stroke-width="2.4" stroke-linecap="round" fill="none"/>',
+      2: '<ellipse cx="24" cy="33.5" rx="2.6" ry="2.2" fill="' + ink + '"/>',
+      3: '<path d="M19 32.5h10" stroke="' + ink + '" stroke-width="2.4" stroke-linecap="round"/>',
+      4: '<path d="M17.5 30.5c3.4 4 9.6 4 13 0" stroke="' + ink + '" stroke-width="2.4" stroke-linecap="round" fill="none"/>',
+      5: '<path d="M16 29h16c0 5.4-3.6 8.6-8 8.6S16 34.4 16 29z" fill="' + ink + '"/><path d="M19.6 34.6c2.6 1.8 6.2 1.8 8.8 0" stroke="#FF6B8B" stroke-width="2.6" stroke-linecap="round" fill="none"/>'
+    }[v];
+    var blush = v >= 4 ? '<ellipse cx="12.5" cy="29.5" rx="3.2" ry="2" fill="#FF7A9C" opacity="0.45"/><ellipse cx="35.5" cy="29.5" rx="3.2" ry="2" fill="#FF7A9C" opacity="0.45"/>' : "";
+    return '<svg class="mood-face" viewBox="0 0 48 48" aria-hidden="true" focusable="false">' +
+      '<defs><radialGradient id="' + g + '" cx="38%" cy="32%" r="70%"><stop offset="0" stop-color="#fff" stop-opacity="0.55"/><stop offset="0.35" stop-color="' + c[0] + '"/><stop offset="1" stop-color="' + c[1] + '"/></radialGradient></defs>' +
+      '<circle cx="24" cy="25" r="19" fill="' + c[1] + '" opacity="0.25"/>' +
+      '<circle cx="24" cy="24" r="19" fill="url(#' + g + ')"/>' +
+      '<ellipse cx="17" cy="13.5" rx="5" ry="2.6" fill="#fff" opacity="0.5" transform="rotate(-25 17 13.5)"/>' +
+      blush + eyes + mouth + "</svg>";
   }
   function moodRow(current) {
     return '<fieldset class="ci-row"><legend>' + esc(t("map.mood.q")) + '</legend><div class="ci-chips is-mood">' + [1, 2, 3, 4, 5].map(function (v) {
-      return '<button type="button" class="ci-chip ci-mood press" data-ci="mood" data-v="' + v + '" aria-pressed="' + (current === v) + '">' + moodFace(v) + "<small>" + esc(t("map.mood." + v)) + "</small></button>";
+      return '<button type="button" class="ci-chip ci-mood press" data-ci="mood" data-v="' + v + '" style="--mood:' + MOOD_COL[v][1] + ';--mood-soft:' + MOOD_COL[v][0] + '" aria-pressed="' + (current === v) + '">' + moodFace(v) + "<small>" + esc(t("map.mood." + v)) + "</small></button>";
     }).join("") + "</div></fieldset>" +
       (current && current <= 2 ? '<p class="ci-support">' + icon("heart") + "<span>" + esc(t("map.mood.support")) + "</span></p>" : "");
   }
